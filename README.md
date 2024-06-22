@@ -1,6 +1,6 @@
 # TempestWX Data Extractor
 
-This program is designed to extract weather station data from any station displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, or publishing it to an MQTT server.  This program was generated entirely by GPT4o with prompts and iterative corrections.  It is intended as a thought experiment and demonstration of using LLMs for code generation.  It is not intended to be used publically and will likely break as soon as the website format changes.
+This program is designed to extract weather station data from any station displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, or publishing it to an MQTT server.  This program and this text was generated entirely by GPT4o with prompts and iterative corrections.  It is intended as a thought experiment and demonstration of using LLMs for code generation.  It is not intended to be used publically and will likely break as soon as the website format changes.
 
 ## Features and Functionality
 
@@ -55,19 +55,16 @@ This program is designed to extract weather station data from any station displa
    python iceicedata.py -s
 2. **Extract Data and Save to JSON**:
    ```sh
-   python iceicedata.py https://tempestwx.com/map/50515/65.1557/-16.47/6 -j output.json
+   python iceicedata.py -j output.json https://tempestwx.com/map/50515/65.1557/-16.47/6 
 3. **Extract Data and Publish to MQTT:**:
    ```sh
-   python iceicedata.py https://tempestwx.com/map/50515/65.1557/-16.47/6 -m
+   python iceicedata.py -m https://tempestwx.com/map/50515/65.1557/-16.47/6 
 4. **Extract Data and Save to Text File:**:
    ```sh
-   python iceicedata.py https://tempestwx.com/map/50515/65.1557/-16.47/6 -o output.txt
+   python iceicedata.py -o output.txt https://tempestwx.com/map/50515/65.1557/-16.47/6 
 5. **Publish Windrose Data to MQTT:**:
    ```sh
-   python iceicedata.py https://tempestwx.com/map/50515/65.1557/-16.47/6 -m -w WindroseTopic/
-
-## Summary
-This program is a versatile tool for extracting and outputting weather station data from the TempestWX map, offering flexibility in output formats and configurations, making it suitable for various use cases and integration into existing workflows.
+   python iceicedata.py -m -w WindroseTopic/ https://tempestwx.com/map/50515/65.1557/-16.47/6 
 
 
 ## Requirements
