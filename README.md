@@ -1,6 +1,6 @@
 # TempestWX Data Extractor
 
-This program is designed to extract weather station data from any station displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, or publishing it to an MQTT server.
+This program is designed to extract weather station data from any station displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, or publishing it to an MQTT server.  This program was generated entirely by GPT4o with prompts and iterative corrections.  It is intended as a thought experiment and demonstration of using LLMs for code generation.  It is not intended to be used publically and will likely break as soon as the website format changes.
 
 ## Features and Functionality
 
