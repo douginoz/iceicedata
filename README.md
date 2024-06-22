@@ -70,3 +70,26 @@ This program is designed to extract weather station data from any station displa
 This program is a versatile tool for extracting and outputting weather station data from the TempestWX map, offering flexibility in output formats and configurations, making it suitable for various use cases and integration into existing workflows.
 
 
+## Requirements
+
+To run this program on an Ubuntu machine, you will need to have the following:
+
+1. **Python 3.6 or higher**: Ensure Python is installed and accessible from the command line.
+2. **Selenium WebDriver**: Required for web scraping.
+3. **Geckodriver**: The WebDriver for Firefox.
+4. **Mozilla Firefox**: The web browser used by Selenium.
+5. **Paho MQTT**: A Python library for MQTT communication.
+
+## Installation Steps
+
+Follow these steps to install the necessary dependencies and set up the environment:
+
+1. **Update Package List**: First, update the package list on your Ubuntu machine to ensure you have the latest information on the newest versions of packages and their dependencies.
+
+2. **Install Python 3**: Install Python 3 and pip (Python's package installer) if they are not already installed on your system.
+
+3. **Install Mozilla Firefox**: Install the Mozilla Firefox web browser, which is required by Selenium WebDriver for web scraping.
+
+4. **Install Geckodriver**: Download and install Geckodriver, the WebDriver for Firefox. Extract the downloaded tar file and move the Geckodriver binary to `/usr/local/bin` to make it accessible system-wide.
+
+5. **Install Selenium and Paho MQTT**: Use pip to install the Selenium and Paho MQTT libraries, which are required for web scraping and MQTT communication, respectively.
