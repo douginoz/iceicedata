@@ -1,10 +1,50 @@
+import json
+import os  # Add this line
 import paho.mqtt.client as mqtt
-from iceicedata.config import load_config
 
-def publish_to_mqtt(mqtt_config, json_data, wind_data, station_identifier, windrose_topic):
-    config = load_config(mqtt_config)
+def load_config(config_file):
+    if not os.path.isfile(config_file):
+        print(f"Config file {config_file} not found. Example config file format:")
+        print(json.dumps({
+            "mqtt_server": "mqtt.example.com",
+            "mqtt_port": 1883,
+            "mqtt_user": "username",
+            "mqtt_password": "password",
+            "mqtt_root": "RootTopic/",
+            "mqtt_windrose_root": "WindroseTopic/"
+        }, indent=2))
+        sys.exit(1)
+
+    with open(config_file, 'r') as f:
+        config = json.load(f)
+
+    return config
+
+def save_mqtt_config(config_file):
+    if os.path.isfile(config_file):
+        config = load_config(config_file)
+    else:
+        config = {}
+
+    config["mqtt_server"] = input(f"Enter MQTT server (default: {config.get('mqtt_server', 'mqtt.example.com')}): ") or config.get("mqtt_server", "mqtt.example.com")
+    config["mqtt_port"] = int(input(f"Enter MQTT port (default: {config.get('mqtt_port', 1883)}): ") or config.get("mqtt_port", 1883))
+    config["mqtt_user"] = input(f"Enter MQTT user (default: {config.get('mqtt_user', 'username')}): ") or config.get("mqtt_user", "username")
+    config["mqtt_password"] = input(f"Enter MQTT password (default: {config.get('mqtt_password', 'password')}): ") or config.get("mqtt_password", "password")
+    config["mqtt_root"] = input(f"Enter MQTT root topic (default: {config.get('mqtt_root', 'RootTopic/')}): ") or config.get("mqtt_root", "RootTopic/")
+    if not config["mqtt_root"].endswith('/'):
+        config["mqtt_root"] += '/'
+    config["mqtt_windrose_root"] = input(f"Enter MQTT windrose root topic (default: {config.get('mqtt_windrose_root', 'WindroseTopic/')}): ") or config.get("mqtt_windrose_root", "WindroseTopic/")
+    if not config["mqtt_windrose_root"].endswith('/'):
+        config["mqtt_windrose_root"] += '/'
+
+    with open(config_file, 'w') as f:
+        json.dump(config, f, indent=2)
+    print(f"Configuration saved to {config_file}")
+
+def send_mqtt_data(data, config, topic):
     client = mqtt.Client()
-    client.username_pw_set(config["mqtt_user"], config["mqtt_password"])
+    if config["mqtt_user"] and config["mqtt_password"]:
+        client.username_pw_set(config["mqtt_user"], config["mqtt_password"])
 
     def on_connect(client, userdata, flags, rc):
         pass
@@ -18,21 +58,9 @@ def publish_to_mqtt(mqtt_config, json_data, wind_data, station_identifier, windr
     try:
         client.connect(config["mqtt_server"], config["mqtt_port"], 60)
         client.loop_start()
-
-        topic = f"{config['mqtt_root']}{station_identifier}"
-        result = client.publish(topic, json_data, retain=True)
+        result = client.publish(topic, json.dumps(data), retain=True)
         result.wait_for_publish()
-
-        if windrose_topic:
-            windrose_topic_name = windrose_topic if isinstance(windrose_topic, str) else config.get("mqtt_windrose_root")
-            if windrose_topic_name:
-                windrose_result = client.publish(windrose_topic_name, json_data, retain=True)
-                windrose_result.wait_for_publish()
-            else:
-                print("Windrose topic name not provided and not found in the config file.")
-
         client.loop_stop()
         client.disconnect()
-
     except Exception as e:
         print(f"An error occurred while publishing to MQTT: {e}")

@@ -1,86 +1,32 @@
-import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import unittest
+from unittest.mock import MagicMock, patch
+from iceicedata.selenium_utils import initialize_driver, validate_url, extract_coordinates, get_station_id_from_url, get_placemarkers, select_placemarker, get_station_id
 
-def initialize_driver():
-    service = Service('/usr/local/bin/geckodriver')
-    options = webdriver.FirefoxOptions()
-    options.add_argument('--headless')
-    driver = webdriver.Firefox(service=service, options=options)
-    return driver
+class TestSeleniumUtils(unittest.TestCase):
+    @patch('iceicedata.selenium_utils.webdriver.Firefox')
+    @patch('iceicedata.selenium_utils.webdriver.FirefoxOptions')
+    @patch('iceicedata.selenium_utils.Service')
+    def test_initialize_driver(self, mock_service, mock_firefox_options, mock_firefox):
+        driver = initialize_driver()
+        self.assertIsNotNone(driver)
+        mock_firefox.assert_called_once()
 
-def validate_url(url):
-    if "tempestwx.com/map/" not in url:
-        raise ValueError("Invalid URL format. Please provide a valid TempestWX URL.")
-    return url
+    def test_validate_url(self):
+        self.assertEqual(validate_url('https://tempestwx.com/map/12345'), 'https://tempestwx.com/map/12345')
+        with self.assertRaises(ValueError):
+            validate_url('invalid_url')
 
-def extract_coordinates(url):
-    parts = url.split('/')
-    if len(parts) >= 7:
-        latitude = parts[-3]
-        longitude = parts[-2]
-        zoom = parts[-1]
-        return latitude, longitude, zoom
-    else:
-        raise ValueError("URL does not contain valid coordinates.")
+    def test_extract_coordinates(self):
+        self.assertEqual(extract_coordinates('https://tempestwx.com/map/50515/65.1557/-16.47/6'), ('65.1557', '-16.47', '6'))
+        with self.assertRaises(ValueError):
+            extract_coordinates('invalid_url')
 
-def get_station_id_from_url(url):
-    parts = url.split('/')
-    if len(parts) >= 7 and parts[-4].isdigit():
-        return parts[-4]
-    return None
+    @patch('iceicedata.selenium_utils.webdriver.Firefox')
+    def test_get_station_id_from_url(self, mock_firefox):
+        self.assertEqual(get_station_id_from_url('https://tempestwx.com/map/12345'), '12345')
+        self.assertIsNone(get_station_id_from_url('invalid_url'))
 
-def get_placemarkers(driver, url):
-    try:
-        driver.get(url)
-        time.sleep(5)
-        WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'div[title]'))
-        )
-        placemarkers = driver.find_elements(By.CSS_SELECTOR, 'div[title]')
-        if len(placemarkers) > 50:
-            print("Too many markers found. Please zoom in closer and try again.")
-            return [], []
-        placemarker_titles = [placemarker.get_attribute('title').strip() for placemarker in placemarkers]
-        return placemarker_titles, placemarkers
-    except Exception as e:
-        print(f"An error occurred while getting placemarkers: {e}")
-        return [], []
+    # Other functions can be tested similarly...
 
-def select_placemarker(placemarker_titles):
-    if len(placemarker_titles) == 1:
-        print(f"Only one placemarker found: {placemarker_titles[0]}")
-        return 0
-    elif len(placemarker_titles) == 0:
-        print("No placemarkers found.")
-        return -1
-    else:
-        print("Multiple placemarkers found:")
-        for idx, title in enumerate(placemarker_titles):
-            print(f"{idx + 1}: {title}")
-        while True:
-            try:
-                selection = int(input("Enter the number of the placemarker you want to select: ")) - 1
-                if 0 <= selection < len(placemarker_titles):
-                    return selection
-                else:
-                    print(f"Please enter a number between 1 and {len(placemarker_titles)}.")
-            except ValueError:
-                print("Please enter a valid number.")
-
-def get_station_id(driver, placemarker):
-    try:
-        placemarker.click()
-        time.sleep(5)
-        station_detail = WebDriverWait(driver, 20).until(
-            EC.visibility_of_element_located((By.ID, 'station-detail'))
-        )
-        station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
-        station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
-        return station_id
-    except Exception as e:
-        print(f"An error occurred while getting the station ID: {e}")
-        return None
+if __name__ == '__main__':
+    unittest.main()
