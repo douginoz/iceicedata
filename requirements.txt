@@ -1,3 +1,4 @@
 selenium
 paho-mqtt
 pytz
+pytest
