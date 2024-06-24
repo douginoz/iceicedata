@@ -1,4 +1,4 @@
-import json
+import yaml
 import sys
 import os
 
@@ -36,7 +36,7 @@ def create_default_config(config_file):
 def load_config(config_file):
 
     with open(config_file, 'r') as f:
-        config = json.load(f)
+        config = yaml.safe_load(f)
 
     return config
 

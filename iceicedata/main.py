@@ -43,7 +43,7 @@ Options:
   -o [FILE], --output [FILE]    Output data to a plain ASCII file. If not provided, print to stdout.
   -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration from FILE. Default: iceicedata.json.
   -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root' from the configuration file.
-  -c FILE, --config FILE        Specify the configuration file to use. Default: config.json.
+  -c FILE, --config FILE        Specify the configuration file to use. Default: config.yaml.
   -i ID, --station-id ID        The station ID to process.
   -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes (between 5 and 1440).
 
@@ -54,7 +54,7 @@ Options:
     parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
     parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help=argparse.SUPPRESS)
     parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('-c', '--config', type=str, default='config.json', help=argparse.SUPPRESS)
+    parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
