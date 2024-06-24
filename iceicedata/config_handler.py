@@ -9,7 +9,7 @@ DEFAULT_CONFIG = {
     "mqtt_password": "",
     "mqtt_root": "",
     "mqtt_windrose_root": "",
-    "retain": False
+    "mqtt_retain": False
 }
 
 def load_config(config_file):
@@ -34,8 +34,8 @@ def save_mqtt_config(config_file):
     config["mqtt_windrose_root"] = input(f"Enter MQTT windrose root topic (default: {config.get('mqtt_windrose_root', '')}): ") or config.get("mqtt_windrose_root", "")
     if not config["mqtt_windrose_root"].endswith('/'):
         config["mqtt_windrose_root"] += '/'
-    config["retain"] = input(f"Set retain flag (default: {config.get('retain', False)}): ") or config.get("retain", False)
-    config["retain"] = str(config["retain"]).lower() in ['true', '1', 't', 'y', 'yes']
+    config["mqtt_retain"] = input(f"Set retain flag (default: {config.get('mqtt_retain', False)}): ") or config.get("mqtt_retain", False)
+    config["mqtt_retain"] = str(config["mqtt_retain"]).lower() in ['true', '1', 't', 'y', 'yes']
 
     with open(config_file, 'w') as f:
         yaml.safe_dump(config, f, default_flow_style=False)
