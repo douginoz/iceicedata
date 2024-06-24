@@ -119,7 +119,7 @@ Options:
             print(f"Waiting for {args.repeat} minutes before repeating...")
             time.sleep(args.repeat * 60)
 
-            data, wind_data, station_identifier = process_data(final_url, skip_initial=True)
+            data, wind_data, station_identifier, final_url = process_data(final_url, skip_initial=True)
 
             if data is None:
                 print("Failed to process the data from the URL.")
