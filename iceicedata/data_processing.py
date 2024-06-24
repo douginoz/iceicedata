@@ -141,6 +141,8 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
         print(json_data)
 
     if json_file:
+        if not json_file.endswith('.json'):
+            json_file += '.json'
         with open(json_file, 'w') as f:
             f.write(json_data)
 
