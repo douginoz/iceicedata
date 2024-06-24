@@ -79,7 +79,10 @@ Options:
 
     if config_file and os.path.isfile(config_file):
         logger.debug("Loading specified configuration file: %s", config_file)
-        config.update(load_config(config_file))
+        config = load_config(config_file)
+        if not validate_config(config):
+            print(f"Error: Invalid configuration format in '{config_file}'.")
+            sys.exit(1)
 
     if args.debug or config.get('debug', False):
         logger.setLevel(logging.DEBUG)
@@ -153,6 +156,9 @@ Options:
     if args.config:
         try:
             config = load_config(args.config)
+            if not validate_config(config):
+                print(f"Error: Invalid configuration format in '{args.config}'.")
+                sys.exit(1)
         except Exception as e:
             print(f"Error: Cannot load the configuration file '{args.config}': {e}")
             sys.exit(1)
