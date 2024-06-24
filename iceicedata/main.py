@@ -290,12 +290,18 @@ Options:
 
     # Repeat the data retrieval and processing if the repeat parameter is provided
     while args.repeat is not None:
-        print(f"Waiting for {args.repeat} minutes before repeating...")
-        time.sleep(args.repeat * 60)
+        if repeat_unit == 'm':
+            time.sleep(repeat_value * 60)
+        elif repeat_unit == 'd':
+            time.sleep(repeat_value * 86400)
 
-        data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
+        try:
+            data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
+        except Exception as e:
+            print(f"Error: Failed to process the data from the URL: {e}")
+            sys.exit(1)
 
-        if data is None:
+        if data is None or final_url is None:
             print("Failed to process the data from the URL.")
             return
 
@@ -303,10 +309,12 @@ Options:
 
         output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
+        logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
         if args.mqtt:
             config = load_config(args.mqtt)
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
+        logger.debug("Checking if windrose option is provided for sending data in repeat loop.")
         if args.windrose:
             config = load_config('config.yaml')
             if not config.get('mqtt_windrose_root'):
