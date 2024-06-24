@@ -47,7 +47,7 @@ Options:
   -i ID, --station-id ID        The station ID to process.
   -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes (between 5 and 1440).
 
-''')
+''', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
     parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help='Output data to a JSON file.')
