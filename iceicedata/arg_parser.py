@@ -23,7 +23,7 @@ Options:
   -S, --setup-mqtt              Configure MQTT.
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('-r', '--repeat', type=int, help=argparse.SUPPRESS)
+    parser.add_argument('-r', '--repeat', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-i', '--station-id', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
