@@ -34,10 +34,6 @@ def create_default_config(config_file):
         f.write(CONFIG_COMMENTS)
 
 def load_config(config_file):
-    if not os.path.isfile(config_file):
-        create_default_config(config_file)
-        print(f"Default configuration file created at {config_file}. Please update it with your MQTT settings.")
-        sys.exit(1)
 
     with open(config_file, 'r') as f:
         config = json.load(f)
