@@ -153,7 +153,7 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
         with open(json_file, 'w') as f:
             f.write(json_data)
 
-    if output_file:
+    if output_file and output_file != '/dev/null':
         with open(output_file, 'w') as f:
             for key, value in data.items():
                 value_str = f'"{value["value"]}"' if "value" in value else '""'
