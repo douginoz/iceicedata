@@ -69,7 +69,7 @@ Options:
   -i ID, --station-id ID        The station ID to process.
   ''', formatter_class=CustomHelpFormatter)
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
-    parser.add_argument('-i', '--station-id', type=str, required=True, help='The station ID to process.')
+    parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-s', '--stdout', action='store_true', help=argparse.SUPPRESS)
@@ -101,7 +101,7 @@ Options:
             print("Error: --setup-mqtt (-S) and --mqtt (-m) options cannot be used together.")
             sys.exit(1)
         save_mqtt_config('iceicedata.json')
-    elif not args.station_id and not args.mqtt:
+    elif not args.station_id and not args.mqtt and not args.setup_mqtt:
         parser.print_help()
     else:
         station_id = validate_station_id(args.station_id)
