@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 import pytz
 from iceicedata.helper import convert_wind_speed_to_mps, split_value_and_unit, convert_timestamp_to_unix_ms, convert_compass_to_degrees, validate_url, extract_coordinates, get_station_id_from_url
-from iceicedata.selenium_utils import get_placemarkers, select_placemarker, get_station_id
+from iceicedata.selenium_utils import get_station_id
 
 def process_data(url, skip_initial=False):
     driver = None
@@ -22,35 +22,6 @@ def process_data(url, skip_initial=False):
         options.add_argument('--headless')
         driver = webdriver.Firefox(service=service, options=options)
         
-        if not skip_initial:
-            # Validate and extract details from the URL
-            final_url = validate_url(url)
-            latitude, longitude, zoom = extract_coordinates(final_url)
-            station_id = get_station_id_from_url(final_url)
-            station_name = None  # Initialize station_name
-
-            if not station_id:
-                # Get all placemarkers
-                placemarker_titles, placemarkers = get_placemarkers(driver, final_url)
-                if not placemarkers:
-                    return None, None, None, None
-
-                # Select a placemarker
-                selection = select_placemarker(placemarker_titles)
-                if selection == -1:
-                    return None, None, None, None
-
-                # Get the station ID
-                station_id, station_name = get_station_id(driver, placemarkers[selection])
-                if not station_id:
-                    print("Failed to retrieve the station ID.")
-                    return None, None, None, None
-
-            # Construct the URL with the station ID if it wasn't already present
-            final_url = f"https://tempestwx.com/map/{station_id}/{latitude}/{longitude}/{zoom}"
-            print(f"Constructed URL: {final_url}")
-            if station_name:
-                print(f"Station Name: {station_name}")
         
         # Open the target webpage
         driver.get(final_url)
