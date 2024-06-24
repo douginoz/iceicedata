@@ -43,12 +43,13 @@ def process_data(url, skip_initial=False):
         print("Station info element found.")
         station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
         station_name = station_info.text.strip()
+        print(f"Extracted station ID: {station_id}, station name: {station_name}")
         station_identifier = f"{station_id} - {station_name}"
 
         # Look for 'sw-list'
         sw_list = station_detail.find_element(By.CLASS_NAME, 'sw-list')
 
-        # Extract the data from sw-list
+        print("Extracting data from sw-list...")
         data = {}
         wind_data = {}
         for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
@@ -73,7 +74,7 @@ def process_data(url, skip_initial=False):
                 if wind_direction_degrees is not None:
                     wind_data["wind_direction"] = wind_direction_degrees
 
-        # Properly handle the timestamp value
+        print("Data extraction from sw-list completed.")
         timestamp_value = data.get("timestamp", {}).get("value", "")
         timezone_value = data.get("timezone", {}).get("value", "")
 
