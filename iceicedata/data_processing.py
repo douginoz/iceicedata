@@ -23,17 +23,21 @@ def process_data(url, skip_initial=False):
         driver = webdriver.Firefox(service=service, options=options)
         
         
-        # Open the target webpage
+        print(f"Opening URL: {url}")
         driver.get(url)
-        time.sleep(5)  # Wait for page to fully load
+        time.sleep(10)  # Wait for page to fully load
+        print("Page loaded.")
 
         # Wait for the station-detail element to appear
-        station_detail = WebDriverWait(driver, 20).until(
+        print("Waiting for station-detail element to appear...")
+        station_detail = WebDriverWait(driver, 30).until(
             EC.visibility_of_element_located((By.ID, 'station-detail'))
         )
 
         # Extract the station ID from the href attribute
+        print("station-detail element found.")
         station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
+        print("Station info element found.")
         station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
         station_name = station_info.text.strip()
         station_identifier = f"{station_id} - {station_name}"
