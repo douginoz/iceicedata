@@ -66,3 +66,6 @@ def send_mqtt_data(data, config, topic):
         client.disconnect()
     except Exception as e:
         print(f"An error occurred while publishing to MQTT: {e}")
+
+    if not config.get('mqtt_retain'):
+        print("MQTT retain flag is not set in the configuration file. Please add it to the configuration file and try again.")
