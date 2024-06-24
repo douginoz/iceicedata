@@ -88,7 +88,7 @@ Options:
         parser.print_help()
     else:
         station_id = args.station_id
-        final_url = f"https://tempestwx.com/{station_id}"  # Construct the URL using the station ID
+        final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
         # Process the URL to get the data
         data, wind_data, station_identifier, final_url = process_data(final_url)
