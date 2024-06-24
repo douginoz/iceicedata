@@ -9,6 +9,7 @@ import paho.mqtt.client as mqtt
 import time
 import os
 import sys
+import signal
 from datetime import datetime
 import pytz
 from iceicedata.data_processing import process_data, output_data
@@ -28,6 +29,12 @@ class CustomHelpFormatter(argparse.RawTextHelpFormatter):
         if group.title == 'optional arguments':
             return
         super().add_argument_group(group)
+
+def signal_handler(sig, frame):
+    print("\nProgram terminated by user.")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 def main():
     parser = argparse.ArgumentParser(description='''
