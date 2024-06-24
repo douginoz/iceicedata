@@ -23,13 +23,10 @@ def process_data(url, skip_initial=False):
         driver = webdriver.Firefox(service=service, options=options)
         
         
-        print(f"Opening URL: {url}")
         driver.get(url)
         time.sleep(10)  # Wait for page to fully load
-        print("Page loaded.")
 
         # Wait for the station-detail element to appear
-        print("Waiting for station-detail element to appear...")
         print("Waiting for station-detail element to appear...")
         station_detail = WebDriverWait(driver, 40).until(
             EC.visibility_of_element_located((By.ID, 'station-detail'))
@@ -37,19 +34,15 @@ def process_data(url, skip_initial=False):
 
         # Extract the station ID from the href attribute
         print("station-detail element found.")
-        print("station-detail element found.")
         station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
-        print("Station info element found.")
         print("Station info element found.")
         station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
         station_name = station_info.text.strip()
-        print(f"Extracted station ID: {station_id}, station name: {station_name}")
         station_identifier = f"{station_id} - {station_name}"
 
         # Look for 'sw-list'
         sw_list = station_detail.find_element(By.CLASS_NAME, 'sw-list')
 
-        print("Extracting data from sw-list...")
         data = {}
         wind_data = {}
         for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
@@ -74,7 +67,6 @@ def process_data(url, skip_initial=False):
                 if wind_direction_degrees is not None:
                     wind_data["wind_direction"] = wind_direction_degrees
 
-        print("Data extraction from sw-list completed.")
         timestamp_value = data.get("timestamp", {}).get("value", "")
         timezone_value = data.get("timezone", {}).get("value", "")
 
