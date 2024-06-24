@@ -119,8 +119,9 @@ Options:
             print(f"Error: Cannot load the configuration file '{args.config}': {e}")
             sys.exit(1)
 
-    if args.mqtt:
-        parser.print_help()
+    if args.mqtt is not None:
+        if args.mqtt == '':
+            args.mqtt = 'config.yaml'
     else:
         try:
             config_file = args.config
