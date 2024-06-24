@@ -90,6 +90,8 @@ Options:
         station_id = args.station_id
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
+        data, wind_data, station_name, final_url = process_data(final_url)
+
         if data is None or final_url is None:
             print("Failed to process the data from the URL.")
             return
@@ -99,7 +101,6 @@ Options:
         if args.repeat:
             message += f"; Retrieving data every {args.repeat} minutes."
         print(message)
-        data, wind_data, station_name, final_url = process_data(final_url)
 
         if data is None or final_url is None:
             print("Failed to process the data from the URL.")
