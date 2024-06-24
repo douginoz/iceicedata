@@ -44,6 +44,7 @@ def save_mqtt_config(config_file):
     print(f"Configuration saved to {config_file}")
 
 def send_mqtt_data(data, config, topic):
+    print("Sending data to MQTT server with topic:", topic)
     client = mqtt.Client()
     if config["mqtt_user"] and config["mqtt_password"]:
         client.username_pw_set(config["mqtt_user"], config["mqtt_password"])
@@ -64,7 +65,9 @@ def send_mqtt_data(data, config, topic):
         result.wait_for_publish()
         client.loop_stop()
         client.disconnect()
+        print("Data published to MQTT server.")
     except Exception as e:
+        print(f"An error occurred while publishing to MQTT: {e}")
         print(f"An error occurred while publishing to MQTT: {e}")
 
     if not config.get('mqtt_retain'):

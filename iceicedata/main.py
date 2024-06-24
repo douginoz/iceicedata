@@ -60,7 +60,9 @@ Options:
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
+    print("Starting main function with arguments:", args)
     if args.version:
+        print("Version argument detected.")
         print(f"Version: {VERSION}")
         sys.exit(0)
 
@@ -120,6 +122,7 @@ Options:
             sys.exit(1)
 
     if args.mqtt is not None:
+        print("MQTT option detected with config file:", args.mqtt)
         if args.mqtt == '':
             args.mqtt = 'config.yaml'
         if not os.path.isfile(args.mqtt):
@@ -152,16 +155,21 @@ Options:
             print(f"Error: Cannot load the configuration file '{config_file}': {e}")
             sys.exit(1)
 
+        print("Validating station ID:", args.station_id)
         station_id = validate_station_id(args.station_id)
+        print("Station ID validated:", station_id)
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
         print(f"Looking for station {station_id} -", end='', flush=True)
+        print("Processing data for URL:", final_url)
         try:
             data, wind_data, station_name, final_url = process_data(final_url)
         except Exception as e:
             print(f"Error: Failed to process the data from the URL: {e}")
             sys.exit(1)
+        print("Data processing completed. Data:", data)
         if data is None or final_url is None:
+            print("Data or final URL is None.")
             print("Failed to process the data from the URL.")
             return
         print(f" found. Station Name: {station_name}", end='')
@@ -178,10 +186,12 @@ Options:
         station_identifier = f"{station_id} - {station_name}"
 
         if args.mqtt:
+            print("Sending data to MQTT server.")
             config = load_config(args.mqtt)
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
         if args.windrose:
+            print("Publishing windrose data to MQTT server.")
             config = load_config('iceicedata.json')
             if not config.get('mqtt_windrose_root'):
                 print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")

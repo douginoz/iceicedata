@@ -14,10 +14,12 @@ from iceicedata.helper import convert_wind_speed_to_mps, split_value_and_unit, c
 from iceicedata.selenium_utils import get_station_id
 
 def process_data(url, skip_initial=False):
+    print("Starting data processing for URL:", url)
     driver = None
 
     try:
         # Initialize the WebDriver
+        print("Initializing WebDriver.")
         service = Service('/usr/local/bin/geckodriver')
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
@@ -25,6 +27,7 @@ def process_data(url, skip_initial=False):
         
         
         driver.get(url)
+        print("Navigated to URL:", url)
         time.sleep(10)  # Wait for page to fully load
 
         # Wait for the station-detail element to appear
@@ -45,6 +48,7 @@ def process_data(url, skip_initial=False):
             print(f"Error: Station ID {station_id} not found on the website.")
             return None, None, None, None
 
+        print("Extracting data from the page.")
         data = {}
         wind_data = {}
         for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
@@ -115,8 +119,10 @@ def process_data(url, skip_initial=False):
             if key in descriptions:
                 data[key]["description"] = descriptions[key]
 
+        print("Data extraction completed. Data:", data)
         return data, wind_data, station_name, url
     except Exception as e:
+        print(f"An error occurred: {e}")
         print(f"An error occurred: {e}")
         return None, None, None, None
 

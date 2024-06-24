@@ -7,6 +7,7 @@ import time
 
 
 def get_station_id(driver, placemarker):
+    print("Getting station ID for placemarker.")
     try:
         placemarker.click()
         time.sleep(5)  # Wait for click action to take effect
@@ -20,7 +21,9 @@ def get_station_id(driver, placemarker):
         station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
         station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
         station_name = station_info.text.strip()
+        print("Station ID and name extracted:", station_id, station_name)
         return station_id, station_name
     except Exception as e:
+        print(f"An error occurred while getting the station ID: {e}")
         print(f"An error occurred while getting the station ID: {e}")
         return None, None
