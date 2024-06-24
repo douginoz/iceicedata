@@ -46,6 +46,7 @@ Options:
   -c FILE, --config FILE        Specify the configuration file to use. Default: config.yaml.
   -i ID, --station-id ID        The station ID to process.
   -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes (between 5 and 1440).
+  -S, --setup-mqtt              Set up MQTT configuration interactively.
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-r', '--repeat', type=int, help=argparse.SUPPRESS)
@@ -56,7 +57,12 @@ Options:
     parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
+
+    if args.setup_mqtt:
+        save_mqtt_config(args.config)
+        sys.exit(0)
 
     if args.repeat is not None:
         if not (5 <= args.repeat <= 1440):
@@ -80,7 +86,10 @@ Options:
         parser.print_help()
     else:
         config_file = args.config
-        config = load_config(config_file)
+        config = load_config(config_file) or load_config('config.yaml')
+        if not config:
+            print(f"Error: Configuration file '{config_file}' not found. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-c' option.")
+            sys.exit(1)
         if not validate_config(config):
             print("Error: Invalid configuration format.")
             sys.exit(1)
