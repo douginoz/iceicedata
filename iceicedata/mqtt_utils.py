@@ -63,7 +63,7 @@ def send_mqtt_data(data, config, topic):
         logger.debug("Connecting to MQTT server: %s:%s", config["mqtt_server"], config["mqtt_port"])
         client.connect(config["mqtt_server"], config["mqtt_port"], 60)
         client.loop_start()
-        result = client.publish(topic, json.dumps(data), retain=config.get("mqtt_retain", True))
+        result = client.publish(topic, json.dumps(data), retain=config.get("mqtt_retain", False))
         result.wait_for_publish()
         client.loop_stop()
         client.disconnect()
@@ -71,5 +71,3 @@ def send_mqtt_data(data, config, topic):
         logger.error("An error occurred while publishing to MQTT: %s", e)
         print(f"An error occurred while publishing to MQTT: {e}")
 
-    if not config.get('mqtt_retain'):
-        print("MQTT retain flag is not set in the configuration file. Please add it to the configuration file and try again.")
