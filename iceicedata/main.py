@@ -90,7 +90,11 @@ Options:
         station_id = args.station_id
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
-        # Process the URL to get the data
+        # Display the station name and repeat interval if applicable
+        message = f"Station name: {station_id}"
+        if args.repeat:
+            message += f"; Retrieving data every {args.repeat} minutes."
+        print(message)
         data, wind_data, station_identifier, final_url = process_data(final_url)
 
         if data is None or final_url is None:
@@ -114,7 +118,6 @@ Options:
 
         # Repeat the data retrieval and processing if the repeat parameter is provided
         while args.repeat is not None:
-            print(f"Waiting for {args.repeat} minutes before repeating...")
             time.sleep(args.repeat * 60)
 
             data, wind_data, station_identifier, final_url = process_data(final_url, skip_initial=True)

@@ -16,7 +16,6 @@ def process_data(url, skip_initial=False):
     driver = None
 
     try:
-        print(f"Opening URL: {url}")
         # Initialize the WebDriver
         service = Service('/usr/local/bin/geckodriver')
         options = webdriver.FirefoxOptions()
@@ -26,7 +25,6 @@ def process_data(url, skip_initial=False):
         
         driver.get(url)
         time.sleep(10)  # Wait for page to fully load
-        print("Page loaded.")
 
         # Wait for the station-detail element to appear
         station_detail = WebDriverWait(driver, 40).until(
