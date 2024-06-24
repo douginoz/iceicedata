@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from iceicedata.selenium_utils import get_station_id
+from iceicedata.helper import validate_url, extract_coordinates, get_station_id_from_url
 
 class TestSeleniumUtils(unittest.TestCase):
 
