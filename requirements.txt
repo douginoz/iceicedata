@@ -2,3 +2,4 @@ selenium
 paho-mqtt
 pytz
 pytest
+pyyaml
