@@ -45,7 +45,6 @@ def save_mqtt_config(config_file):
     print(f"Configuration saved to {config_file}")
 
 def send_mqtt_data(data, config, topic):
-    print("Sending data to MQTT server with topic:", topic)
     logger = logging.getLogger()
     logger.debug("Sending data to MQTT server with topic: %s", topic)
     client = mqtt.Client()

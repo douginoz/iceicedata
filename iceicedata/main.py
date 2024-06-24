@@ -187,7 +187,6 @@ Options:
 
     logger.debug("Validating station ID: %s", args.station_id)
     station_id = validate_station_id(args.station_id)
-    print("Station ID validated:", station_id)
     final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
     print(f"Looking for station {station_id} -", end='', flush=True)
@@ -218,7 +217,6 @@ Options:
 
     logger.debug("Checking if MQTT option is provided for sending data.")
     if args.mqtt:
-        print("Sending data to MQTT server.")
         config = load_config(args.mqtt)
         send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 

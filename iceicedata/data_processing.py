@@ -22,7 +22,6 @@ def process_data(url, skip_initial=False):
 
     try:
         # Initialize the WebDriver
-        print("Initializing WebDriver.")
         service = Service('/usr/local/bin/geckodriver')
         logger.debug("Initializing WebDriver.")
         options = webdriver.FirefoxOptions()
