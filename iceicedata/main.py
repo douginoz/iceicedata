@@ -47,7 +47,7 @@ Options:
     parser.add_argument('-i', '--station-id', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
-    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help=argparse.SUPPRESS)
+    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
@@ -215,7 +215,7 @@ Options:
 
         if args.windrose:
             print("Publishing windrose data to MQTT server.")
-            config = load_config('iceicedata.json')
+            config = load_config('config.yaml')
             if not config.get('mqtt_windrose_root'):
                 print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
             else:
@@ -245,7 +245,7 @@ Options:
                 send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
             if args.windrose:
-                config = load_config('iceicedata.json')
+                config = load_config('config.yaml')
                 if not config.get('mqtt_windrose_root'):
                     print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
                 else:
@@ -260,7 +260,7 @@ Options:
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
         if args.windrose:
-            config = load_config('iceicedata.json')
+            config = load_config('config.yaml')
             if not config.get('mqtt_windrose_root'):
                 print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
             else:
@@ -287,7 +287,7 @@ Options:
                 send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
             if args.windrose:
-                config = load_config('iceicedata.json')
+                config = load_config('config.yaml')
                 if not config.get('mqtt_windrose_root'):
                     print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
                 else:

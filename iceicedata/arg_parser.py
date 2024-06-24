@@ -27,7 +27,7 @@ Options:
     parser.add_argument('-i', '--station-id', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
-    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help=argparse.SUPPRESS)
+    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
