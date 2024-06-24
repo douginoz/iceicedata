@@ -45,6 +45,8 @@ def save_mqtt_config(config_file):
 
 def send_mqtt_data(data, config, topic):
     print("Sending data to MQTT server with topic:", topic)
+    logger = logging.getLogger()
+    logger.debug("Sending data to MQTT server with topic: %s", topic)
     client = mqtt.Client()
     if config["mqtt_user"] and config["mqtt_password"]:
         client.username_pw_set(config["mqtt_user"], config["mqtt_password"])
@@ -59,15 +61,16 @@ def send_mqtt_data(data, config, topic):
     client.on_publish = on_publish
 
     try:
+        logger.debug("Connecting to MQTT server: %s:%s", config["mqtt_server"], config["mqtt_port"])
         client.connect(config["mqtt_server"], config["mqtt_port"], 60)
         client.loop_start()
         result = client.publish(topic, json.dumps(data), retain=config.get("mqtt_retain", True))
         result.wait_for_publish()
         client.loop_stop()
         client.disconnect()
-        print("Data published to MQTT server.")
+        logger.debug("Data published to MQTT server.")
     except Exception as e:
-        print(f"An error occurred while publishing to MQTT: {e}")
+        logger.error("An error occurred while publishing to MQTT: %s", e)
         print(f"An error occurred while publishing to MQTT: {e}")
 
     if not config.get('mqtt_retain'):

@@ -58,10 +58,41 @@ Options:
     parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('-d', '--debug', type=str, nargs='?', const='', help='Enable debug mode. Optionally specify a log file.')
     args = parser.parse_args()
 
+    # Setup logging
+    import logging
+    log_level = logging.DEBUG if args.debug is not None else logging.INFO
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
+    if args.debug:
+        log_file = args.debug if args.debug else None
+        logging.basicConfig(level=log_level, format=log_format, filename=log_file, filemode='w')
+    else:
+        logging.basicConfig(level=log_level, format=log_format)
+    logger = logging.getLogger()
+
+    logger.debug("Starting main function with arguments: %s", args)
+
     print("Starting main function with arguments:", args)
-    if args.version:
+    # Load configuration
+    config_file = args.config
+    local_config_file = 'config.yaml'
+    config = {}
+
+    if os.path.isfile(local_config_file):
+        logger.debug("Loading local configuration file: %s", local_config_file)
+        config.update(load_config(local_config_file))
+
+    if config_file and os.path.isfile(config_file):
+        logger.debug("Loading specified configuration file: %s", config_file)
+        config.update(load_config(config_file))
+
+    if config.get('debug', False):
+        logger.setLevel(logging.DEBUG)
+        logger.debug("Debug mode enabled from configuration file.")
+
+    logger.debug("Configuration loaded: %s", config)
         print("Version argument detected.")
         print(f"Version: {VERSION}")
         sys.exit(0)

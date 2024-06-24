@@ -33,6 +33,8 @@ def convert_compass_to_degrees(direction):
     return compass_to_degrees.get(direction, None)
 
 def validate_url(url):
+    logger = logging.getLogger()
+    logger.debug("Validating URL: %s", url)
     if "tempestwx.com/map/" not in url:
         raise ValueError("Invalid URL format. Please provide a valid TempestWX URL.")
     return url

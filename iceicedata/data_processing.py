@@ -15,19 +15,22 @@ from iceicedata.selenium_utils import get_station_id
 
 def process_data(url, skip_initial=False):
     print("Starting data processing for URL:", url)
+    logger = logging.getLogger()
+    logger.debug("Starting data processing for URL: %s", url)
     driver = None
 
     try:
         # Initialize the WebDriver
         print("Initializing WebDriver.")
         service = Service('/usr/local/bin/geckodriver')
+        logger.debug("Initializing WebDriver.")
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
         driver = webdriver.Firefox(service=service, options=options)
         
         
         driver.get(url)
-        print("Navigated to URL:", url)
+        logger.debug("Navigated to URL: %s", url)
         time.sleep(10)  # Wait for page to fully load
 
         # Wait for the station-detail element to appear
@@ -48,7 +51,7 @@ def process_data(url, skip_initial=False):
             print(f"Error: Station ID {station_id} not found on the website.")
             return None, None, None, None
 
-        print("Extracting data from the page.")
+        logger.debug("Extracting data from the page.")
         data = {}
         wind_data = {}
         for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
@@ -119,10 +122,10 @@ def process_data(url, skip_initial=False):
             if key in descriptions:
                 data[key]["description"] = descriptions[key]
 
-        print("Data extraction completed. Data:", data)
+        logger.debug("Data extraction completed. Data: %s", data)
         return data, wind_data, station_name, url
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logger.error("An error occurred: %s", e)
         print(f"An error occurred: {e}")
         return None, None, None, None
 
