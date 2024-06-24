@@ -103,6 +103,10 @@ Options:
             print("Failed to process the data from the URL.")
             return
 
+        if data is None:
+            print("Failed to process the data from the URL.")
+            return
+
         if args.stdout or args.json or args.output:
             output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
 
