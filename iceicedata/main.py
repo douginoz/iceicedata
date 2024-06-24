@@ -48,14 +48,14 @@ Options:
   -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes (between 5 and 1440).
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
-    parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
-    parser.add_argument('-j', '--json', type=str, help='Output data to a JSON file.')
-    parser.add_argument('-o', '--output', type=str, nargs='?', const='', help='Output data to a plain ASCII file. If not provided, print to stdout.')
-    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help='Send data to the MQTT server using the configuration from FILE. Default: iceicedata.json.')
-    parser.add_argument('-w', '--windrose', action='store_true', help='Publish windrose MQTT data. Uses "mqtt_windrose_root" from the configuration file.')
-    parser.add_argument('-c', '--config', type=str, default='config.json', help='Specify the configuration file to use. Default: config.json.')
-    parser.add_argument('-v', '--version', action='store_true', help='Show the version information and exit.')
+    parser.add_argument('-r', '--repeat', type=int, help=argparse.SUPPRESS)
+    parser.add_argument('-i', '--station-id', type=str, help=argparse.SUPPRESS)
+    parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
+    parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
+    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help=argparse.SUPPRESS)
+    parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('-c', '--config', type=str, default='config.json', help=argparse.SUPPRESS)
+    parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     if args.repeat is not None:
