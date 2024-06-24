@@ -11,7 +11,7 @@ from iceicedata.config_handler import save_mqtt_config
 from iceicedata.arg_parser import parse_arguments
 from iceicedata.config_loader import load_config, validate_config
 
-VERSION = "1.2.0"  # Important update increment
+VERSION = "1.3.0"  # Important update increment
 
 
 def signal_handler(sig, frame):
