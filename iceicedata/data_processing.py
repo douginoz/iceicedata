@@ -5,6 +5,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from selenium.common.exceptions import NoSuchElementException
 import os
 import sys
 from datetime import datetime
@@ -27,18 +28,22 @@ def process_data(url, skip_initial=False):
         time.sleep(10)  # Wait for page to fully load
 
         # Wait for the station-detail element to appear
-        station_detail = WebDriverWait(driver, 40).until(
-            EC.visibility_of_element_located((By.ID, 'station-detail'))
-        )
+        try:
+            station_detail = WebDriverWait(driver, 40).until(
+                EC.visibility_of_element_located((By.ID, 'station-detail'))
+            )
 
-        # Extract the station ID from the href attribute
-        station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
-        station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
-        station_name = station_info.text.strip()
-        station_identifier = f"{station_id} - {station_name}"
+            # Extract the station ID from the href attribute
+            station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
+            station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
+            station_name = station_info.text.strip()
+            station_identifier = f"{station_id} - {station_name}"
 
-        # Look for 'sw-list'
-        sw_list = station_detail.find_element(By.CLASS_NAME, 'sw-list')
+            # Look for 'sw-list'
+            sw_list = station_detail.find_element(By.CLASS_NAME, 'sw-list')
+        except NoSuchElementException:
+            print(f"Error: Station ID {station_id} not found on the website.")
+            return None, None, None, None
 
         data = {}
         wind_data = {}
