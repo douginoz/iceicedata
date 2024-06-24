@@ -164,32 +164,23 @@ Options:
             sys.exit(1)
 
     logger.debug("Checking if MQTT option is provided.")
-    if args.mqtt is not None:
-        if args.mqtt == '':
-            args.mqtt = 'config.yaml'
-        if not os.path.isfile(args.mqtt):
-            print(f"Error: Configuration file '{args.mqtt}' not found. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+    if args.mqtt is not None or args.windrose:
+        if args.config:
+            config_file = args.config
+        else:
+            config_file = 'config.yaml'
+        
+        if not os.path.isfile(config_file):
+            print(f"Error: Configuration file '{config_file}' not found. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
             sys.exit(1)
+        
         try:
-            config = load_config(args.mqtt)
+            config = load_config(config_file)
             required_keys = ["mqtt_server", "mqtt_port", "mqtt_root"]
             for key in required_keys:
                 if key not in config:
-                    print(f"Error: Missing required MQTT configuration parameter '{key}' in '{args.mqtt}'. Please use the '-S' option to generate a valid config.")
+                    print(f"Error: Missing required MQTT configuration parameter '{key}' in '{config_file}'. Please use the '-S' option to generate a valid config.")
                     sys.exit(1)
-            if not validate_config(config):
-                print("Error: Invalid configuration format.")
-                sys.exit(1)
-        except Exception as e:
-            print(f"Error: Cannot load the configuration file '{args.mqtt}': {e}")
-            sys.exit(1)
-    else:
-        try:
-            config_file = args.config
-            config = load_config(config_file) or load_config('config.yaml')
-            if not config:
-                print("Error: Configuration file not found. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
-                sys.exit(1)
             if not validate_config(config):
                 print("Error: Invalid configuration format.")
                 sys.exit(1)
