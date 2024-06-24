@@ -13,7 +13,8 @@ import signal
 from datetime import datetime
 import pytz
 from iceicedata.data_processing import process_data, output_data
-from iceicedata.mqtt_utils import send_mqtt_data, load_config, save_mqtt_config
+from iceicedata.mqtt_utils import send_mqtt_data
+from iceicedata.config_handler import load_config, validate_config
 from iceicedata.helper import validate_url  # Correct import
 
 VERSION = "1.1.5"  # Incremented version
@@ -64,8 +65,7 @@ Options:
   -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root'
                                 from the configuration file.
 
-  -S, --setup-mqtt              Setup MQTT configuration and save to a file. This
-                                option is mutually exclusive with -m.
+  -c FILE, --config FILE        Specify the configuration file to use. Default: config.json.
   -i ID, --station-id ID        The station ID to process.
   ''', formatter_class=CustomHelpFormatter)
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
@@ -75,7 +75,7 @@ Options:
     parser.add_argument('-s', '--stdout', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help=argparse.SUPPRESS)
     parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('-c', '--config', type=str, default='config.json', help='Specify the configuration file to use. Default: config.json.')
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
@@ -96,32 +96,15 @@ Options:
         except ValueError:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
-    def validate_mqtt_config(config):
-        required_keys = ["mqtt_server", "mqtt_port", "mqtt_user", "mqtt_password", "mqtt_root", "mqtt_windrose_root"]
-        for key in required_keys:
-            if key not in config:
-                return False
-        return True
 
-    if args.setup_mqtt:
-        args.station_id = None  # Ignore station ID if setup MQTT is used
-        if args.mqtt:
-            print("Error: --setup-mqtt (-S) and --mqtt (-m) options cannot be used together.")
-            sys.exit(1)
-        save_mqtt_config('iceicedata.json')
     elif not args.station_id and not args.mqtt:
         parser.print_help()
     else:
-        if args.mqtt:
-            try:
-                config = load_config(args.mqtt)
-                if not validate_mqtt_config(config):
-                    raise ValueError("Invalid MQTT configuration format.")
-            except Exception as e:
-                print(f"Error: {e}")
-                sys.exit(1)
-        else:
-            config = load_config('iceicedata.json')
+        config_file = args.config
+        config = load_config(config_file)
+        if not validate_config(config):
+            print("Error: Invalid configuration format.")
+            sys.exit(1)
 
         station_id = validate_station_id(args.station_id)
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
