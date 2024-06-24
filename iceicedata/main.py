@@ -125,7 +125,7 @@ Options:
             sys.exit(1)
 
     logger.debug("Validating station ID.")
-    if not args.station_id and not args.version:
+    if not args.station_id and not args.version and not args.setup_mqtt:
         print("Error: The -i option is required unless -v is used.")
         sys.exit(1)
 
