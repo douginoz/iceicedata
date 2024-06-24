@@ -14,7 +14,7 @@ from datetime import datetime
 import pytz
 from iceicedata.data_processing import process_data, output_data
 from iceicedata.mqtt_utils import send_mqtt_data
-from iceicedata.config_handler import load_config, validate_config
+from iceicedata.config_handler import load_config, validate_config, save_mqtt_config
 from iceicedata.helper import validate_url  # Correct import
 
 VERSION = "1.1.5"  # Incremented version
