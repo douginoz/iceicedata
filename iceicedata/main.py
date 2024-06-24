@@ -17,7 +17,7 @@ from iceicedata.mqtt_utils import send_mqtt_data
 from iceicedata.config_handler import load_config, validate_config, save_mqtt_config
 from iceicedata.helper import validate_url  # Correct import
 
-VERSION = "1.1.5"  # Incremented version
+VERSION = "2.0.0"  # Important update increment
 
 
 def signal_handler(sig, frame):
@@ -41,11 +41,11 @@ Options:
   -v, --version                 Show the version information and exit.
   -j FILE, --json FILE          Output data to a JSON file.
   -o [FILE], --output [FILE]    Output data to a plain ASCII file. If not provided, print to stdout.
-  -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration from FILE. Default: iceicedata.json.
+  -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration from FILE. Default: config.yaml.
   -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root' from the configuration file.
   -c FILE, --config FILE        Specify the configuration file to use. Default: config.yaml.
   -i ID, --station-id ID        The station ID to process.
-  -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes (between 5 and 1440).
+  -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes or days. Specify as '5m' for minutes or '1d' for days (minimum 5 minutes or 1 day).
   -S, --setup-mqtt              Set up MQTT configuration interactively.
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
@@ -64,10 +64,24 @@ Options:
         save_mqtt_config(args.config)
         sys.exit(0)
 
-    if args.repeat is not None:
-        if not (5 <= args.repeat <= 1440):
-            print("Error: The repeat delay must be between 5 and 1440 minutes.")
+    def validate_repeat(repeat):
+        import re
+        match = re.match(r'^(\d+)([md])$', repeat)
+        if not match:
+            print("Error: Invalid repeat format. Use '5m' for minutes or '1d' for days.")
             sys.exit(1)
+        value, unit = match.groups()
+        value = int(value)
+        if unit == 'm' and value < 5:
+            print("Error: The repeat delay must be at least 5 minutes.")
+            sys.exit(1)
+        if unit == 'd' and value < 1:
+            print("Error: The repeat delay must be at least 1 day.")
+            sys.exit(1)
+        return value, unit
+
+    if args.repeat:
+        repeat_value, repeat_unit = validate_repeat(args.repeat)
 
     def validate_station_id(station_id):
         try:
@@ -82,23 +96,54 @@ Options:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
 
-    if not args.station_id and not args.mqtt:
+    if not args.station_id:
+        print("Error: The -i option is required.")
+        sys.exit(1)
+
+    if args.output is None:
+        print("Error: The -o option requires a filename.")
+        sys.exit(1)
+
+    if args.output:
+        try:
+            with open(args.output, 'w') as f:
+                pass
+        except IOError:
+            print(f"Error: Cannot write to the output file '{args.output}'.")
+            sys.exit(1)
+
+    if args.config:
+        try:
+            config = load_config(args.config)
+        except Exception as e:
+            print(f"Error: Cannot load the configuration file '{args.config}': {e}")
+            sys.exit(1)
+
+    if args.mqtt:
         parser.print_help()
     else:
-        config_file = args.config
-        config = load_config(config_file) or load_config('config.yaml')
-        if not config:
-            print("Error: -m option specified but no config.yaml found. Re-run with -S to generate one, or specify its location with -c.")
-            sys.exit(1)
-        if not validate_config(config):
-            print("Error: Invalid configuration format.")
+        try:
+            config_file = args.config
+            config = load_config(config_file) or load_config('config.yaml')
+            if not config:
+                print("Error: -m option specified but no config.yaml found. Re-run with -S to generate one, or specify its location with -c.")
+                sys.exit(1)
+            if not validate_config(config):
+                print("Error: Invalid configuration format.")
+                sys.exit(1)
+        except Exception as e:
+            print(f"Error: Cannot load the configuration file '{config_file}': {e}")
             sys.exit(1)
 
         station_id = validate_station_id(args.station_id)
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
         print(f"Looking for station {station_id} -", end='', flush=True)
-        data, wind_data, station_name, final_url = process_data(final_url)
+        try:
+            data, wind_data, station_name, final_url = process_data(final_url)
+        except Exception as e:
+            print(f"Error: Failed to process the data from the URL: {e}")
+            sys.exit(1)
         if data is None or final_url is None:
             print("Failed to process the data from the URL.")
             return
@@ -131,7 +176,11 @@ Options:
         while args.repeat is not None:
             time.sleep(args.repeat * 60)
 
-            data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
+            try:
+                data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
+            except Exception as e:
+                print(f"Error: Failed to process the data from the URL: {e}")
+                sys.exit(1)
 
             if data is None or final_url is None:
                 print("Failed to process the data from the URL.")
@@ -153,8 +202,8 @@ Options:
                     windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
                     send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
-        if args.stdout or args.json or args.output:
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
+        if args.json or args.output:
+            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
 
         if args.mqtt:
             config = load_config(args.mqtt)
