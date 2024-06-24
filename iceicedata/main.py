@@ -90,8 +90,34 @@ Options:
         print("Error: URL must be provided. Use the -u or --url option to specify the URL.")
         sys.exit(1)
     else:
-        while True:
-            data, wind_data, station_identifier = process_data(args.url)
+        # Process the initial URL to get the final URL with station ID
+        data, wind_data, station_identifier, final_url = process_data(args.url)
+
+        if data is None:
+            print("Failed to process the data from the URL.")
+            return
+
+        if args.stdout or args.json or args.output:
+            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
+
+        if args.mqtt:
+            config = load_config(args.mqtt)
+            send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+
+        if args.windrose:
+            config = load_config('iceicedata.json')
+            if not config.get('mqtt_windrose_root'):
+                print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+            else:
+                windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+
+        # Repeat the data retrieval and processing if the repeat parameter is provided
+        while args.repeat is not None:
+            print(f"Waiting for {args.repeat} minutes before repeating...")
+            time.sleep(args.repeat * 60)
+
+            data, wind_data, station_identifier = process_data(final_url, skip_initial=True)
 
             if data is None:
                 print("Failed to process the data from the URL.")
@@ -111,12 +137,6 @@ Options:
                 else:
                     windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
                     send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
-
-            if args.repeat is None:
-                break
-            else:
-                print(f"Waiting for {args.repeat} minutes before repeating...")
-                time.sleep(args.repeat * 60)
 
 if __name__ == "__main__":
     main()
