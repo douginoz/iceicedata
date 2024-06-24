@@ -147,4 +147,7 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
     if output_file:
         with open(output_file, 'w') as f:
             for key, value in data.items():
-                f.write(f"{key},{value['value']}\n")
+                value_str = f'"{value["value"]}"' if "value" in value else '""'
+                unit_str = f'"{value["unit"]}"' if "unit" in value else '""'
+                description_str = f'"{value["description"]}"' if "description" in value else '""'
+                f.write(f'"{key}",{value_str},{unit_str},{description_str}\n')
