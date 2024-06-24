@@ -61,6 +61,9 @@ if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ] ; then
     export VIRTUAL_ENV_PROMPT
 fi
 
+# Install dependencies from requirements.txt
+pip install -r /home/moa/scripts/iceicedata/requirements.txt
+
 # This should detect bash and zsh, which have a hash command that must
 # be called to get it to forget past commands.  Without forgetting
 # past commands the $PATH changes we made may not be respected
