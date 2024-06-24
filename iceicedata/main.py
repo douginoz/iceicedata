@@ -59,7 +59,7 @@ Options:
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
     parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help='Output data to a JSON file.')
-    parser.add_argument('-o', '--output', type=str, help='Output data to a plain ASCII file. If not provided, print to stdout.')
+    parser.add_argument('-o', '--output', type=str, nargs='?', const='', help='Output data to a plain ASCII file. If not provided, print to stdout.')
     parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help='Send data to the MQTT server using the configuration from FILE. Default: iceicedata.json.')
     parser.add_argument('-w', '--windrose', action='store_true', help='Publish windrose MQTT data. Uses "mqtt_windrose_root" from the configuration file.')
     parser.add_argument('-c', '--config', type=str, default='config.json', help='Specify the configuration file to use. Default: config.json.')
