@@ -97,7 +97,7 @@ Options:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
 
-    elif not args.station_id and not args.mqtt:
+    if not args.station_id and not args.mqtt:
         parser.print_help()
     else:
         config_file = args.config
