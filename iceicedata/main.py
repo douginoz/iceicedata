@@ -230,7 +230,6 @@ Options:
 
     logger.debug("Checking if windrose option is provided for sending data.")
     if args.windrose:
-        print("Publishing windrose data to MQTT server.")
         config = load_config('config.yaml')
         if not config.get('mqtt_windrose_root'):
             print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
