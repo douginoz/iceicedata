@@ -67,7 +67,6 @@ def send_mqtt_data(data, config, topic):
         result.wait_for_publish()
         client.loop_stop()
         client.disconnect()
-        logger.debug("Data published to MQTT server.")
     except Exception as e:
         logger.error("An error occurred while publishing to MQTT: %s", e)
         print(f"An error occurred while publishing to MQTT: {e}")
