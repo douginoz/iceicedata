@@ -163,29 +163,20 @@ Options:
             print(f"Error: Cannot load the configuration file '{args.config}': {e}")
             sys.exit(1)
 
-    logger.debug("Checking if MQTT option is provided.")
+    logger.debug("Checking if MQTT or windrose option is provided.")
     if args.mqtt is not None or args.windrose:
-        if args.config:
-            config_file = args.config
-        else:
-            config_file = 'config.yaml'
-        
-        if not os.path.isfile(config_file):
-            print(f"Error: Configuration file '{config_file}' not found. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+        if not config:
+            print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
             sys.exit(1)
         
-        try:
-            config = load_config(config_file)
-            required_keys = ["mqtt_server", "mqtt_port", "mqtt_root"]
-            for key in required_keys:
-                if key not in config:
-                    print(f"Error: Missing required MQTT configuration parameter '{key}' in '{config_file}'. Please use the '-S' option to generate a valid config.")
-                    sys.exit(1)
-            if not validate_config(config):
-                print("Error: Invalid configuration format.")
+        required_keys = ["mqtt_server", "mqtt_port", "mqtt_root"]
+        for key in required_keys:
+            if key not in config:
+                print(f"Error: Missing required MQTT configuration parameter '{key}' in '{config_file}'. Please use the '-S' option to generate a valid config.")
                 sys.exit(1)
-        except Exception as e:
-            print(f"Error: Cannot load the configuration file '{config_file}': {e}")
+        
+        if not validate_config(config):
+            print("Error: Invalid configuration format.")
             sys.exit(1)
 
     station_id = None
@@ -273,17 +264,20 @@ Options:
     if args.json or args.output:
         output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
 
-    if args.mqtt:
-        config = load_config(args.mqtt)
-        send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+    if args.mqtt or args.windrose:
+        if not config:
+            print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+            sys.exit(1)
+        
+        if args.mqtt:
+            send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-    if args.windrose:
-        config = load_config('config.yaml')
-        if not config.get('mqtt_windrose_root'):
-            print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-        else:
-            windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-            send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+        if args.windrose:
+            if not config.get('mqtt_windrose_root'):
+                print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+            else:
+                windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
     # Repeat the data retrieval and processing if the repeat parameter is provided
     while args.repeat is not None:
