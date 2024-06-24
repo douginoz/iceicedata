@@ -185,46 +185,79 @@ Options:
             print(f"Error: Cannot load the configuration file '{config_file}': {e}")
             sys.exit(1)
 
-        logger.debug("Validating station ID: %s", args.station_id)
-        station_id = validate_station_id(args.station_id)
-        print("Station ID validated:", station_id)
-        final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
+    logger.debug("Validating station ID: %s", args.station_id)
+    station_id = validate_station_id(args.station_id)
+    print("Station ID validated:", station_id)
+    final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
-        print(f"Looking for station {station_id} -", end='', flush=True)
-        logger.debug("Processing data for URL: %s", final_url)
+    print(f"Looking for station {station_id} -", end='', flush=True)
+    logger.debug("Processing data for URL: %s", final_url)
+    try:
+        data, wind_data, station_name, final_url = process_data(final_url)
+    except Exception as e:
+        print(f"Error: Failed to process the data from the URL: {e}")
+        sys.exit(1)
+    logger.debug("Data processing completed. Data: %s", data)
+    logger.debug("Checking if data or final URL is None.")
+    if data is None or final_url is None:
+        print("Data or final URL is None.")
+        print("Failed to process the data from the URL.")
+        return
+    print(f" found. Station Name: {station_name}", end='')
+    if args.repeat:
+        print(f"; Retrieving data every {args.repeat} minutes.", end='')
+    print()  # Move to the next line after the message
+
+    if data is None or final_url is None:
+        print("Failed to process the data from the URL.")
+        return
+
+    output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
+
+    station_identifier = f"{station_id} - {station_name}"
+
+    logger.debug("Checking if MQTT option is provided for sending data.")
+    if args.mqtt:
+        print("Sending data to MQTT server.")
+        config = load_config(args.mqtt)
+        send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+
+    logger.debug("Checking if windrose option is provided for sending data.")
+    if args.windrose:
+        print("Publishing windrose data to MQTT server.")
+        config = load_config('config.yaml')
+        if not config.get('mqtt_windrose_root'):
+            print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+        else:
+            windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+            send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+
+    # Repeat the data retrieval and processing if the repeat parameter is provided
+    logger.debug("Checking if repeat option is provided.")
+    while args.repeat is not None:
+        time.sleep(args.repeat * 60)
+
         try:
-            data, wind_data, station_name, final_url = process_data(final_url)
+            data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
         except Exception as e:
             print(f"Error: Failed to process the data from the URL: {e}")
             sys.exit(1)
-        logger.debug("Data processing completed. Data: %s", data)
-        logger.debug("Checking if data or final URL is None.")
-        if data is None or final_url is None:
-            print("Data or final URL is None.")
-            print("Failed to process the data from the URL.")
-            return
-        print(f" found. Station Name: {station_name}", end='')
-        if args.repeat:
-            print(f"; Retrieving data every {args.repeat} minutes.", end='')
-        print()  # Move to the next line after the message
 
         if data is None or final_url is None:
             print("Failed to process the data from the URL.")
             return
-
-        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
         station_identifier = f"{station_id} - {station_name}"
 
-        logger.debug("Checking if MQTT option is provided for sending data.")
+        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
+
+        logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
         if args.mqtt:
-            print("Sending data to MQTT server.")
             config = load_config(args.mqtt)
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-        logger.debug("Checking if windrose option is provided for sending data.")
+        logger.debug("Checking if windrose option is provided for sending data in repeat loop.")
         if args.windrose:
-            print("Publishing windrose data to MQTT server.")
             config = load_config('config.yaml')
             if not config.get('mqtt_windrose_root'):
                 print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
@@ -232,41 +265,35 @@ Options:
                 windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
                 send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
-        # Repeat the data retrieval and processing if the repeat parameter is provided
-        logger.debug("Checking if repeat option is provided.")
-        while args.repeat is not None:
-            time.sleep(args.repeat * 60)
+    if args.json or args.output:
+        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
 
-            try:
-                data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
-            except Exception as e:
-                print(f"Error: Failed to process the data from the URL: {e}")
-                sys.exit(1)
+    if args.mqtt:
+        config = load_config(args.mqtt)
+        send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-            if data is None or final_url is None:
-                print("Failed to process the data from the URL.")
-                return
+    if args.windrose:
+        config = load_config('config.yaml')
+        if not config.get('mqtt_windrose_root'):
+            print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+        else:
+            windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+            send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
-            station_identifier = f"{station_id} - {station_name}"
+    # Repeat the data retrieval and processing if the repeat parameter is provided
+    while args.repeat is not None:
+        print(f"Waiting for {args.repeat} minutes before repeating...")
+        time.sleep(args.repeat * 60)
 
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
+        data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
 
-            logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
-            if args.mqtt:
-                config = load_config(args.mqtt)
-                send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+        if data is None:
+            print("Failed to process the data from the URL.")
+            return
 
-            logger.debug("Checking if windrose option is provided for sending data in repeat loop.")
-            if args.windrose:
-                config = load_config('config.yaml')
-                if not config.get('mqtt_windrose_root'):
-                    print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-                else:
-                    windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                    send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+        station_identifier = f"{station_id} - {station_name}"
 
-        if args.json or args.output:
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
+        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
         if args.mqtt:
             config = load_config(args.mqtt)
@@ -279,33 +306,6 @@ Options:
             else:
                 windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
                 send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
-
-        # Repeat the data retrieval and processing if the repeat parameter is provided
-        while args.repeat is not None:
-            print(f"Waiting for {args.repeat} minutes before repeating...")
-            time.sleep(args.repeat * 60)
-
-            data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
-
-            if data is None:
-                print("Failed to process the data from the URL.")
-                return
-
-            station_identifier = f"{station_id} - {station_name}"
-
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
-
-            if args.mqtt:
-                config = load_config(args.mqtt)
-                send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
-
-            if args.windrose:
-                config = load_config('config.yaml')
-                if not config.get('mqtt_windrose_root'):
-                    print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-                else:
-                    windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                    send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
 if __name__ == "__main__":
     main()
