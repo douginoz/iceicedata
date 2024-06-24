@@ -137,7 +137,7 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
     wind_speed_data = json.dumps({"wind_speed": wind_data.get("wind_speed")})
     wind_direction_data = json.dumps({"wind_direction": wind_data.get("wind_direction")})
 
-    if stdout:
+    if stdout and not output_file:
         print(json_data)
 
     if json_file:
