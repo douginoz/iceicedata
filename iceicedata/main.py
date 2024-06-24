@@ -96,6 +96,13 @@ Options:
         except ValueError:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
+    def validate_mqtt_config(config):
+        required_keys = ["mqtt_server", "mqtt_port", "mqtt_user", "mqtt_password", "mqtt_root", "mqtt_windrose_root"]
+        for key in required_keys:
+            if key not in config:
+                return False
+        return True
+
     if args.setup_mqtt:
         args.station_id = None  # Ignore station ID if setup MQTT is used
         if args.mqtt:
@@ -105,6 +112,17 @@ Options:
     elif not args.station_id and not args.mqtt:
         parser.print_help()
     else:
+        if args.mqtt:
+            try:
+                config = load_config(args.mqtt)
+                if not validate_mqtt_config(config):
+                    raise ValueError("Invalid MQTT configuration format.")
+            except Exception as e:
+                print(f"Error: {e}")
+                sys.exit(1)
+        else:
+            config = load_config('iceicedata.json')
+
         station_id = validate_station_id(args.station_id)
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
