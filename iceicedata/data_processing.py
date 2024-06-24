@@ -15,7 +15,6 @@ from iceicedata.helper import convert_wind_speed_to_mps, split_value_and_unit, c
 from iceicedata.selenium_utils import get_station_id
 
 def process_data(url, skip_initial=False):
-    print("Starting data processing for URL:", url)
     logger = logging.getLogger()
     logger.debug("Starting data processing for URL: %s", url)
     driver = None
@@ -23,7 +22,6 @@ def process_data(url, skip_initial=False):
     try:
         # Initialize the WebDriver
         service = Service('/usr/local/bin/geckodriver')
-        logger.debug("Initializing WebDriver.")
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
         driver = webdriver.Firefox(service=service, options=options)
