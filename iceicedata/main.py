@@ -28,7 +28,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 def main():
     parser = argparse.ArgumentParser(description='''
-    
+
 This program extracts weather station data from any station displayed on the TempestWX map.
 
 Steps:
@@ -38,24 +38,16 @@ Steps:
 
 Options:
   -h, --help                    Show this help message and exit.
-
   -v, --version                 Show the version information and exit.
-
   -j FILE, --json FILE          Output data to a JSON file.
-
-  -o FILE, --output FILE        Output data to a plain ASCII file. If not provided,
-                                print to stdout.
-
-
-  -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration
-                                from FILE. Default: iceicedata.json.
-
-  -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root'
-                                from the configuration file.
-
+  -o [FILE], --output [FILE]    Output data to a plain ASCII file. If not provided, print to stdout.
+  -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration from FILE. Default: iceicedata.json.
+  -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root' from the configuration file.
   -c FILE, --config FILE        Specify the configuration file to use. Default: config.json.
   -i ID, --station-id ID        The station ID to process.
-  ''')
+  -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes (between 5 and 1440).
+
+''')
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
     parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help='Output data to a JSON file.')
