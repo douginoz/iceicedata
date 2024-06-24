@@ -10,6 +10,7 @@ import sys
 from datetime import datetime
 import pytz
 from iceicedata.helper import convert_wind_speed_to_mps, split_value_and_unit, convert_timestamp_to_unix_ms, convert_compass_to_degrees, validate_url, extract_coordinates, get_station_id_from_url
+from iceicedata.selenium_utils import get_placemarkers, select_placemarker
 
 def process_data(url):
     driver = None
