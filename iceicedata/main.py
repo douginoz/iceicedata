@@ -80,7 +80,7 @@ Options:
         logger.debug("Loading specified configuration file: %s", config_file)
         config.update(load_config(config_file))
 
-    if config.get('debug', False):
+    if args.debug or config.get('debug', False):
         logger.setLevel(logging.DEBUG)
         logger.debug("Debug mode enabled from configuration file.")
 
