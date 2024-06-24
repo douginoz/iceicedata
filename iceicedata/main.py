@@ -61,6 +61,7 @@ Options:
                                 option is mutually exclusive with -m.
   -u URL, --url URL             The URL to process.
   ''', formatter_class=CustomHelpFormatter)
+    parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
     parser.add_argument('-u', '--url', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, help=argparse.SUPPRESS)
@@ -70,6 +71,11 @@ Options:
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
+
+    if args.repeat is not None:
+        if not (5 <= args.repeat <= 1440):
+            print("Error: The repeat delay must be between 5 and 1440 minutes.")
+            sys.exit(1)
 
     if args.version:
         print(f"Version: {VERSION}")
@@ -84,26 +90,33 @@ Options:
         print("Error: URL must be provided. Use the -u or --url option to specify the URL.")
         sys.exit(1)
     else:
-        data, wind_data, station_identifier = process_data(args.url)
+        while True:
+            data, wind_data, station_identifier = process_data(args.url)
 
-        if data is None:
-            print("Failed to process the data from the URL.")
-            return
+            if data is None:
+                print("Failed to process the data from the URL.")
+                return
 
-        if args.stdout or args.json or args.output:
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
+            if args.stdout or args.json or args.output:
+                output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
 
-        if args.mqtt:
-            config = load_config(args.mqtt)
-            send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+            if args.mqtt:
+                config = load_config(args.mqtt)
+                send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-        if args.windrose:
-            config = load_config('iceicedata.json')
-            if not config.get('mqtt_windrose_root'):
-                print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+            if args.windrose:
+                config = load_config('iceicedata.json')
+                if not config.get('mqtt_windrose_root'):
+                    print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+                else:
+                    windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                    send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+
+            if args.repeat is None:
+                break
             else:
-                windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+                print(f"Waiting for {args.repeat} minutes before repeating...")
+                time.sleep(args.repeat * 60)
 
 if __name__ == "__main__":
     main()
