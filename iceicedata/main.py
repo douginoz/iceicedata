@@ -85,7 +85,9 @@ Options:
         logger.debug("Debug mode enabled from configuration file.")
 
     logger.debug("Configuration loaded: %s", config)
+    logger.debug("Checking if version argument is provided.")
     if args.version:
+        logger.debug("Version argument detected.")
         print("Version argument detected.")
         print(f"Version: {VERSION}")
         sys.exit(0)
@@ -122,14 +124,17 @@ Options:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
 
+    logger.debug("Validating station ID.")
     if not args.station_id and not args.version:
         print("Error: The -i option is required unless -v is used.")
         sys.exit(1)
 
+    logger.debug("Validating output file argument.")
     if args.output is not None and args.output == '':
         print("Error: The -o option requires a filename.")
         sys.exit(1)
 
+    logger.debug("Checking if output file is provided.")
     if args.output:
         try:
             with open(args.output, 'w') as f:
@@ -138,6 +143,7 @@ Options:
             print(f"Error: Cannot write to the output file '{args.output}'.")
             sys.exit(1)
 
+    logger.debug("Loading configuration file.")
     if args.config:
         try:
             config = load_config(args.config)
@@ -145,6 +151,7 @@ Options:
             print(f"Error: Cannot load the configuration file '{args.config}': {e}")
             sys.exit(1)
 
+    logger.debug("Checking if MQTT option is provided.")
     if args.mqtt is not None:
         if args.mqtt == '':
             args.mqtt = 'config.yaml'
@@ -178,19 +185,20 @@ Options:
             print(f"Error: Cannot load the configuration file '{config_file}': {e}")
             sys.exit(1)
 
-        print("Validating station ID:", args.station_id)
+        logger.debug("Validating station ID: %s", args.station_id)
         station_id = validate_station_id(args.station_id)
         print("Station ID validated:", station_id)
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
         print(f"Looking for station {station_id} -", end='', flush=True)
-        print("Processing data for URL:", final_url)
+        logger.debug("Processing data for URL: %s", final_url)
         try:
             data, wind_data, station_name, final_url = process_data(final_url)
         except Exception as e:
             print(f"Error: Failed to process the data from the URL: {e}")
             sys.exit(1)
-        print("Data processing completed. Data:", data)
+        logger.debug("Data processing completed. Data: %s", data)
+        logger.debug("Checking if data or final URL is None.")
         if data is None or final_url is None:
             print("Data or final URL is None.")
             print("Failed to process the data from the URL.")
@@ -208,11 +216,13 @@ Options:
 
         station_identifier = f"{station_id} - {station_name}"
 
+        logger.debug("Checking if MQTT option is provided for sending data.")
         if args.mqtt:
             print("Sending data to MQTT server.")
             config = load_config(args.mqtt)
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
+        logger.debug("Checking if windrose option is provided for sending data.")
         if args.windrose:
             print("Publishing windrose data to MQTT server.")
             config = load_config('config.yaml')
@@ -223,6 +233,7 @@ Options:
                 send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
         # Repeat the data retrieval and processing if the repeat parameter is provided
+        logger.debug("Checking if repeat option is provided.")
         while args.repeat is not None:
             time.sleep(args.repeat * 60)
 
@@ -240,10 +251,12 @@ Options:
 
             output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
+            logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
             if args.mqtt:
                 config = load_config(args.mqtt)
                 send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
+            logger.debug("Checking if windrose option is provided for sending data in repeat loop.")
             if args.windrose:
                 config = load_config('config.yaml')
                 if not config.get('mqtt_windrose_root'):
