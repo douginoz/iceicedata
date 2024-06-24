@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock, patch
-from iceicedata.selenium_utils import initialize_driver, validate_url, extract_coordinates, get_station_id_from_url, get_placemarkers, select_placemarker, get_station_id
+from iceicedata.selenium_utils import validate_url, extract_coordinates, get_station_id_from_url, get_station_id
 
 class TestSeleniumUtils(unittest.TestCase):
     @patch('iceicedata.selenium_utils.webdriver.Firefox')
