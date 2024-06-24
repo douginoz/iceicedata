@@ -59,10 +59,10 @@ Options:
 
   -S, --setup-mqtt              Setup MQTT configuration and save to a file. This
                                 option is mutually exclusive with -m.
-  -u URL, --url URL             The URL to process.
+  -i ID, --station-id ID        The station ID to process.
   ''', formatter_class=CustomHelpFormatter)
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
-    parser.add_argument('-u', '--url', type=str, help=argparse.SUPPRESS)
+    parser.add_argument('-i', '--station-id', type=str, required=True, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-s', '--stdout', action='store_true', help=argparse.SUPPRESS)
@@ -84,15 +84,13 @@ Options:
             print("Error: --setup-mqtt (-S) and --mqtt (-m) options cannot be used together.")
             sys.exit(1)
         save_mqtt_config('iceicedata.json')
-    elif not args.url and not args.mqtt:
+    elif not args.station_id and not args.mqtt:
         parser.print_help()
-    elif not args.url:
-        print("Error: URL must be provided. Use the -u or --url option to specify the URL.")
-        sys.exit(1)
     else:
-        final_url = args.url  # Initialize final_url with the initial URL
+        station_id = args.station_id
+        final_url = f"https://tempestwx.com/{station_id}"  # Construct the URL using the station ID
 
-        # Process the initial URL to get the final URL with station ID
+        # Process the URL to get the data
         data, wind_data, station_identifier, final_url = process_data(final_url)
 
         if data is None or final_url is None:
