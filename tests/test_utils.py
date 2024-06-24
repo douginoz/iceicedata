@@ -9,13 +9,8 @@ def split_value_and_unit(value):
 
 def convert_wind_speed_to_mps(speed):
     try:
-        local_tz = pytz.timezone(timezone_str)
-        local_dt = datetime.strptime(timestamp_str, '%m/%d/%Y %I:%M:%S %p')
-        local_dt = local_tz.localize(local_dt, is_dst=None)
-        unix_time_ms = int(local_dt.timestamp() * 1000)
-        return unix_time_ms
         return round(float(speed) * 0.27778, 2)
-    except ValueError as e:
+    except ValueError:
         return speed
 
 def convert_timestamp_to_unix_ms(timestamp_str, timezone_str):
