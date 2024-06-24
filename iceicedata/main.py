@@ -125,10 +125,15 @@ Options:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
 
-    logger.debug("Validating station ID.")
-    if not args.station_id and not args.version and not args.setup_mqtt:
-        print("Error: The -i option is required unless -v is used.")
-        sys.exit(1)
+    if args.setup_mqtt:
+        logger.debug("Setting up MQTT configuration.")
+        save_mqtt_config(config_file)
+        sys.exit(0)
+    else:
+        logger.debug("Validating station ID.")
+        if not args.station_id and not args.version and not args.setup_mqtt:
+            print("Error: The -i option is required unless -v is used.")
+            sys.exit(1)
 
     logger.debug("Validating output file argument.")
     if args.output is not None and args.output == '':
