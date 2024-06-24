@@ -13,6 +13,7 @@ def load_config(config_file):
             "mqtt_password": "password",
             "mqtt_root": "RootTopic/",
             "mqtt_windrose_root": "WindroseTopic/"
+            "mqtt_retain": False
         }, indent=2))
         sys.exit(1)
 
@@ -59,7 +60,7 @@ def send_mqtt_data(data, config, topic):
     try:
         client.connect(config["mqtt_server"], config["mqtt_port"], 60)
         client.loop_start()
-        result = client.publish(topic, json.dumps(data), retain=True)
+        result = client.publish(topic, json.dumps(data), retain=config.get("mqtt_retain", True))
         result.wait_for_publish()
         client.loop_stop()
         client.disconnect()
