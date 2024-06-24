@@ -21,6 +21,7 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 def main():
+    final_url = None
     parser = argparse.ArgumentParser(description='''
 
 This program extracts weather station data from any station displayed on the TempestWX map.
