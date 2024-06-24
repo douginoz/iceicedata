@@ -142,11 +142,11 @@ def process_data(url, skip_initial=False):
             if key in descriptions:
                 data[key]["description"] = descriptions[key]
 
-        return data, wind_data, station_identifier, final_url
+        return data, wind_data, station_identifier, final_url if not skip_initial else url
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None, None, None
+        return None, None, None, None
 
     finally:
         if driver:

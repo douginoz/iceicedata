@@ -90,8 +90,10 @@ Options:
         print("Error: URL must be provided. Use the -u or --url option to specify the URL.")
         sys.exit(1)
     else:
+        final_url = args.url  # Initialize final_url with the initial URL
+
         # Process the initial URL to get the final URL with station ID
-        data, wind_data, station_identifier, final_url = process_data(args.url)
+        data, wind_data, station_identifier, final_url = process_data(final_url)
 
         if data is None:
             print("Failed to process the data from the URL.")
