@@ -16,7 +16,7 @@ from iceicedata.data_processing import process_data, output_data
 from iceicedata.mqtt_utils import send_mqtt_data, load_config, save_mqtt_config
 from iceicedata.helper import validate_url  # Correct import
 
-VERSION = "1.1.4"  # Incremented version
+VERSION = "1.1.5"  # Incremented version
 
 class CustomHelpFormatter(argparse.RawTextHelpFormatter):
     def add_arguments(self, actions):
