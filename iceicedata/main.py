@@ -93,6 +93,7 @@ Options:
         logger.debug("Debug mode enabled from configuration file.")
 
     logger.debug("Configuration loaded: %s", config)
+    if args.version:
         print("Version argument detected.")
         print(f"Version: {VERSION}")
         sys.exit(0)
