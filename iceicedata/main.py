@@ -56,7 +56,7 @@ Options:
 
   -c FILE, --config FILE        Specify the configuration file to use. Default: config.json.
   -i ID, --station-id ID        The station ID to process.
-  ''', formatter_class=CustomHelpFormatter)
+  ''')
     parser.add_argument('-r', '--repeat', type=int, help='Repeat the data retrieval every N minutes (between 5 and 1440).')
     parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
