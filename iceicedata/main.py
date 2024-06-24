@@ -1,21 +1,14 @@
 import json
-import argparse
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import paho.mqtt.client as mqtt
 import time
 import os
 import sys
 import signal
-from datetime import datetime
-import pytz
+import logging
 from iceicedata.data_processing import process_data, output_data
 from iceicedata.mqtt_utils import send_mqtt_data
-from iceicedata.config_handler import load_config, validate_config, save_mqtt_config
-from iceicedata.helper import validate_url  # Correct import
+from iceicedata.config_handler import save_mqtt_config
+from iceicedata.arg_parser import parse_arguments
+from iceicedata.config_loader import load_config, validate_config
 
 VERSION = "1.2.0"  # Important update increment
 
