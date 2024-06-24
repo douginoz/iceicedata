@@ -212,18 +212,20 @@ Options:
     station_identifier = f"{station_id} - {station_name}"
 
     logger.debug("Checking if MQTT option is provided for sending data.")
-    if args.mqtt:
-        config = load_config(args.mqtt)
-        send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+    if args.mqtt or args.windrose:
+        if not config:
+            print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+            sys.exit(1)
+        
+        if args.mqtt:
+            send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-    logger.debug("Checking if windrose option is provided for sending data.")
-    if args.windrose:
-        config = load_config('config.yaml')
-        if not config.get('mqtt_windrose_root'):
-            print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-        else:
-            windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-            send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+        if args.windrose:
+            if not config.get('mqtt_windrose_root'):
+                print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+            else:
+                windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
     # Repeat the data retrieval and processing if the repeat parameter is provided
     logger.debug("Checking if repeat option is provided.")
@@ -248,18 +250,20 @@ Options:
         output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
         logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
-        if args.mqtt:
-            config = load_config(args.mqtt)
-            send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+        if args.mqtt or args.windrose:
+            if not config:
+                print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+                sys.exit(1)
+        
+            if args.mqtt:
+                send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-        logger.debug("Checking if windrose option is provided for sending data in repeat loop.")
-        if args.windrose:
-            config = load_config('config.yaml')
-            if not config.get('mqtt_windrose_root'):
-                print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-            else:
-                windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+            if args.windrose:
+                if not config.get('mqtt_windrose_root'):
+                    print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+                else:
+                    windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                    send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
     if args.json or args.output:
         output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
