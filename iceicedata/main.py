@@ -60,8 +60,8 @@ Options:
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    if args.setup_mqtt:
-        save_mqtt_config(args.config)
+    if args.version:
+        print(f"Version: {VERSION}")
         sys.exit(0)
 
     def validate_repeat(repeat):
@@ -96,8 +96,8 @@ Options:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
 
-    if not args.station_id:
-        print("Error: The -i option is required.")
+    if not args.station_id and not args.version:
+        print("Error: The -i option is required unless -v is used.")
         sys.exit(1)
 
     if args.output is None:
