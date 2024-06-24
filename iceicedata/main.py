@@ -46,7 +46,6 @@ Options:
   -o FILE, --output FILE        Output data to a plain ASCII file. If not provided,
                                 print to stdout.
 
-  -s, --stdout                  Display data on stdout.
 
   -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration
                                 from FILE. Default: iceicedata.json.
@@ -61,7 +60,6 @@ Options:
     parser.add_argument('-i', '--station-id', type=str, help='The station ID to process.')
     parser.add_argument('-j', '--json', type=str, help='Output data to a JSON file.')
     parser.add_argument('-o', '--output', type=str, help='Output data to a plain ASCII file. If not provided, print to stdout.')
-    parser.add_argument('-s', '--stdout', action='store_true', help='Display data on stdout.')
     parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='iceicedata.json', help='Send data to the MQTT server using the configuration from FILE. Default: iceicedata.json.')
     parser.add_argument('-w', '--windrose', action='store_true', help='Publish windrose MQTT data. Uses "mqtt_windrose_root" from the configuration file.')
     parser.add_argument('-c', '--config', type=str, default='config.json', help='Specify the configuration file to use. Default: config.json.')
@@ -112,8 +110,7 @@ Options:
             print("Failed to process the data from the URL.")
             return
 
-        if args.stdout or args.json or args.output:
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
+        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
         station_identifier = f"{station_id} - {station_name}"
 
@@ -141,8 +138,7 @@ Options:
 
             station_identifier = f"{station_id} - {station_name}"
 
-            if args.stdout or args.json or args.output:
-                output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
+            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
             if args.mqtt:
                 config = load_config(args.mqtt)
@@ -184,8 +180,7 @@ Options:
 
             station_identifier = f"{station_id} - {station_name}"
 
-            if args.stdout or args.json or args.output:
-                output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
+            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
             if args.mqtt:
                 config = load_config(args.mqtt)
