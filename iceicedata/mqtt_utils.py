@@ -12,7 +12,7 @@ def load_config(config_file):
             "mqtt_user": "username",
             "mqtt_password": "password",
             "mqtt_root": "RootTopic/",
-            "mqtt_windrose_root": "WindroseTopic/"
+            "mqtt_windrose_root": "WindroseTopic/",
             "mqtt_retain": False
         }, indent=2))
         sys.exit(1)
