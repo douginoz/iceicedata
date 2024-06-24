@@ -240,7 +240,10 @@ Options:
     # Repeat the data retrieval and processing if the repeat parameter is provided
     logger.debug("Checking if repeat option is provided.")
     while args.repeat is not None:
-        time.sleep(args.repeat * 60)
+        if repeat_unit == 'm':
+            time.sleep(repeat_value * 60)
+        elif repeat_unit == 'd':
+            time.sleep(repeat_value * 86400)
 
         try:
             data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
