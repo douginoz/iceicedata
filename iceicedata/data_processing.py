@@ -145,6 +145,6 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
             f.write(json_data)
 
     if output_file:
-        output_text = json.dumps(data, indent=2)
         with open(output_file, 'w') as f:
-            f.write(output_text)
+            for key, value in data.items():
+                f.write(f"{key},{value['value']}\n")
