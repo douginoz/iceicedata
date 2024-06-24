@@ -10,6 +10,7 @@ def load_config(config_file):
     with open(config_file, 'r') as f:
         config = json.load(f)
     
+    config["debug"] = config.get("debug", False)
     return config
 
 def save_mqtt_config(config_file):

@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import logging
 import paho.mqtt.client as mqtt
 
 def load_config(config_file):
