@@ -97,11 +97,12 @@ Options:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
     if args.setup_mqtt:
+        args.station_id = None  # Ignore station ID if setup MQTT is used
         if args.mqtt:
             print("Error: --setup-mqtt (-S) and --mqtt (-m) options cannot be used together.")
             sys.exit(1)
         save_mqtt_config('iceicedata.json')
-    elif not args.station_id and not args.mqtt and not args.setup_mqtt:
+    elif not args.station_id and not args.mqtt:
         parser.print_help()
     else:
         station_id = validate_station_id(args.station_id)
