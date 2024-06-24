@@ -109,6 +109,8 @@ Options:
         if args.stdout or args.json or args.output:
             output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
 
+        station_identifier = f"{station_id} - {station_name}"
+
         if args.mqtt:
             config = load_config(args.mqtt)
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
@@ -130,6 +132,8 @@ Options:
             if data is None or final_url is None:
                 print("Failed to process the data from the URL.")
                 return
+
+            station_identifier = f"{station_id} - {station_name}"
 
             if args.stdout or args.json or args.output:
                 output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
@@ -171,6 +175,8 @@ Options:
             if data is None:
                 print("Failed to process the data from the URL.")
                 return
+
+            station_identifier = f"{station_id} - {station_name}"
 
             if args.stdout or args.json or args.output:
                 output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=args.stdout)
