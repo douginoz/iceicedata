@@ -1,0 +1,8 @@
+debug: false
+mqtt_password: mozzie
+mqtt_port: 1883
+mqtt_retain: false
+mqtt_root: Tempest/
+mqtt_server: 192.168.1.20
+mqtt_user: Mozzie
+mqtt_windrose_root: Tempest_windrose/

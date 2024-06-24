@@ -26,5 +26,4 @@ def get_station_id(driver, placemarker):
         return station_id, station_name
     except Exception as e:
         logger.error("An error occurred while getting the station ID: %s", e)
-        print(f"An error occurred while getting the station ID: {e}")
         return None, None

@@ -1,4 +1,5 @@
 import pytz
+import logging
 from datetime import datetime
 
 def convert_wind_speed_to_mps(speed):
