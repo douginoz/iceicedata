@@ -19,17 +19,6 @@ from iceicedata.helper import validate_url  # Correct import
 
 VERSION = "1.1.5"  # Incremented version
 
-class CustomHelpFormatter(argparse.RawTextHelpFormatter):
-    def add_arguments(self, actions):
-        for action in actions:
-            if action.help == argparse.SUPPRESS:
-                continue
-            self._add_item(self._format_action, [action])
-    
-    def add_argument_group(self, group):
-        if group.title == 'optional arguments':
-            return
-        super().add_argument_group(group)
 
 def signal_handler(sig, frame):
     print("\nProgram terminated by user.")
