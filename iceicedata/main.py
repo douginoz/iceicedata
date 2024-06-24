@@ -185,9 +185,11 @@ Options:
             print(f"Error: Cannot load the configuration file '{config_file}': {e}")
             sys.exit(1)
 
-    logger.debug("Validating station ID: %s", args.station_id)
-    station_id = validate_station_id(args.station_id)
-    final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
+    station_id = None
+    if args.station_id:
+        logger.debug("Validating station ID: %s", args.station_id)
+        station_id = validate_station_id(args.station_id)
+        final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
     print(f"Looking for station {station_id} -", end='', flush=True)
     logger.debug("Processing data for URL: %s", final_url)
