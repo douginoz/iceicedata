@@ -131,9 +131,17 @@ Options:
             print(f"Error: Cannot load the configuration file '{args.mqtt}': {e}")
             sys.exit(1)
     else:
-        config = load_config(args.config)
-        if not config:
-            print("Error: Configuration file not found. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+        try:
+            config_file = args.config
+            config = load_config(config_file) or load_config('config.yaml')
+            if not config:
+                print("Error: -m option specified but no config.yaml found. Re-run with -S to generate one, or specify its location with -c.")
+                sys.exit(1)
+            if not validate_config(config):
+                print("Error: Invalid configuration format.")
+                sys.exit(1)
+        except Exception as e:
+            print(f"Error: Cannot load the configuration file '{config_file}': {e}")
             sys.exit(1)
 
         station_id = validate_station_id(args.station_id)
