@@ -111,6 +111,9 @@ def process_data(url, skip_initial=False):
                 data[key]["description"] = descriptions[key]
 
         return data, wind_data, station_name, url
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None, None, None, None
 
     except Exception as e:
         print(f"An error occurred: {e}")
