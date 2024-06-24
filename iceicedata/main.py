@@ -84,7 +84,18 @@ Options:
             print("Error: The repeat delay must be between 5 and 1440 minutes.")
             sys.exit(1)
 
-    if args.version:
+    def validate_station_id(station_id):
+        try:
+            station_id = station_id.strip().lstrip('0')
+            if not station_id.isdigit():
+                raise ValueError
+            station_id = int(station_id)
+            if not (1 <= station_id <= 999999):
+                raise ValueError
+            return station_id
+        except ValueError:
+            print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
+            sys.exit(1)
         print(f"Version: {VERSION}")
     elif args.setup_mqtt:
         if args.mqtt:
@@ -94,7 +105,7 @@ Options:
     elif not args.station_id and not args.mqtt:
         parser.print_help()
     else:
-        station_id = args.station_id
+        station_id = validate_station_id(args.station_id)
         final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
 
         print(f"Looking for station {station_id} -", end='', flush=True)
