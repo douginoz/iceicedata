@@ -17,7 +17,7 @@ from iceicedata.mqtt_utils import send_mqtt_data
 from iceicedata.config_handler import load_config, validate_config, save_mqtt_config
 from iceicedata.helper import validate_url  # Correct import
 
-VERSION = "2.0.0"  # Important update increment
+VERSION = "1.1.0"  # Important update increment
 
 
 def signal_handler(sig, frame):
