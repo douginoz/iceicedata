@@ -100,7 +100,7 @@ Options:
         print("Error: The -i option is required unless -v is used.")
         sys.exit(1)
 
-    if args.output is None:
+    if args.output is not None and args.output == '':
         print("Error: The -o option requires a filename.")
         sys.exit(1)
 
