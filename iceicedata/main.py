@@ -67,8 +67,6 @@ Options:
     logger = logging.getLogger()
 
     logger.debug("Starting main function with arguments: %s", args)
-
-    print("Starting main function with arguments:", args)
     # Load configuration
     config_file = args.config
     local_config_file = 'config.yaml'
@@ -148,7 +146,6 @@ Options:
             sys.exit(1)
 
     if args.mqtt is not None:
-        print("MQTT option detected with config file:", args.mqtt)
         if args.mqtt == '':
             args.mqtt = 'config.yaml'
         if not os.path.isfile(args.mqtt):
