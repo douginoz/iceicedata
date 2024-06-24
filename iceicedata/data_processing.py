@@ -24,7 +24,7 @@ def process_data(url, skip_initial=False):
         
         
         # Open the target webpage
-        driver.get(final_url)
+        driver.get(url)
         time.sleep(5)  # Wait for page to fully load
 
         # Wait for the station-detail element to appear
@@ -113,7 +113,7 @@ def process_data(url, skip_initial=False):
             if key in descriptions:
                 data[key]["description"] = descriptions[key]
 
-        return data, wind_data, station_identifier, final_url if not skip_initial else url
+        return data, wind_data, station_identifier, url if not skip_initial else url
 
     except Exception as e:
         print(f"An error occurred: {e}")
