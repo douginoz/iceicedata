@@ -102,20 +102,10 @@ Options:
         if data is None or final_url is None:
             print("Failed to process the data from the URL.")
             return
-        print(f" found. Station Name: {station_name}", end='', flush=True)
+        print(f" found. Station Name: {station_name}", end='')
         if args.repeat:
-            print(f"; Retrieving data every {args.repeat} minutes.", end='', flush=True)
+            print(f"; Retrieving data every {args.repeat} minutes.", end='')
         print()  # Move to the next line after the message
-
-        if data is None or final_url is None:
-            print("Failed to process the data from the URL.")
-            return
-
-        # Display the station name and repeat interval if applicable
-        message = f"Station name: {station_name}"
-        if args.repeat:
-            message += f"; Retrieving data every {args.repeat} minutes."
-        print(message)
 
         if data is None or final_url is None:
             print("Failed to process the data from the URL.")
