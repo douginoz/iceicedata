@@ -96,7 +96,6 @@ Options:
         except ValueError:
             print("Error: Invalid station ID. Please enter an integer between 1 and 999999.")
             sys.exit(1)
-        print(f"Version: {VERSION}")
     elif args.setup_mqtt:
         if args.mqtt:
             print("Error: --setup-mqtt (-S) and --mqtt (-m) options cannot be used together.")
