@@ -37,6 +37,7 @@ def process_data(url, skip_initial=False):
         station_info = station_detail.find_element(By.XPATH, './/a[contains(@href, "/station/")]')
         station_id = station_info.get_attribute('href').split('/station/')[1].split('?')[0]
         station_name = station_info.text.strip()
+        print(f"Extracted station ID: {station_id}, station name: {station_name}")
         station_identifier = f"{station_id} - {station_name}"
 
         # Look for 'sw-list'
