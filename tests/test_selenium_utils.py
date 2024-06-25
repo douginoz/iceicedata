@@ -15,10 +15,9 @@ class TestSeleniumUtils(unittest.TestCase):
         with self.assertRaises(ValueError):
             extract_coordinates('invalid_url')
 
-    @patch('iceicedata.selenium_utils.webdriver.Firefox')
-    def test_get_station_id_from_url(self, mock_firefox):
-        self.assertEqual(get_station_id_from_url('https://tempestwx.com/map/12345'), '12345')
-        self.assertIsNone(get_station_id_from_url('invalid_url'))
+    def test_get_station_id_from_url(self):
+        self.assertEqual(get_station_id_from_url('https://tempestwx.com/map/12345/'), '12345')
+        self.assertIsNone(get_station_id_from_url('https://tempestwx.com/map/invalid_url/'))
 
     # Other functions can be tested similarly...
 

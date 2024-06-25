@@ -11,7 +11,7 @@ class TestMain(unittest.TestCase):
     @patch('iceicedata.main.select_placemarker')
     @patch('iceicedata.main.get_station_id')
     @patch('iceicedata.main.process_station_data')
-    @patch('iceicedata.main.publish_to_mqtt')
+    @patch('iceicedata.mqtt_utils.send_mqtt_data')
     def test_main_function(self, mock_publish_to_mqtt, mock_process_station_data, mock_get_station_id, mock_select_placemarker, mock_get_placemarkers, mock_get_station_id_from_url, mock_extract_coordinates, mock_validate_url, mock_initialize_driver):
         # Set up mock return values
         mock_initialize_driver.return_value = MagicMock()
