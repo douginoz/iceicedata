@@ -1,0 +1,14 @@
+{
+  "domain": "iceicedata",
+  "name": "IceIceData",
+  "version": "1.0.0",
+  "documentation": "https://github.com/douginoz/iceicedata",
+  "requirements": [
+    "selenium",
+    "paho-mqtt",
+    "pytz",
+    "pyyaml"
+  ],
+  "dependencies": [],
+  "codeowners": ["@douginoz"]
+}
