@@ -1,6 +1,7 @@
+# arg_parser.py
 import argparse
 
-def parse_arguments():
+def parse_arguments(config):
     parser = argparse.ArgumentParser(description='''
 
 This program extracts weather station data from any station displayed on the TempestWX map.
@@ -21,6 +22,8 @@ Options:
   -i ID, --station-id ID        The station ID to process.
   -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes or days. Specify as '5m' for minutes or '1d' for days (minimum 5 minutes or 1 day).
   -S, --setup-mqtt              Configure MQTT.
+  --database [DATABASE]         Path and name of the database file (default: value from config.yaml or 'weather_data.db')
+  -d [DEBUG], --debug [DEBUG]   Enable debug mode. Optionally specify a log file.
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-r', '--repeat', type=str, help=argparse.SUPPRESS)
@@ -32,5 +35,6 @@ Options:
     parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
     parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('--database', type=str, nargs='?', const=config.get('database_file', 'weather_data.db'), help='Path and name of the database file (default: value from config.yaml or "weather_data.db")')
     parser.add_argument('-d', '--debug', type=str, nargs='?', const='', help='Enable debug mode. Optionally specify a log file.')
     return parser.parse_args()

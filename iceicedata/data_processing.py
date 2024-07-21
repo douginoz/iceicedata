@@ -1,3 +1,4 @@
+# data_processing.py
 import logging
 import json
 from selenium import webdriver
@@ -7,12 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
-import os
-import sys
-from datetime import datetime
-import pytz
-from iceicedata.helper import convert_wind_speed_to_mps, split_value_and_unit, convert_timestamp_to_unix_ms, convert_compass_to_degrees, validate_url, extract_coordinates, get_station_id_from_url
-from iceicedata.selenium_utils import get_station_id
+from helper import convert_wind_speed_to_mps, split_value_and_unit, convert_timestamp_to_unix_ms, convert_compass_to_degrees
 
 def process_data(url, skip_initial=False):
     logger = logging.getLogger()
@@ -25,13 +21,11 @@ def process_data(url, skip_initial=False):
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
         driver = webdriver.Firefox(service=service, options=options)
-        
-        
+
         driver.get(url)
         logger.debug("Navigated to URL: %s", url)
-        time.sleep(10)  # Wait for page to fully load
+        time.sleep(10)  # Wait for the page to fully load
 
-        # Wait for the station-detail element to appear
         try:
             station_detail = WebDriverWait(driver, 40).until(
                 EC.visibility_of_element_located((By.ID, 'station-detail'))
@@ -43,91 +37,86 @@ def process_data(url, skip_initial=False):
             station_name = station_info.text.strip()
             station_identifier = f"{station_id} - {station_name}"
 
-            # Look for 'sw-list'
+            # Initialize the data dictionary with all expected keys
+            data = {
+                'station_id': station_id,
+                'station_name': station_name,
+                'air_density': {'value': None, 'unit': None, 'description': "The mass of air per unit volume."},
+                'air_temperature': {'value': None, 'unit': None, 'description': "The temperature of the air."},
+                'station_pressure': {'value': None, 'unit': None, 'description': "The atmospheric pressure at the station."},
+                'brightness': {'value': None, 'unit': None, 'description': "The intensity of light."},
+                'delta_t': {'value': None, 'unit': None, 'description': "The difference between air temperature and dew point."},
+                'dew_point': {'value': None, 'unit': None, 'description': "The temperature at which air becomes saturated with moisture."},
+                'feels_like': {'value': None, 'unit': None, 'description': "The apparent temperature considering humidity and wind."},
+                'heat_index': {'value': None, 'unit': None, 'description': "The perceived temperature due to air temperature and humidity."},
+                'lightning_strike_count': {'value': None, 'unit': None, 'description': "The number of lightning strikes detected."},
+                'lightning_detected_last_3_hrs': {'value': None, 'unit': None, 'description': "The number of lightning strikes detected in the last 3 hours."},
+                'lightning_distance_detected': {'value': None, 'unit': None, 'description': "The estimated distance of detected lightning strikes."},
+                'lightning_last_detected': {'value': None, 'unit': None, 'description': "The time since the last lightning strike was detected."},
+                'rain_intensity': {'value': None, 'unit': None, 'description': "The rate of rainfall."},
+                'rain_accumulation_today': {'value': None, 'unit': None, 'description': "The total rainfall accumulated today."},
+                'rain_accumulation_yesterday': {'value': None, 'unit': None, 'description': "The total rainfall accumulated yesterday."},
+                'rain_duration_today': {'value': None, 'unit': None, 'description': "The duration of rainfall today."},
+                'rain_duration_yesterday': {'value': None, 'unit': None, 'description': "The duration of rainfall yesterday."},
+                'relative_humidity': {'value': None, 'unit': None, 'description': "The percentage of moisture in the air relative to saturation."},
+                'sea_level_pressure': {'value': None, 'unit': None, 'description': "The atmospheric pressure adjusted to sea level."},
+                'solar_radiation': {'value': None, 'unit': None, 'description': "The power per unit area received from the Sun."},
+                'timestamp': {'value': None, 'unit': None, 'description': "The date and time of the observation."},
+                'timezone': {'value': None, 'unit': None, 'description': "The timezone of the observation."},
+                'timestamp_unix': {'value': None, 'unit': None, 'description': "The timestamp in Unix time format."},
+                'uv_index': {'value': None, 'unit': None, 'description': "The ultraviolet index indicating the level of UV radiation."},
+                'wet_bulb_temperature': {'value': None, 'unit': None, 'description': "The lowest temperature air can reach by evaporative cooling."},
+                'wind_speed': {'value': None, 'unit': None, 'description': "The speed of the wind."},
+                'wind_chill': {'value': None, 'unit': None, 'description': "The perceived decrease in air temperature felt by the body."},
+                'wind_direction': {'value': None, 'unit': None, 'description': "The direction from which the wind is blowing."},
+                'wind_gust': {'value': None, 'unit': None, 'description': "The peak wind speed during a short time interval."},
+                'wind_lull': {'value': None, 'unit': None, 'description': "The minimum wind speed during a short time interval."}
+            }
+
+            # Initialize the wind_data dictionary
+            wind_data = {
+                'wind_speed': None,
+                'wind_direction': None
+            }
+
+            # Populate the data dictionary with values from the website
             sw_list = station_detail.find_element(By.CLASS_NAME, 'sw-list')
+            for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
+                label = item.find_element(By.XPATH, '../span[@class="lv-param-label"]').text.strip().lower().replace(" ", "_")
+                value = item.text.strip()
+
+                if label in data:
+                    numeric_value, unit = split_value_and_unit(value)
+                    data[label]['value'] = numeric_value
+                    data[label]['unit'] = unit
+
+            # Handling timestamp and timezone
+            if 'timestamp' in data and data['timestamp']['value'] is not None:
+                timezone_value = data['timezone']['value'] if 'timezone' in data else None
+                unix_time_ms = convert_timestamp_to_unix_ms(data['timestamp']['value'], timezone_value)
+                if unix_time_ms is not None:
+                    data['timestamp_unix']['value'] = unix_time_ms
+            else:
+                logger.warning("Timestamp or timezone is missing in the data.")
+
         except NoSuchElementException:
+            logger.error("Station details not found.")
             print(f"Error: Station ID {station_id} not found on the website.")
             return None, None, None, None
 
-        logger.debug("Extracting data from the page.")
-        data = {}
-        wind_data = {}
-        for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
-            label = item.find_element(By.XPATH, '../span[@class="lv-param-label"]').text.strip().lower().replace(" ", "_")
-            value = item.text.strip()
-
-            if label == "timestamp" or label == "timezone":
-                data[label] = {"value": value, "unit": None}
-            else:
-                numeric_value, unit = split_value_and_unit(value)
-
-                if label == "rain_intensity":
-                    unit = unit.replace(" ", "")
-
-                data[label] = {"value": numeric_value, "unit": unit}
-
-            if label == "wind_speed":
-                wind_speed_mps = convert_wind_speed_to_mps(value.split()[0])
-                wind_data["wind_speed"] = wind_speed_mps
-            elif label == "wind_direction":
-                wind_direction_degrees = convert_compass_to_degrees(value)
-                if wind_direction_degrees is not None:
-                    wind_data["wind_direction"] = wind_direction_degrees
-
-        timestamp_value = data.get("timestamp", {}).get("value", "")
-        timezone_value = data.get("timezone", {}).get("value", "")
-
-        if timestamp_value and timezone_value:
-            unix_time_ms = convert_timestamp_to_unix_ms(timestamp_value, timezone_value)
-            if unix_time_ms is not None:
-                data["timestamp_unix"] = {"value": unix_time_ms, "unit": "ms"}
-
-        # Add descriptions to each key
-        descriptions = {
-            "air_density": "The mass of air per unit volume.",
-            "air_temperature": "The temperature of the air.",
-            "station_pressure": "The atmospheric pressure at the station.",
-            "brightness": "The intensity of light.",
-            "delta_t": "The difference between air temperature and dew point.",
-            "dew_point": "The temperature at which air becomes saturated with moisture.",
-            "feels_like": "The apparent temperature considering humidity and wind.",
-            "heat_index": "The perceived temperature due to air temperature and humidity.",
-            "lightning_strike_count": "The number of lightning strikes detected.",
-            "lightning_detected_last_3_hrs": "The number of lightning strikes detected in the last 3 hours.",
-            "lightning_distance_detected": "The estimated distance of detected lightning strikes.",
-            "lightning_last_detected": "The time since the last lightning strike was detected.",
-            "rain_intensity": "The rate of rainfall.",
-            "rain_accumulation_(today)": "The total rainfall accumulated today.",
-            "rain_accumulation_(yesterday)": "The total rainfall accumulated yesterday.",
-            "rain_duration_(today)": "The duration of rainfall today.",
-            "rain_duration_(yesterday)": "The duration of rainfall yesterday.",
-            "relative_humidity": "The percentage of moisture in the air relative to saturation.",
-            "sea_level_pressure": "The atmospheric pressure adjusted to sea level.",
-            "solar_radiation": "The power per unit area received from the Sun.",
-            "timestamp": "The date and time of the observation.",
-            "timezone": "The timezone of the observation.",
-            "timestamp_unix": "The timestamp in Unix time format.",
-            "uv_index": "The ultraviolet index indicating the level of UV radiation.",
-            "wet_bulb_temperature": "The lowest temperature air can reach by evaporative cooling.",
-            "wind_speed": "The speed of the wind.",
-            "wind_chill": "The perceived decrease in air temperature felt by the body.",
-            "wind_direction": "The direction from which the wind is blowing.",
-            "wind_gust": "The peak wind speed during a short time interval.",
-            "wind_lull": "The minimum wind speed during a short time interval."
+        logger.debug("Data extraction completed. Data: %s", data)
+        
+        # Prepare attribute descriptions to be passed to insert function
+        attribute_descriptions = {
+            key: value['description'] for key, value in data.items() if 'description' in value
         }
 
-        for key in data:
-            if key in descriptions:
-                data[key]["description"] = descriptions[key]
+        # Log the attribute descriptions
+        logger.debug("Attribute descriptions prepared: %s", attribute_descriptions)
 
-        logger.debug("Data extraction completed. Data: %s", data)
-        return data, wind_data, station_name, url
+        return data, wind_data, station_name, attribute_descriptions
     except Exception as e:
         logger.error("An error occurred: %s", e)
-        print(f"An error occurred: {e}")
-        return None, None, None, None
-
-    except Exception as e:
         print(f"An error occurred: {e}")
         return None, None, None, None
 
@@ -141,9 +130,7 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
         return
 
     json_data = json.dumps(data)
-    wind_speed_data = json.dumps({"wind_speed": wind_data.get("wind_speed")})
-    wind_direction_data = json.dumps({"wind_direction": wind_data.get("wind_direction")})
-
+    
     if stdout and not output_file:
         print(json_data)
 

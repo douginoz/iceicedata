@@ -9,7 +9,11 @@ DEFAULT_CONFIG = {
     "mqtt_password": "",
     "mqtt_root": "",
     "mqtt_windrose_root": "",
-    "mqtt_retain": False
+    "mqtt_retain": False,
+    "database_file": "/path/to/database.db",
+    "database_name": "weather_data",
+    "database_user": "username",
+    "database_password": "password"
 }
 
 def load_config(config_file):
@@ -21,6 +25,11 @@ def load_config(config_file):
 
     config["debug"] = config.get("debug", False)
     return config
+
+def save_config(config_file, config):
+    with open(config_file, 'w') as f:
+        yaml.safe_dump(config, f, default_flow_style=False)
+    print(f"Configuration saved to {config_file}")
 
 def save_mqtt_config(config_file):
     config = load_config(config_file) or {}
@@ -38,12 +47,15 @@ def save_mqtt_config(config_file):
     config["mqtt_retain"] = input(f"Set retain flag (default: {config.get('mqtt_retain', True)}): ") or config.get("mqtt_retain", True)
     config["mqtt_retain"] = str(config["mqtt_retain"]).lower() in ['true', '1', 't', 'y', 'yes']
 
-    with open(config_file, 'w') as f:
-        yaml.safe_dump(config, f, default_flow_style=False)
-    print(f"Configuration saved to {config_file}")
+    config["database_file"] = input(f"Enter database file path (default: {config.get('database_file', '/path/to/database.db')}): ") or config.get("database_file", "/path/to/database.db")
+    config["database_name"] = input(f"Enter database name (default: {config.get('database_name', 'weather_data')}): ") or config.get("database_name", "weather_data")
+    config["database_user"] = input(f"Enter database user (default: {config.get('database_user', 'username')}): ") or config.get("database_user", "username")
+    config["database_password"] = input(f"Enter database password (default: {config.get('database_password', 'password')}): ") or config.get("database_password", "password")
+
+    save_config(config_file, config)
 
 def validate_config(config):
-    required_keys = ["mqtt_server", "mqtt_port", "mqtt_user", "mqtt_password", "mqtt_root", "mqtt_windrose_root"]
+    required_keys = ["mqtt_server", "mqtt_port", "mqtt_user", "mqtt_password", "mqtt_root", "mqtt_windrose_root", "database_file", "database_name", "database_user", "database_password"]
     for key in required_keys:
         if key not in config:
             return False

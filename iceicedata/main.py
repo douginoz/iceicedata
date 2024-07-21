@@ -1,3 +1,4 @@
+# main.py
 import json
 import time
 import os
@@ -5,14 +6,14 @@ import sys
 import signal
 import logging
 import argparse
-from iceicedata.data_processing import process_data, output_data
-from iceicedata.mqtt_utils import send_mqtt_data
-from iceicedata.config_handler import save_mqtt_config
-from iceicedata.arg_parser import parse_arguments
-from iceicedata.config_loader import load_config, validate_config
+from data_processing import process_data, output_data
+from mqtt_utils import send_mqtt_data
+from config_handler import save_config, save_mqtt_config
+from arg_parser import parse_arguments
+from config_loader import load_config, validate_config
+from database import create_database, insert_data_into_database, check_database_integrity
 
-VERSION = "1.2.2"  # Important update increment
-
+VERSION = "1.3.0"  # Updated version
 
 def signal_handler(sig, frame):
     print("\nProgram terminated by user.")
@@ -22,77 +23,36 @@ signal.signal(signal.SIGINT, signal_handler)
 
 def main():
     final_url = None
-    parser = argparse.ArgumentParser(description='''
+    # Load configuration
+    config_file = 'config.yaml'
+    local_config_file = 'config.yaml'
+    config = {}
 
-This program extracts weather station data from any station displayed on the TempestWX map.
+    if os.path.isfile(local_config_file):
+        config.update(load_config(local_config_file))
 
-Steps:
-1. Obtain the URL for the map area of interest from https://tempestwx.com/map/.
-2. Navigate to the desired location on the map and zoom in until fewer than 50 stations are visible.
-3. Copy the URL from the browser's address bar and provide it to the script.
-
-Options:
-  -h, --help                    Show this help message and exit.
-  -v, --version                 Show the version information and exit.
-  -j FILE, --json FILE          Output data to a JSON file.
-  -o FILE, --output FILE        Output data to a plain ASCII file. If not provided, print to stdout.
-  -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration from FILE. Default: config.yaml.
-  -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root' from the configuration file.
-  -c FILE, --config FILE        Specify the configuration file to use. Default: config.yaml.
-  -i ID, --station-id ID        The station ID to process.
-  -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes or days. Specify as '5m' for minutes or '1d' for days (minimum 5 minutes or 1 day).
-  -S, --setup-mqtt              Configure MQTT.
-
-''', formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('-r', '--repeat', type=str, help=argparse.SUPPRESS)
-    parser.add_argument('-i', '--station-id', type=str, help=argparse.SUPPRESS)
-    parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
-    parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
-    parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='config.yaml', help=argparse.SUPPRESS)
-    parser.add_argument('-w', '--windrose', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('-c', '--config', type=str, default='config.yaml', help=argparse.SUPPRESS)
-    parser.add_argument('-v', '--version', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('-d', '--debug', type=str, nargs='?', const='', help='Enable debug mode. Optionally specify a log file.')
-    args = parser.parse_args()
+    args = parse_arguments(config)
 
     # Setup logging
     import logging
-    log_level = logging.DEBUG if args.debug is not None else logging.INFO
+    log_level = logging.INFO
     log_format = '%(asctime)s - %(levelname)s - %(message)s'
-    if args.debug:
-        log_file = args.debug if args.debug else None
+    if args.debug is not None:
+        log_level = logging.DEBUG
+        if args.debug:
+            log_file = args.debug
+        else:
+            log_file = None
         logging.basicConfig(level=log_level, format=log_format, filename=log_file, filemode='w')
     else:
         logging.basicConfig(level=log_level, format=log_format)
     logger = logging.getLogger()
 
     logger.debug("Starting main function with arguments: %s", args)
-    # Load configuration
-    config_file = args.config
-    local_config_file = 'config.yaml'
-    config = {}
 
-    if os.path.isfile(local_config_file):
-        logger.debug("Loading local configuration file: %s", local_config_file)
-        config.update(load_config(local_config_file))
-
-    if config_file and os.path.isfile(config_file):
-        logger.debug("Loading specified configuration file: %s", config_file)
-        config = load_config(config_file)
-        if not validate_config(config):
-            print(f"Error: Invalid configuration format in '{config_file}'.")
-            sys.exit(1)
-
-    if args.debug or config.get('debug', False):
-        logger.setLevel(logging.DEBUG)
-        logger.debug("Debug mode enabled from configuration file.")
-
-    logger.debug("Configuration loaded: %s", config)
     logger.debug("Checking if version argument is provided.")
     if args.version:
         logger.debug("Version argument detected.")
-        print("Version argument detected.")
         print(f"Version: {VERSION}")
         sys.exit(0)
 
@@ -152,17 +112,6 @@ Options:
             print(f"Error: Cannot write to the output file '{args.output}'.")
             sys.exit(1)
 
-    logger.debug("Loading configuration file.")
-    if args.config:
-        try:
-            config = load_config(args.config)
-            if not validate_config(config):
-                print(f"Error: Invalid configuration format in '{args.config}'.")
-                sys.exit(1)
-        except Exception as e:
-            print(f"Error: Cannot load the configuration file '{args.config}': {e}")
-            sys.exit(1)
-
     logger.debug("Checking if MQTT or windrose option is provided.")
     if args.mqtt is not None or args.windrose:
         if not config:
@@ -188,14 +137,16 @@ Options:
     print(f"Looking for station {station_id} -", end='', flush=True)
     logger.debug("Processing data for URL: %s", final_url)
     try:
-        data, wind_data, station_name, final_url = process_data(final_url)
+        # Updated to receive attribute_descriptions
+        data, wind_data, station_name, attribute_descriptions = process_data(final_url)
     except Exception as e:
         print(f"Error: Failed to process the data from the URL: {e}")
         sys.exit(1)
     logger.debug("Data processing completed. Data: %s", data)
-    logger.debug("Checking if data or final URL is None.")
-    if data is None or final_url is None:
-        print("Data or final URL is None.")
+    logger.debug("Attribute descriptions: %s", attribute_descriptions)
+    logger.debug("Checking if data is None.")
+    if data is None:
+        print("Data is None.")
         print("Failed to process the data from the URL.")
         return
     print(f" found. Station Name: {station_name}", end='')
@@ -203,7 +154,7 @@ Options:
         print(f"; Retrieving data every {args.repeat} minutes.", end='')
     print()  # Move to the next line after the message
 
-    if data is None or final_url is None:
+    if data is None:
         print("Failed to process the data from the URL.")
         return
 
@@ -227,43 +178,38 @@ Options:
                 windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
                 send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
-    # Repeat the data retrieval and processing if the repeat parameter is provided
-    logger.debug("Checking if repeat option is provided.")
-    while args.repeat is not None:
-        if repeat_unit == 'm':
-            time.sleep(repeat_value * 60)
-        elif repeat_unit == 'd':
-            time.sleep(repeat_value * 86400)
+    logger.debug("Checking if database option is provided.")
+    if args.database is not None:
+        database_file = args.database
+        create_database(database_file)
+        check_database_integrity(database_file)
 
-        try:
-            data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
-        except Exception as e:
-            print(f"Error: Failed to process the data from the URL: {e}")
-            sys.exit(1)
+        # Updated to use attribute_descriptions from process_data
+        logger.debug("Inserting data into database. Attribute descriptions: %s", attribute_descriptions)
+        insert_data_into_database(database_file, data, attribute_descriptions)
 
-        if data is None or final_url is None:
-            print("Failed to process the data from the URL.")
-            return
+        while args.repeat is not None:
+            if repeat_unit == 'm':
+                time.sleep(repeat_value * 60)
+            elif repeat_unit == 'd':
+                time.sleep(repeat_value * 86400)
 
-        station_identifier = f"{station_id} - {station_name}"
-
-        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
-
-        logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
-        if args.mqtt or args.windrose:
-            if not config:
-                print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
+            try:
+                # Updated to receive attribute_descriptions
+                data, wind_data, station_name, attribute_descriptions = process_data(final_url, skip_initial=True)
+            except Exception as e:
+                print(f"Error: Failed to process the data from the URL: {e}")
                 sys.exit(1)
-        
-            if args.mqtt:
-                send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
-            if args.windrose:
-                if not config.get('mqtt_windrose_root'):
-                    print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-                else:
-                    windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                    send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+            if data is None:
+                print("Failed to process the data from the URL.")
+                return
+
+            station_identifier = f"{station_id} - {station_name}"
+            # Updated to use attribute_descriptions from process_data
+            logger.debug("Inserting data into database (repeat). Attribute descriptions: %s", attribute_descriptions)
+            insert_data_into_database(database_file, data, attribute_descriptions)
+
 
     if args.json or args.output:
         output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
@@ -277,41 +223,6 @@ Options:
             send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
 
         if args.windrose:
-            if not config.get('mqtt_windrose_root'):
-                print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-            else:
-                windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
-
-    # Repeat the data retrieval and processing if the repeat parameter is provided
-    while args.repeat is not None:
-        if repeat_unit == 'm':
-            time.sleep(repeat_value * 60)
-        elif repeat_unit == 'd':
-            time.sleep(repeat_value * 86400)
-
-        try:
-            data, wind_data, station_name, final_url = process_data(final_url, skip_initial=True)
-        except Exception as e:
-            print(f"Error: Failed to process the data from the URL: {e}")
-            sys.exit(1)
-
-        if data is None or final_url is None:
-            print("Failed to process the data from the URL.")
-            return
-
-        station_identifier = f"{station_id} - {station_name}"
-
-        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
-
-        logger.debug("Checking if MQTT option is provided for sending data in repeat loop.")
-        if args.mqtt:
-            config = load_config(args.mqtt)
-            send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
-
-        logger.debug("Checking if windrose option is provided for sending data in repeat loop.")
-        if args.windrose:
-            config = load_config('config.yaml')
             if not config.get('mqtt_windrose_root'):
                 print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
             else:
