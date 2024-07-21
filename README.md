@@ -23,6 +23,7 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
    - **Plain ASCII Output (`-o` or `--output`)**: Outputs the data in a human-readable format to a specified file or prints it to stdout if no filename is provided.
    - **MQTT Publishing (`-m` or `--mqtt`)**: Publishes the data to an MQTT server specified in a configuration file. If no file is specified, it looks for a default configuration file (`config.yaml`).
       - The MQTT configuration file can be generated using the -S option.
+   - **Database recording (`--database`)**: Saves data to an sqlite database.
 
 4. **MQTT Configuration**:
    - **Setup (`-S` or `--setup-mqtt`)**: Prompts the user to enter MQTT configuration details (server, port, username, password, root topic, windrose root topic) and saves them to a default configuration file (`config.yaml`). If the file already exists, it reads the existing values and allows the user to update them.
