@@ -27,7 +27,10 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
    - **Setup (`-S` or `--setup-mqtt`)**: Prompts the user to enter MQTT configuration details (server, port, username, password, root topic, windrose root topic) and saves them to a default configuration file (`config.yaml`). If the file already exists, it reads the existing values and allows the user to update them.
    - **Windrose Data (`-w` or `--windrose`)**: Optionally publishes windrose data to an MQTT topic. Windrose charts require 2 inputs - wind speed, in meters/second, and wind direction, as a compass bearing. A separate MQTT topic name is used to minimize data being sent to the windrose application (Grafana, Home Assistant, etc.). The topic name can be provided as an argument; if not, it uses the value from the configuration file. This option can be used by itself or in conjunction with the -m (send all the other data to MQTT) option.
 
-5. **Debug Mode**:
+5. **Database option**:
+   - **Database ('--database')**: Enable database storage of retrieved data.  Database location can be stored in config.yaml or optionally included with '--database [FILE]'.
+
+7. **Debug Mode**:
    - **Debug (`-d` or `--debug`)**: Enable debug mode. Optionally specify a log file to store debug information.
 
 ## Example Usage
