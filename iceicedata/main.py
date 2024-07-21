@@ -13,7 +13,7 @@ from arg_parser import parse_arguments
 from config_loader import load_config, validate_config
 from database import create_database, insert_data_into_database, check_database_integrity
 
-VERSION = "1.3.1"  # Updated version
+VERSION = "1.3.2"  # Updated version
 
 def signal_handler(sig, frame):
     print("\nProgram terminated by user.")
@@ -89,13 +89,8 @@ def main():
 
     if args.setup_mqtt:
         logger.debug("Setting up MQTT configuration.")
-        save_mqtt_config(config_file)
+        save_mqtt_config(config_file)  # Fixed closing parenthesis here
         sys.exit(0)
-    else:
-        logger.debug("Validating station ID.")
-        if not args.station_id and not args.version and not args.setup_mqtt:
-            print("Error: The -i option is required unless -v is used.")
-            sys.exit(1)
 
     logger.debug("Validating output file argument.")
     if args.output is not None and args.output == '':
@@ -116,82 +111,87 @@ def main():
         if not config:
             print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
             sys.exit(1)
-        
+
         required_keys = ["mqtt_server", "mqtt_port", "mqtt_root"]
         for key in required_keys:
             if key not in config:
                 print(f"Error: Missing required MQTT configuration parameter '{key}' in '{config_file}'. Please use the '-S' option to generate a valid config.")
                 sys.exit(1)
-        
+
         if not validate_config(config):
             print("Error: Invalid configuration format.")
             sys.exit(1)
 
-    station_id = None
+    station_ids = []
     if args.station_id:
-        logger.debug("Validating station ID: %s", args.station_id)
-        station_id = validate_station_id(args.station_id)
-        final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
+        if os.path.isfile(args.station_id):
+            with open(args.station_id, 'r') as f:
+                station_ids = [validate_station_id(line.strip()) for line in f if line.strip().isdigit()]
+        else:
+            logger.debug("Validating multiple station IDs: %s", args.station_id)
+            station_ids = [validate_station_id(station_id.strip()) for station_id in args.station_id.split(',')]
 
+    # Create the database if specified
     if args.database is not None:
         database_file = args.database
         create_database(database_file)
         check_database_integrity(database_file)
 
-    while True:
-        print(f"Looking for station {station_id} -", end='', flush=True)
-        logger.debug("Processing data for URL: %s", final_url)
-        try:
-            data, wind_data, station_name, attribute_descriptions = process_data(final_url)
-        except Exception as e:
-            print(f"Error: Failed to process the data from the URL: {e}")
-            sys.exit(1)
+    while True:  # Main processing loop for repeated execution
+        for station_id in station_ids:
+            logger.debug("Processing data for Station ID: %s", station_id)
+            final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
+            
+            print(f"Looking for station {station_id} -", end='', flush=True)
+            logger.debug("Processing data for URL: %s", final_url)
+            try:
+                data, wind_data, station_name, attribute_descriptions = process_data(final_url)
+            except Exception as e:
+                print(f"Error: Failed to process the data from the URL: {e}")
+                continue  # Skip to the next station ID
 
-        logger.debug("Data processing completed. Data: %s", data)
-        logger.debug("Attribute descriptions: %s", attribute_descriptions)
-        logger.debug("Checking if data is None.")
-        if data is None:
-            print("Data is None.")
-            print("Failed to process the data from the URL.")
-            return
+            logger.debug("Data processing completed. Data: %s", data)
+            logger.debug("Attribute descriptions: %s", attribute_descriptions)
+            logger.debug("Checking if data is None.")
+            if data is None:
+                print("Data is None.")
+                print(f"Failed to process the data for station ID {station_id}.")
+                continue  # Skip to the next station ID
 
-        print(f" found. Station Name: {station_name}", end='')
+            print(f" found. Station Name: {station_name}", end='')
+            print()  # Move to the next line after the message
+
+            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
+
+            station_identifier = f"{station_id} - {station_name}"
+
+            logger.debug("Checking if MQTT option is provided for sending data.")
+            if args.mqtt or args.windrose:
+                if args.mqtt:
+                    send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
+
+                if args.windrose:
+                    if not config.get('mqtt_windrose_root'):
+                        print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
+                    else:
+                        windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                        send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
+
+            logger.debug("Checking if database option is provided.")
+            if args.database is not None:
+                logger.debug("Inserting data into database. Attribute descriptions: %s", attribute_descriptions)
+                insert_data_into_database(database_file, data, attribute_descriptions)
+
+            if args.json or args.output:
+                output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
+
+        # After processing all station IDs, wait before the next iteration if repeat is specified
         if args.repeat:
-            print(f"; Retrieving data every {args.repeat}.", end='')
-        print()  # Move to the next line after the message
-
-        output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
-
-        station_identifier = f"{station_id} - {station_name}"
-
-        logger.debug("Checking if MQTT option is provided for sending data.")
-        if args.mqtt or args.windrose:
-            if args.mqtt:
-                send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
-
-            if args.windrose:
-                if not config.get('mqtt_windrose_root'):
-                    print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
-                else:
-                    windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
-                    send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
-
-        logger.debug("Checking if database option is provided.")
-        if args.database is not None:
-            logger.debug("Inserting data into database. Attribute descriptions: %s", attribute_descriptions)
-            insert_data_into_database(database_file, data, attribute_descriptions)
-
-        if args.json or args.output:
-            output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
-
-        if not args.repeat:
-            break
-
-        # Wait before next iteration
-        if repeat_unit == 'm':
-            time.sleep(repeat_value * 60)
-        elif repeat_unit == 'd':
-            time.sleep(repeat_value * 86400)
+            logger.debug("Waiting for next iteration...")
+            if repeat_unit == 'm':
+                time.sleep(repeat_value * 60)
+            elif repeat_unit == 'd':
+                time.sleep(repeat_value * 86400)
 
 if __name__ == "__main__":
     main()

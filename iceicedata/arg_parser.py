@@ -1,4 +1,3 @@
-# arg_parser.py
 import argparse
 
 def parse_arguments(config):
@@ -19,15 +18,16 @@ Options:
   -m [FILE], --mqtt [FILE]      Send data to the MQTT server using the configuration from FILE. Default: config.yaml.
   -w, --windrose                Publish windrose MQTT data. Uses 'mqtt_windrose_root' from the configuration file.
   -c FILE, --config FILE        Specify the configuration file to use. Default: config.yaml.
-  -i ID, --station-id ID        The station ID to process.
+  -i ID, --station-id ID        Comma-separated list of station IDs or a file containing station IDs to process.
   -r REPEAT, --repeat REPEAT    Repeat the data retrieval every N minutes or days. Specify as '5m' for minutes or '1d' for days (minimum 5 minutes or 1 day).
   -S, --setup-mqtt              Configure MQTT.
   --database [DATABASE]         Path and name of the database file (default: value from config.yaml or 'weather_data.db')
   -d [DEBUG], --debug [DEBUG]   Enable debug mode. Optionally specify a log file.
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
+
     parser.add_argument('-r', '--repeat', type=str, help=argparse.SUPPRESS)
-    parser.add_argument('-i', '--station-id', type=str, help=argparse.SUPPRESS)
+    parser.add_argument('-i', '--station-id', type=str, help='Comma-separated list of station IDs or a file containing station IDs.')
     parser.add_argument('-j', '--json', type=str, help=argparse.SUPPRESS)
     parser.add_argument('-o', '--output', type=str, nargs='?', const='', help=argparse.SUPPRESS)
     parser.add_argument('-m', '--mqtt', type=str, nargs='?', const='config.yaml', help=argparse.SUPPRESS)
@@ -37,4 +37,5 @@ Options:
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--database', type=str, nargs='?', const=config.get('database_file', 'weather_data.db'), help='Path and name of the database file (default: value from config.yaml or "weather_data.db")')
     parser.add_argument('-d', '--debug', type=str, nargs='?', const='', help='Enable debug mode. Optionally specify a log file.')
+    
     return parser.parse_args()
