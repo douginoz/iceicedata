@@ -13,6 +13,7 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
 1. **Station ID Handling**:
    - The program accepts a station ID to process data from a specific weather station.
    - The station ID can be provided using the `-i` or `--station-id` option.
+   - Multiple station IDs can be specified (comma separated) or by including a file with the list of stations.
 
 2. **Data Extraction**:
    - The program retrieves detailed weather data from the selected station, including air temperature, wind speed, wind direction, rain data, and other relevant meteorological parameters.
