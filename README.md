@@ -2,7 +2,7 @@
 
 # TempestWX Data Extractor
 
-This program is designed to extract weather station data from any station displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, or publishing it to an MQTT server.
+This program is designed to extract weather station data from any station, or multiple stations, displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, publishing it to an MQTT server and saving it to an sqlite database.
 
 Apart from this sentence, this program, structure, workflow, files, and the rest of this text were generated entirely by GPT-4 with prompts and iterative corrections. It is intended as a thought experiment and demonstration of using LLMs for code generation. It is not intended to be used publicly and will likely break as soon as the website format changes.
 
@@ -43,27 +43,35 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
 
 2. **Extracting JSON-formatted data to a file**:
    ```sh
-   python -m iceicedata.main -i 125353 -j output.json
+   python -m iceicedata.main -i 41866 -j output.json
    ```
 
 3. **Extracting Data and Publishing to an MQTT server**:
    ```sh
-   python -m iceicedata.main -i 125353 -m
+   python -m iceicedata.main -i 41866 -m
    ```
 
 4. **Extracting Data and Saving to a Text File**:
    ```sh
-   python -m iceicedata.main -i 125353 -o output.txt
+   python -m iceicedata.main -i 41866 -o output.txt
    ```
 
 5. **Publishing Windrose Data to MQTT**:
    ```sh
-   python -m iceicedata.main -i 125353 -m -w
+   python -m iceicedata.main -i 41866 -m -w
    ```
 
 6. **Specifying a Configuration File**:
    ```sh
-   python -m iceicedata.main -i 125353 -c custom_config.yaml -m
+   python -m iceicedata.main -i 41866 -c custom_config.yaml -m
+   ```
+
+7. **Specifying multiple stations**:
+   ```sh
+   python -m iceicedata.main -i 41866,147444 -c custom_config.yaml -m
+   ```
+      ```sh
+   python -m iceicedata.main -i station_list.txt -c custom_config.yaml -m
    ```
 
 ## Requirements
