@@ -35,6 +35,23 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
 7. **Debug Mode**:
    - **Debug (`-d` or `--debug`)**: Enable debug mode. Optionally specify a log file to store debug information.
 
+8. **Reporting**:
+   - **Reporting (`-R` or `--report`)**: Generate a report. Choose from: daily, weekly, or monthly:
+
+   <dl>
+  <dt><code>-R {daily,weekly,monthly}, --report {daily,weekly,monthly}</code></dt>
+  <dd>Generate a report. Choose from: daily, weekly, or monthly.</dd>
+
+  <dt><code>--start-date START_DATE</code></dt>
+  <dd>Start date for the report (YYYY-MM-DD).</dd>
+
+  <dt><code>--end-date END_DATE</code></dt>
+  <dd>End date for the report (YYYY-MM-DD).</dd>
+
+  <dt><code>--output-format {pdf,html,csv}</code></dt>
+  <dd>Report output format. Choose from: pdf, html, or csv. Default: pdf.</dd>
+</dl>
+
 ## Example Usage
 
 1. **Setting up MQTT Configuration**:
@@ -73,6 +90,10 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
    ```
       ```sh
    python -m iceicedata.main -i station_list.txt -c custom_config.yaml -m
+   ```
+7. **Specifying a single day report**:
+   ```sh
+   python iceicedata/main.py -R daily --start-date 2024-07-22 --end-date 2024-07-22
    ```
 
 ## Requirements
