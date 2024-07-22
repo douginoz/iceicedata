@@ -2,7 +2,7 @@
 
 # TempestWX Data Extractor
 
-This program is designed to extract weather station data from any station, or multiple stations, displayed on the TempestWX map. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, publishing it to an MQTT server and saving it to an sqlite database.
+This program is designed to extract weather station data from any Tempest station, or multiple stations. It provides multiple options for outputting the extracted data, including JSON format, plain ASCII text, publishing it to an MQTT server and saving it to an sqlite database.
 
 Apart from this sentence, this program, structure, workflow, files, and the rest of this text were generated entirely by GPT-4 with prompts and iterative corrections. It is intended as a thought experiment and demonstration of using LLMs for code generation. It is not intended to be used publicly and will likely break as soon as the website format changes.
 
@@ -11,9 +11,9 @@ Apart from this sentence, this program, structure, workflow, files, and the rest
 ## Features and Functionality
 
 1. **Station ID Handling**:
-   - The program accepts a station ID to process data from a specific weather station.
-   - The station ID can be provided using the `-i` or `--station-id` option.
-   - Multiple station IDs can be specified (comma separated) or by including a file with the list of stations.
+   - The program accepts one or more station IDs, obtainable from browsing the tempestwx.com map.
+   - The station ID(s) can be provided using the `-i` or `--station-id` parameter
+   - Multiple station IDs can be specified (comma separated) or by including a file with the list of stations, e.g. '-i 41866', '-i 41866,147444', or '-i filename.txt'.
 
 2. **Data Extraction**:
    - The program retrieves detailed weather data from the selected station, including air temperature, wind speed, wind direction, rain data, and other relevant meteorological parameters.

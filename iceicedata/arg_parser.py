@@ -6,9 +6,15 @@ def parse_arguments(config):
 This program extracts weather station data from any station displayed on the TempestWX map.
 
 Steps:
-1. Obtain the URL for the map area of interest from https://tempestwx.com/map/.
-2. Navigate to the desired location on the map and zoom in until fewer than 50 stations are visible.
-3. Copy the URL from the browser's address bar and provide it to the script.
+1. Edit the config.yaml file to include any required parameters.
+2. Obtain the station ID for the map area of interest from https://tempestwx.com/map/:
+  a. Click on the station of interest
+  b. Note the station ID in the URL, e.g. "https://tempestwx.com/map/41866/63.4814/-20.2043/5" has a station ID of 41866
+  c. Include the station ID using the '-i' option
+  d. Multiple stations can be comma-separated or included in an optionally specified file.
+3. Select the output option(s) required (JSON, ASCII, MQTT, database)
+4. Include a repeat option if you want it to continuously obtain data, via the -r option.
+
 
 Options:
   -h, --help                    Show this help message and exit.
@@ -23,6 +29,11 @@ Options:
   -S, --setup-mqtt              Configure MQTT.
   --database [DATABASE]         Path and name of the database file (default: value from config.yaml or 'weather_data.db')
   -d [DEBUG], --debug [DEBUG]   Enable debug mode. Optionally specify a log file.
+  -R TYPE, --report TYPE        Generate a report. Types: daily, weekly, monthly.
+  --start-date START_DATE       Start date for the report (YYYY-MM-DD).
+  --end-date END_DATE           End date for the report (YYYY-MM-DD).
+  --output-format FORMAT        Report output format: pdf, html, csv (default: pdf).
+
 
 ''', formatter_class=argparse.RawTextHelpFormatter)
 
@@ -37,5 +48,9 @@ Options:
     parser.add_argument('-S', '--setup-mqtt', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--database', type=str, nargs='?', const=config.get('database_file', 'weather_data.db'), help='Path and name of the database file (default: value from config.yaml or "weather_data.db")')
     parser.add_argument('-d', '--debug', type=str, nargs='?', const='', help='Enable debug mode. Optionally specify a log file.')
+    parser.add_argument('-R', '--report', type=str, choices=['daily', 'weekly', 'monthly'], help='Generate a report.')
+    parser.add_argument('--start-date', type=str, help='Start date for the report (YYYY-MM-DD).')
+    parser.add_argument('--end-date', type=str, help='End date for the report (YYYY-MM-DD).')
+    parser.add_argument('--output-format', type=str, choices=['pdf', 'html', 'csv'], default='pdf', help='Report output format.')
     
     return parser.parse_args()

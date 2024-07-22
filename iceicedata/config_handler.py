@@ -13,7 +13,9 @@ DEFAULT_CONFIG = {
     "database_file": "/path/to/database.db",
     "database_name": "weather_data",
     "database_user": "username",
-    "database_password": "password"
+    "database_password": "password",
+    "report_output_dir": "./reports",
+    "report_default_format": "pdf"
 }
 
 def load_config(config_file):
@@ -51,6 +53,8 @@ def save_mqtt_config(config_file):
     config["database_name"] = input(f"Enter database name (default: {config.get('database_name', 'weather_data')}): ") or config.get("database_name", "weather_data")
     config["database_user"] = input(f"Enter database user (default: {config.get('database_user', 'username')}): ") or config.get("database_user", "username")
     config["database_password"] = input(f"Enter database password (default: {config.get('database_password', 'password')}): ") or config.get("database_password", "password")
+    config["report_output_dir"] = input(f"Enter report output directory (default: {config.get('report_output_dir', './reports')}): ") or config.get("report_output_dir", "./reports")
+    config["report_default_format"] = input(f"Enter default report format (pdf/html/csv) (default: {config.get('report_default_format', 'pdf')}): ") or config.get("report_default_format", "pdf")
 
     save_config(config_file, config)
 

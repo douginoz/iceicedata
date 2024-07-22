@@ -6,14 +6,16 @@ import sys
 import signal
 import logging
 import argparse
+from datetime import datetime, timedelta
 from data_processing import process_data, output_data
 from mqtt_utils import send_mqtt_data
 from config_handler import save_config, save_mqtt_config
 from arg_parser import parse_arguments
 from config_loader import load_config, validate_config
-from database import create_database, insert_data_into_database, check_database_integrity
+from database import create_database, insert_data_into_database, check_database_integrity, get_data_range
+from report_generator import generate_report
 
-VERSION = "1.3.2"  # Updated version
+VERSION = "1.4.0"
 
 def signal_handler(sig, frame):
     print("\nProgram terminated by user.")
@@ -51,8 +53,6 @@ def validate_station_id(station_id):
         sys.exit(1)
 
 def main():
-    final_url = None
-    # Load configuration
     config_file = 'config.yaml'
     local_config_file = 'config.yaml'
     config = {}
@@ -63,24 +63,15 @@ def main():
     args = parse_arguments(config)
 
     # Setup logging
-    log_level = logging.INFO
+    log_level = logging.INFO if args.debug is None else logging.DEBUG
     log_format = '%(asctime)s - %(levelname)s - %(message)s'
-    if args.debug is not None:
-        log_level = logging.DEBUG
-        if args.debug:
-            log_file = args.debug
-        else:
-            log_file = None
-        logging.basicConfig(level=log_level, format=log_format, filename=log_file, filemode='w')
-    else:
-        logging.basicConfig(level=log_level, format=log_format)
+    log_file = args.debug if args.debug and args.debug != '' else None
+    logging.basicConfig(level=log_level, format=log_format, filename=log_file, filemode='w')
     logger = logging.getLogger()
 
     logger.debug("Starting main function with arguments: %s", args)
 
-    logger.debug("Checking if version argument is provided.")
     if args.version:
-        logger.debug("Version argument detected.")
         print(f"Version: {VERSION}")
         sys.exit(0)
 
@@ -89,15 +80,13 @@ def main():
 
     if args.setup_mqtt:
         logger.debug("Setting up MQTT configuration.")
-        save_mqtt_config(config_file)  # Fixed closing parenthesis here
+        save_mqtt_config(config_file)
         sys.exit(0)
 
-    logger.debug("Validating output file argument.")
     if args.output is not None and args.output == '':
         print("Error: The -o option requires a filename.")
         sys.exit(1)
 
-    logger.debug("Checking if output file is provided.")
     if args.output:
         try:
             with open(args.output, 'w') as f:
@@ -106,7 +95,6 @@ def main():
             print(f"Error: Cannot write to the output file '{args.output}'.")
             sys.exit(1)
 
-    logger.debug("Checking if MQTT or windrose option is provided.")
     if args.mqtt is not None or args.windrose:
         if not config:
             print(f"Error: Configuration file '{config_file}' not found or invalid. Please use the '-S' option to set up a new configuration or provide an existing configuration file with the '-m' option.")
@@ -137,10 +125,38 @@ def main():
         create_database(database_file)
         check_database_integrity(database_file)
 
+    # Handle report generation
+    if args.report:
+        logger.info("Generating report...")
+        
+        # Get the range of available data
+        data_start, data_end = get_data_range(config['database_file'])
+        
+        if data_start is None or data_end is None:
+            logger.error("No data available in the database or unable to parse date range.")
+            sys.exit(1)
+        
+        # Parse the start_date or use the earliest available data
+        start_date = datetime.strptime(args.start_date, "%Y-%m-%d").date() if args.start_date else data_start.date()
+        
+        # Parse the end_date or use today's date
+        end_date = datetime.strptime(args.end_date, "%Y-%m-%d").date() if args.end_date else datetime.now().date()
+        
+        # Adjust dates if they're outside the available range
+        start_date = max(start_date, data_start.date())
+        end_date = min(end_date, data_end.date())
+        
+        if start_date > end_date:
+            logger.error("Start date is after end date or no data available in the specified range.")
+            sys.exit(1)
+        
+        generate_report(args.report, start_date, end_date, args.output_format, config)
+        sys.exit(0)
+        
     while True:  # Main processing loop for repeated execution
         for station_id in station_ids:
             logger.debug("Processing data for Station ID: %s", station_id)
-            final_url = f"https://tempestwx.com/map/{station_id}"  # Construct the URL using the station ID
+            final_url = f"https://tempestwx.com/map/{station_id}"
             
             print(f"Looking for station {station_id} -", end='', flush=True)
             logger.debug("Processing data for URL: %s", final_url)
@@ -148,24 +164,22 @@ def main():
                 data, wind_data, station_name, attribute_descriptions = process_data(final_url)
             except Exception as e:
                 print(f"Error: Failed to process the data from the URL: {e}")
-                continue  # Skip to the next station ID
+                continue
 
             logger.debug("Data processing completed. Data: %s", data)
             logger.debug("Attribute descriptions: %s", attribute_descriptions)
-            logger.debug("Checking if data is None.")
             if data is None:
                 print("Data is None.")
                 print(f"Failed to process the data for station ID {station_id}.")
-                continue  # Skip to the next station ID
+                continue
 
             print(f" found. Station Name: {station_name}", end='')
-            print()  # Move to the next line after the message
+            print()
 
             output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=True)
 
             station_identifier = f"{station_id} - {station_name}"
 
-            logger.debug("Checking if MQTT option is provided for sending data.")
             if args.mqtt or args.windrose:
                 if args.mqtt:
                     send_mqtt_data(data, config, f"{config['mqtt_root']}{station_identifier}")
@@ -177,7 +191,6 @@ def main():
                         windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
                         send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
-            logger.debug("Checking if database option is provided.")
             if args.database is not None:
                 logger.debug("Inserting data into database. Attribute descriptions: %s", attribute_descriptions)
                 insert_data_into_database(database_file, data, attribute_descriptions)
@@ -185,13 +198,14 @@ def main():
             if args.json or args.output:
                 output_data(data, wind_data, json_file=args.json, output_file=args.output, stdout=False)
 
-        # After processing all station IDs, wait before the next iteration if repeat is specified
         if args.repeat:
             logger.debug("Waiting for next iteration...")
             if repeat_unit == 'm':
                 time.sleep(repeat_value * 60)
             elif repeat_unit == 'd':
                 time.sleep(repeat_value * 86400)
+        else:
+            break
 
 if __name__ == "__main__":
     main()
