@@ -152,7 +152,7 @@ def main():
         
         generate_report(args.report, start_date, end_date, args.output_format, config)
         sys.exit(0)
-        
+
     while True:  # Main processing loop for repeated execution
         for station_id in station_ids:
             logger.debug("Processing data for Station ID: %s", station_id)
@@ -188,7 +188,10 @@ def main():
                     if not config.get('mqtt_windrose_root'):
                         print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
                     else:
-                        windrose_data = {"wind_speed": wind_data.get("wind_speed"), "wind_direction": wind_data.get("wind_direction")}
+                        windrose_data = {
+                            "wind_speed": data['wind_speed']['value'],
+                            "wind_direction": data['wind_direction']['value']
+                        }
                         send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 
             if args.database is not None:

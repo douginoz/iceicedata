@@ -25,6 +25,7 @@ def load_config(config_file):
 
 def send_mqtt_data(data, config, topic):
     logger = logging.getLogger()
+    logger.debug(f"Sending MQTT data: {data} to topic: {topic}")
     client = mqtt.Client()
     if config["mqtt_user"] and config["mqtt_password"]:
         client.username_pw_set(config["mqtt_user"], config["mqtt_password"])
