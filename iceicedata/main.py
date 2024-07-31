@@ -14,8 +14,9 @@ from arg_parser import parse_arguments
 from config_loader import load_config, validate_config
 from database import create_database, insert_data_into_database, check_database_integrity, get_data_range
 from report_generator import generate_report
+from helper import convert_compass_to_degrees
 
-VERSION = "1.4.0"
+VERSION = "1.4.1"
 
 def signal_handler(sig, frame):
     print("\nProgram terminated by user.")
@@ -188,9 +189,30 @@ def main():
                     if not config.get('mqtt_windrose_root'):
                         print("Windrose root topic is not set in the configuration file. Please add it to the configuration file and try again.")
                     else:
+<<<<<<< HEAD
                         windrose_data = {
                             "wind_speed": data['wind_speed']['value'],
                             "wind_direction": data['wind_direction']['value']
+=======
+                        wind_direction = data['wind_direction']['value']
+                        if not wind_direction.isdigit():
+                            wind_direction = convert_compass_to_degrees(wind_direction)
+                            if wind_direction is None:
+                                print(f"Invalid wind direction value: {data['wind_direction']['value']}")
+                                continue
+                        else:
+                            wind_direction = float(wind_direction)
+
+                        try:
+                            wind_speed = float(data['wind_speed']['value'])
+                        except ValueError:
+                            print(f"Invalid wind speed value: {data['wind_speed']['value']}")
+                            continue
+
+                        windrose_data = {
+                            "wind_speed": wind_speed,
+                            "wind_direction": wind_direction
+>>>>>>> v1.4.1
                         }
                         send_mqtt_data(windrose_data, config, f"{config['mqtt_windrose_root']}{station_identifier}")
 

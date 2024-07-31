@@ -81,37 +81,35 @@ def insert_data_into_database(database_file, data, attribute_descriptions):
     with closing(conn.cursor()) as cursor:
         logger.debug("Inserting data into weather_data table: %s", data)
 
-        # Handle date-only timestamp
+        # Handle date and time timestamp
         timestamp_str = data['timestamp']['value']
         try:
-            # Parse date only
-            date_only = datetime.strptime(timestamp_str, "%m/%d/%Y").date()
-            # Combine with midnight time
-            timestamp = datetime.combine(date_only, time.min)
+            # Parse date and time
+            timestamp = datetime.strptime(timestamp_str, "%m/%d/%Y %I:%M:%S %p")
         except ValueError:
             logger.error(f"Unable to parse timestamp: {timestamp_str}")
             raise
 
         formatted_timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
-        
+
         # Generate Unix timestamp
         timestamp_unix = calendar.timegm(timestamp.timetuple())
 
         try:
             cursor.execute('''INSERT OR REPLACE INTO weather_data
-                             (station_id, station_name, timestamp, timestamp_unix, air_density, air_temperature, station_pressure, brightness, delta_t, dew_point, feels_like, heat_index, 
-                              lightning_strike_count, lightning_detected_last_3_hrs, lightning_distance_detected, lightning_last_detected, rain_intensity, 
-                              rain_accumulation_today, rain_accumulation_yesterday, rain_duration_today, rain_duration_yesterday, relative_humidity, 
-                              sea_level_pressure, solar_radiation, timezone, uv_index, wet_bulb_temperature, wind_speed, 
+                             (station_id, station_name, timestamp, timestamp_unix, air_density, air_temperature, station_pressure, brightness, delta_t, dew_point, feels_like, heat_index,
+                              lightning_strike_count, lightning_detected_last_3_hrs, lightning_distance_detected, lightning_last_detected, rain_intensity,
+                              rain_accumulation_today, rain_accumulation_yesterday, rain_duration_today, rain_duration_yesterday, relative_humidity,
+                              sea_level_pressure, solar_radiation, timezone, uv_index, wet_bulb_temperature, wind_speed,
                               wind_chill, wind_direction, wind_gust, wind_lull)
                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                             (data['station_id'], data['station_name'], formatted_timestamp, timestamp_unix, 
-                              data['air_density']['value'], data['air_temperature']['value'], data['station_pressure']['value'],
-                              data['brightness']['value'], data['delta_t']['value'], data['dew_point']['value'], data['feels_like']['value'], data['heat_index']['value'],
+                             (data['station_id'], data['station_name'], formatted_timestamp, timestamp_unix,
+                              data['air_density']['value'], data['air_temperature']['value'], data['station_pressure']['value'], data['brightness']['value'],
+                              data['delta_t']['value'], data['dew_point']['value'], data['feels_like']['value'], data['heat_index']['value'],
                               data['lightning_strike_count']['value'], data['lightning_detected_last_3_hrs']['value'], data['lightning_distance_detected']['value'],
                               data['lightning_last_detected']['value'], data['rain_intensity']['value'], data['rain_accumulation_today']['value'],
                               data['rain_accumulation_yesterday']['value'], data['rain_duration_today']['value'], data['rain_duration_yesterday']['value'],
-                              data['relative_humidity']['value'], data['sea_level_pressure']['value'], data['solar_radiation']['value'], 
+                              data['relative_humidity']['value'], data['sea_level_pressure']['value'], data['solar_radiation']['value'],
                               data['timezone']['value'], data['uv_index']['value'], data['wet_bulb_temperature']['value'],
                               data['wind_speed']['value'], data['wind_chill']['value'], data['wind_direction']['value'], data['wind_gust']['value'],
                               data['wind_lull']['value']))
@@ -129,6 +127,7 @@ def insert_data_into_database(database_file, data, attribute_descriptions):
     conn.commit()
     logger.debug("Data insertion committed to the database.")
     conn.close()
+
 
 def check_database_integrity(database_file):
     logger.debug(f"Checking integrity of database '{database_file}'.")

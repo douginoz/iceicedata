@@ -1,0 +1,646 @@
+2024-07-30 21:24:52,736 - DEBUG - Starting main function with arguments: Namespace(repeat=None, station_id='136154', json=None, output=None, mqtt=None, windrose=False, config='/home/moa/scripts/iceicedata/config.yaml', version=False, setup_mqtt=False, database=None, debug='', report=None, start_date=None, end_date=None, output_format='pdf')
+2024-07-30 21:24:52,736 - DEBUG - Validating multiple station IDs: 136154
+2024-07-30 21:24:52,737 - DEBUG - Processing data for Station ID: 136154
+Looking for station 136154 -2024-07-30 21:24:52,737 - DEBUG - Processing data for URL: https://tempestwx.com/map/136154
+2024-07-30 21:24:52,737 - DEBUG - Starting data processing for URL: https://tempestwx.com/map/136154
+2024-07-30 21:24:52,737 - DEBUG - Skipping Selenium Manager; path to firefox driver specified in Service class: /usr/local/bin/geckodriver
+2024-07-30 21:24:52,737 - DEBUG - Started executable: `/usr/local/bin/geckodriver` in a child process with pid: 862494 using 0 to output -3
+2024-07-30 21:24:52,739 - DEBUG - POST http://localhost:60279/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'firefox', 'acceptInsecureCerts': True, 'moz:debuggerAddress': True, 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'moz:firefoxOptions': {'prefs': {'remote.active-protocols': 3}, 'args': ['--headless']}}}}
+2024-07-30 21:24:52,739 - DEBUG - Starting new HTTP connection (1): localhost:60279
+2024-07-30 21:24:54,122 - DEBUG - http://localhost:60279 "POST /session HTTP/11" 200 0
+2024-07-30 21:24:54,123 - DEBUG - Remote response: status=200 | data={"value":{"sessionId":"e9e3ed26-1648-4b8e-aece-6814331e78f6","capabilities":{"acceptInsecureCerts":true,"browserName":"firefox","browserVersion":"128.0.3","moz:accessibilityChecks":false,"moz:buildID":"20240725162350","moz:debuggerAddress":"127.0.0.1:36865","moz:geckodriverVersion":"0.34.0","moz:headless":true,"moz:platformVersion":"6.8.0-39-generic","moz:processID":862497,"moz:profile":"/tmp/rust_mozprofilepbMfGw","moz:shutdownTimeout":60000,"moz:webdriverClick":true,"moz:windowless":false,"pageLoadStrategy":"normal","platformName":"linux","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","userAgent":"Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"}}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '806', 'date': 'Wed, 31 Jul 2024 04:24:52 GMT'})
+2024-07-30 21:24:54,123 - DEBUG - Finished Request
+2024-07-30 21:24:54,123 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/url {'url': 'https://tempestwx.com/map/136154'}
+2024-07-30 21:24:55,204 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/url HTTP/11" 200 0
+2024-07-30 21:24:55,204 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '14', 'date': 'Wed, 31 Jul 2024 04:24:54 GMT'})
+2024-07-30 21:24:55,204 - DEBUG - Finished Request
+2024-07-30 21:24:55,204 - DEBUG - Navigated to URL: https://tempestwx.com/map/136154
+2024-07-30 21:25:05,205 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element {'using': 'css selector', 'value': '[id="station-detail"]'}
+2024-07-30 21:25:05,247 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element HTTP/11" 200 0
+2024-07-30 21:25:05,248 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"010d661a-2d7d-4758-b474-0c8f1e8a671d"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,248 - DEBUG - Finished Request
+2024-07-30 21:25:05,248 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync {'script': '/* isDisplayed */return (function(){return (function(){var g=this||self;\nfunction aa(a){var b=typeof...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': '010d661a-2d7d-4758-b474-0c8f1e8a671d'}]}
+2024-07-30 21:25:05,265 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync HTTP/11" 200 0
+2024-07-30 21:25:05,266 - DEBUG - Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '14', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,266 - DEBUG - Finished Request
+2024-07-30 21:25:05,266 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/010d661a-2d7d-4758-b474-0c8f1e8a671d/element {'using': 'xpath', 'value': './/a[contains(@href, "/station/")]'}
+2024-07-30 21:25:05,270 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/010d661a-2d7d-4758-b474-0c8f1e8a671d/element HTTP/11" 200 0
+2024-07-30 21:25:05,270 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"2ac821e7-8cb9-4d6c-ada4-e03101053e9f"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,270 - DEBUG - Finished Request
+2024-07-30 21:25:05,270 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync {'script': '/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': '2ac821e7-8cb9-4d6c-ada4-e03101053e9f'}, 'href']}
+2024-07-30 21:25:05,277 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync HTTP/11" 200 0
+2024-07-30 21:25:05,277 - DEBUG - Remote response: status=200 | data={"value":"https://tempestwx.com/station/136154"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '48', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,278 - DEBUG - Finished Request
+2024-07-30 21:25:05,278 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/2ac821e7-8cb9-4d6c-ada4-e03101053e9f/text {}
+2024-07-30 21:25:05,286 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/2ac821e7-8cb9-4d6c-ada4-e03101053e9f/text HTTP/11" 200 0
+2024-07-30 21:25:05,287 - DEBUG - Remote response: status=200 | data={"value":"Walfred Rd"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,287 - DEBUG - Finished Request
+2024-07-30 21:25:05,287 - DEBUG - Attempting to locate 'Rain Accumulation (Yesterday)' element.
+2024-07-30 21:25:05,287 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element {'using': 'xpath', 'value': '//span[text()="Rain Accumulation (Yesterday)"]/following-sibling::span'}
+2024-07-30 21:25:05,291 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element HTTP/11" 200 0
+2024-07-30 21:25:05,291 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,291 - DEBUG - Finished Request
+2024-07-30 21:25:05,291 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync {'script': '/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': '88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c'}, 'outerHTML']}
+2024-07-30 21:25:05,297 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync HTTP/11" 200 0
+2024-07-30 21:25:05,297 - DEBUG - Remote response: status=200 | data={"value":"<span class=\"lv-value-display raincheck\" data-param=\"precip_accum_local_yesterday_final\">0.28\"</span>"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '118', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,297 - DEBUG - Finished Request
+2024-07-30 21:25:05,297 - DEBUG - Extracted HTML for 'Rain Accumulation (Yesterday)': <span class="lv-value-display raincheck" data-param="precip_accum_local_yesterday_final">0.28"</span>
+2024-07-30 21:25:05,297 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c/text {}
+2024-07-30 21:25:05,305 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c/text HTTP/11" 200 0
+2024-07-30 21:25:05,305 - DEBUG - Remote response: status=200 | data={"value":"0.28\""} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '18', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,305 - DEBUG - Finished Request
+2024-07-30 21:25:05,305 - DEBUG - Extracted text for 'Rain Accumulation (Yesterday)': 0.28"
+2024-07-30 21:25:05,305 - DEBUG - Before split_value_and_unit for 'Rain Accumulation (Yesterday)': 0.28"
+2024-07-30 21:25:05,305 - DEBUG - Splitting value: 0.28" for key: None
+2024-07-30 21:25:05,305 - DEBUG - Result - Numeric Value: 0.28, Unit: inches
+2024-07-30 21:25:05,305 - DEBUG - After split_value_and_unit for 'Rain Accumulation (Yesterday)': value=0.28, unit=inches
+2024-07-30 21:25:05,305 - DEBUG - Attempting to locate 'Rain Accumulation (Today)' element.
+2024-07-30 21:25:05,305 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element {'using': 'xpath', 'value': '//span[text()="Rain Accumulation (Today)"]/following-sibling::span'}
+2024-07-30 21:25:05,309 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element HTTP/11" 200 0
+2024-07-30 21:25:05,309 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"49c3536f-86da-455a-8aaf-9429001909c0"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,309 - DEBUG - Finished Request
+2024-07-30 21:25:05,309 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync {'script': '/* getAttribute */return (function(){return (function(){var d=this||self;function f(a,b){function c(...', 'args': [{'element-6066-11e4-a52e-4f735466cecf': '49c3536f-86da-455a-8aaf-9429001909c0'}, 'outerHTML']}
+2024-07-30 21:25:05,315 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/execute/sync HTTP/11" 200 0
+2024-07-30 21:25:05,315 - DEBUG - Remote response: status=200 | data={"value":"<span class=\"lv-value-display raincheck\" data-param=\"precip_accum_local_day_final\">0.00\"</span>"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '112', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,315 - DEBUG - Finished Request
+2024-07-30 21:25:05,315 - DEBUG - Extracted HTML for 'Rain Accumulation (Today)': <span class="lv-value-display raincheck" data-param="precip_accum_local_day_final">0.00"</span>
+2024-07-30 21:25:05,315 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/49c3536f-86da-455a-8aaf-9429001909c0/text {}
+2024-07-30 21:25:05,323 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/49c3536f-86da-455a-8aaf-9429001909c0/text HTTP/11" 200 0
+2024-07-30 21:25:05,323 - DEBUG - Remote response: status=200 | data={"value":"0.00\""} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '18', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,323 - DEBUG - Finished Request
+2024-07-30 21:25:05,323 - DEBUG - Extracted text for 'Rain Accumulation (Today)': 0.00"
+2024-07-30 21:25:05,323 - DEBUG - Before split_value_and_unit for 'Rain Accumulation (Today)': 0.00"
+2024-07-30 21:25:05,323 - DEBUG - Splitting value: 0.00" for key: None
+2024-07-30 21:25:05,323 - DEBUG - Result - Numeric Value: 0.00, Unit: inches
+2024-07-30 21:25:05,323 - DEBUG - After split_value_and_unit for 'Rain Accumulation (Today)': value=0.00, unit=inches
+2024-07-30 21:25:05,323 - DEBUG - Rain Accumulation Yesterday: 0.28"
+2024-07-30 21:25:05,323 - DEBUG - Rain Accumulation Today: 0.00"
+2024-07-30 21:25:05,324 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/010d661a-2d7d-4758-b474-0c8f1e8a671d/element {'using': 'css selector', 'value': '.sw-list'}
+2024-07-30 21:25:05,327 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/010d661a-2d7d-4758-b474-0c8f1e8a671d/element HTTP/11" 200 0
+2024-07-30 21:25:05,327 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"68e78d0b-ce32-4c3a-9578-04a9d2076b0d"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,327 - DEBUG - Finished Request
+2024-07-30 21:25:05,327 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/68e78d0b-ce32-4c3a-9578-04a9d2076b0d/elements {'using': 'css selector', 'value': '.lv-value-display'}
+2024-07-30 21:25:05,332 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/68e78d0b-ce32-4c3a-9578-04a9d2076b0d/elements HTTP/11" 200 0
+2024-07-30 21:25:05,332 - DEBUG - Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"83f73e98-d7ce-40e8-913f-4210bdaaa6c4"},{"element-6066-11e4-a52e-4f735466cecf":"ada022d9-f44b-4188-a3a4-3ff79e6cacb2"},{"element-6066-11e4-a52e-4f735466cecf":"1bddc0a7-0e01-40f2-9b8b-b961936e4fad"},{"element-6066-11e4-a52e-4f735466cecf":"1196b6df-1993-491a-bf2c-fdf352eec11d"},{"element-6066-11e4-a52e-4f735466cecf":"9266f929-e88c-4f05-9eb6-bd9d16c4977a"},{"element-6066-11e4-a52e-4f735466cecf":"c4948629-e4f8-4b35-8fb7-fa37e9aeba0c"},{"element-6066-11e4-a52e-4f735466cecf":"8aed320e-f833-4733-9a53-85d836031d3d"},{"element-6066-11e4-a52e-4f735466cecf":"48026bbe-a3a2-4d57-9adf-96ee3a382b1c"},{"element-6066-11e4-a52e-4f735466cecf":"86c13b8a-dda9-4d16-9a12-9837f2c4d4cf"},{"element-6066-11e4-a52e-4f735466cecf":"3a93fce7-6277-4534-a05e-004c455cb4ea"},{"element-6066-11e4-a52e-4f735466cecf":"7fe25a8b-3a64-47ef-977a-9c66959e1bdd"},{"element-6066-11e4-a52e-4f735466cecf":"6ab434e9-ccf6-4014-b095-42f1f27b30a0"},{"element-6066-11e4-a52e-4f735466cecf":"ed81e0d2-6314-4b24-983f-984bbbf8dc53"},{"element-6066-11e4-a52e-4f735466cecf":"49c3536f-86da-455a-8aaf-9429001909c0"},{"element-6066-11e4-a52e-4f735466cecf":"88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c"},{"element-6066-11e4-a52e-4f735466cecf":"1a420b72-b3be-4a48-ac90-b521db6b0329"},{"element-6066-11e4-a52e-4f735466cecf":"f56bc151-5a95-4d01-ba89-2819b9d8076a"},{"element-6066-11e4-a52e-4f735466cecf":"7517f473-af6b-4e46-a520-118b6668b140"},{"element-6066-11e4-a52e-4f735466cecf":"88276b7e-abce-4a12-bdbd-203faebece0e"},{"element-6066-11e4-a52e-4f735466cecf":"18176ad4-4794-48b5-9608-ca880dc955ed"},{"element-6066-11e4-a52e-4f735466cecf":"59bbfb1a-8588-4dea-9636-b7651fd6c594"},{"element-6066-11e4-a52e-4f735466cecf":"575a073f-d206-4087-a61c-6faadfd3cf6d"},{"element-6066-11e4-a52e-4f735466cecf":"77818571-46aa-4931-8970-1978545439ac"},{"element-6066-11e4-a52e-4f735466cecf":"fff2b29c-920f-4169-b347-0d51bd1d8796"},{"element-6066-11e4-a52e-4f735466cecf":"711312f9-c3dd-4fa3-ac3a-47898325538d"},{"element-6066-11e4-a52e-4f735466cecf":"c594576d-5638-40df-9c93-a116e4045dd9"},{"element-6066-11e4-a52e-4f735466cecf":"bcfad4f9-a267-4267-8cac-06be77f714cf"},{"element-6066-11e4-a52e-4f735466cecf":"f5f03ca9-3100-4777-8806-81ee3b5d80bf"},{"element-6066-11e4-a52e-4f735466cecf":"debcad50-9254-4258-91be-1fa8a1c4e4e5"}]} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '2302', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,332 - DEBUG - Finished Request
+2024-07-30 21:25:05,332 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/83f73e98-d7ce-40e8-913f-4210bdaaa6c4/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,335 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/83f73e98-d7ce-40e8-913f-4210bdaaa6c4/element HTTP/11" 200 0
+2024-07-30 21:25:05,335 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"b8486e82-77b2-45a4-aa17-58ff7b44cf7d"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,335 - DEBUG - Finished Request
+2024-07-30 21:25:05,335 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/b8486e82-77b2-45a4-aa17-58ff7b44cf7d/text {}
+2024-07-30 21:25:05,342 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/b8486e82-77b2-45a4-aa17-58ff7b44cf7d/text HTTP/11" 200 0
+2024-07-30 21:25:05,342 - DEBUG - Remote response: status=200 | data={"value":"Air Density"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '23', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,342 - DEBUG - Finished Request
+2024-07-30 21:25:05,342 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/83f73e98-d7ce-40e8-913f-4210bdaaa6c4/text {}
+2024-07-30 21:25:05,350 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/83f73e98-d7ce-40e8-913f-4210bdaaa6c4/text HTTP/11" 200 0
+2024-07-30 21:25:05,350 - DEBUG - Remote response: status=200 | data={"value":"1.19104 kg/m3"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '25', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,350 - DEBUG - Finished Request
+2024-07-30 21:25:05,350 - DEBUG - Splitting value: 1.19104 kg/m3 for key: None
+2024-07-30 21:25:05,350 - DEBUG - Result - Numeric Value: 1.19104, Unit: kg/m3
+2024-07-30 21:25:05,350 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ada022d9-f44b-4188-a3a4-3ff79e6cacb2/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,353 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ada022d9-f44b-4188-a3a4-3ff79e6cacb2/element HTTP/11" 200 0
+2024-07-30 21:25:05,353 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"74ec5f62-989d-4d34-8cfb-d0ddd84c9767"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,353 - DEBUG - Finished Request
+2024-07-30 21:25:05,353 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/74ec5f62-989d-4d34-8cfb-d0ddd84c9767/text {}
+2024-07-30 21:25:05,361 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/74ec5f62-989d-4d34-8cfb-d0ddd84c9767/text HTTP/11" 200 0
+2024-07-30 21:25:05,361 - DEBUG - Remote response: status=200 | data={"value":"Air Temperature"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '27', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,361 - DEBUG - Finished Request
+2024-07-30 21:25:05,361 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ada022d9-f44b-4188-a3a4-3ff79e6cacb2/text {}
+2024-07-30 21:25:05,369 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ada022d9-f44b-4188-a3a4-3ff79e6cacb2/text HTTP/11" 200 0
+2024-07-30 21:25:05,369 - DEBUG - Remote response: status=200 | data={"value":"17.2 °C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,369 - DEBUG - Finished Request
+2024-07-30 21:25:05,369 - DEBUG - Splitting value: 17.2 °C for key: None
+2024-07-30 21:25:05,369 - DEBUG - Result - Numeric Value: 17.2, Unit: °C
+2024-07-30 21:25:05,369 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1bddc0a7-0e01-40f2-9b8b-b961936e4fad/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,372 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1bddc0a7-0e01-40f2-9b8b-b961936e4fad/element HTTP/11" 200 0
+2024-07-30 21:25:05,372 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"7b477e1c-ba9b-45ba-bd1a-86178035dd0b"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,372 - DEBUG - Finished Request
+2024-07-30 21:25:05,372 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7b477e1c-ba9b-45ba-bd1a-86178035dd0b/text {}
+2024-07-30 21:25:05,380 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7b477e1c-ba9b-45ba-bd1a-86178035dd0b/text HTTP/11" 200 0
+2024-07-30 21:25:05,380 - DEBUG - Remote response: status=200 | data={"value":"Station Pressure"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '28', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,380 - DEBUG - Finished Request
+2024-07-30 21:25:05,380 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1bddc0a7-0e01-40f2-9b8b-b961936e4fad/text {}
+2024-07-30 21:25:05,388 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1bddc0a7-0e01-40f2-9b8b-b961936e4fad/text HTTP/11" 200 0
+2024-07-30 21:25:05,388 - DEBUG - Remote response: status=200 | data={"value":"29.315 inHg"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '23', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,388 - DEBUG - Finished Request
+2024-07-30 21:25:05,388 - DEBUG - Splitting value: 29.315 inHg for key: None
+2024-07-30 21:25:05,388 - DEBUG - Result - Numeric Value: 29.315, Unit: inHg
+2024-07-30 21:25:05,388 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1196b6df-1993-491a-bf2c-fdf352eec11d/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,391 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1196b6df-1993-491a-bf2c-fdf352eec11d/element HTTP/11" 200 0
+2024-07-30 21:25:05,391 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"da3beefe-7369-45a9-881c-38e4ba3587a7"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,391 - DEBUG - Finished Request
+2024-07-30 21:25:05,391 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/da3beefe-7369-45a9-881c-38e4ba3587a7/text {}
+2024-07-30 21:25:05,399 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/da3beefe-7369-45a9-881c-38e4ba3587a7/text HTTP/11" 200 0
+2024-07-30 21:25:05,399 - DEBUG - Remote response: status=200 | data={"value":"Brightness"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,399 - DEBUG - Finished Request
+2024-07-30 21:25:05,399 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1196b6df-1993-491a-bf2c-fdf352eec11d/text {}
+2024-07-30 21:25:05,406 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1196b6df-1993-491a-bf2c-fdf352eec11d/text HTTP/11" 200 0
+2024-07-30 21:25:05,406 - DEBUG - Remote response: status=200 | data={"value":"4 lux"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '17', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,406 - DEBUG - Finished Request
+2024-07-30 21:25:05,406 - DEBUG - Splitting value: 4 lux for key: None
+2024-07-30 21:25:05,407 - DEBUG - Result - Numeric Value: 4, Unit: lux
+2024-07-30 21:25:05,407 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/9266f929-e88c-4f05-9eb6-bd9d16c4977a/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,409 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/9266f929-e88c-4f05-9eb6-bd9d16c4977a/element HTTP/11" 200 0
+2024-07-30 21:25:05,409 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"61b6d6fe-a725-4d6e-afab-9eb03a6528e9"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,409 - DEBUG - Finished Request
+2024-07-30 21:25:05,410 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/61b6d6fe-a725-4d6e-afab-9eb03a6528e9/text {}
+2024-07-30 21:25:05,416 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/61b6d6fe-a725-4d6e-afab-9eb03a6528e9/text HTTP/11" 200 0
+2024-07-30 21:25:05,416 - DEBUG - Remote response: status=200 | data={"value":"Delta T"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '19', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,416 - DEBUG - Finished Request
+2024-07-30 21:25:05,416 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/9266f929-e88c-4f05-9eb6-bd9d16c4977a/text {}
+2024-07-30 21:25:05,421 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/9266f929-e88c-4f05-9eb6-bd9d16c4977a/text HTTP/11" 200 0
+2024-07-30 21:25:05,422 - DEBUG - Remote response: status=200 | data={"value":"0.4° C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '19', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,422 - DEBUG - Finished Request
+2024-07-30 21:25:05,422 - DEBUG - Splitting value: 0.4° C for key: None
+2024-07-30 21:25:05,422 - DEBUG - Result - Numeric Value: 0.4, Unit: °C
+2024-07-30 21:25:05,422 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c4948629-e4f8-4b35-8fb7-fa37e9aeba0c/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,425 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c4948629-e4f8-4b35-8fb7-fa37e9aeba0c/element HTTP/11" 200 0
+2024-07-30 21:25:05,425 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"5727f11d-015a-4bbd-a8f6-a3a3661e24ef"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,425 - DEBUG - Finished Request
+2024-07-30 21:25:05,425 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/5727f11d-015a-4bbd-a8f6-a3a3661e24ef/text {}
+2024-07-30 21:25:05,431 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/5727f11d-015a-4bbd-a8f6-a3a3661e24ef/text HTTP/11" 200 0
+2024-07-30 21:25:05,432 - DEBUG - Remote response: status=200 | data={"value":"Dew Point"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '21', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,432 - DEBUG - Finished Request
+2024-07-30 21:25:05,432 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c4948629-e4f8-4b35-8fb7-fa37e9aeba0c/text {}
+2024-07-30 21:25:05,438 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c4948629-e4f8-4b35-8fb7-fa37e9aeba0c/text HTTP/11" 200 0
+2024-07-30 21:25:05,438 - DEBUG - Remote response: status=200 | data={"value":"16.6 °C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,438 - DEBUG - Finished Request
+2024-07-30 21:25:05,438 - DEBUG - Splitting value: 16.6 °C for key: None
+2024-07-30 21:25:05,438 - DEBUG - Result - Numeric Value: 16.6, Unit: °C
+2024-07-30 21:25:05,438 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/8aed320e-f833-4733-9a53-85d836031d3d/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,440 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/8aed320e-f833-4733-9a53-85d836031d3d/element HTTP/11" 200 0
+2024-07-30 21:25:05,440 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f1d5809f-1a7f-4d65-8089-08456bc8527f"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,440 - DEBUG - Finished Request
+2024-07-30 21:25:05,440 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f1d5809f-1a7f-4d65-8089-08456bc8527f/text {}
+2024-07-30 21:25:05,446 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f1d5809f-1a7f-4d65-8089-08456bc8527f/text HTTP/11" 200 0
+2024-07-30 21:25:05,447 - DEBUG - Remote response: status=200 | data={"value":"Feels Like"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,447 - DEBUG - Finished Request
+2024-07-30 21:25:05,447 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/8aed320e-f833-4733-9a53-85d836031d3d/text {}
+2024-07-30 21:25:05,452 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/8aed320e-f833-4733-9a53-85d836031d3d/text HTTP/11" 200 0
+2024-07-30 21:25:05,452 - DEBUG - Remote response: status=200 | data={"value":"17.2 °C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,452 - DEBUG - Finished Request
+2024-07-30 21:25:05,452 - DEBUG - Splitting value: 17.2 °C for key: None
+2024-07-30 21:25:05,452 - DEBUG - Result - Numeric Value: 17.2, Unit: °C
+2024-07-30 21:25:05,453 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/48026bbe-a3a2-4d57-9adf-96ee3a382b1c/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,455 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/48026bbe-a3a2-4d57-9adf-96ee3a382b1c/element HTTP/11" 200 0
+2024-07-30 21:25:05,455 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"793afc60-cbbe-4d38-beb8-f640bd0155ea"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,455 - DEBUG - Finished Request
+2024-07-30 21:25:05,455 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/793afc60-cbbe-4d38-beb8-f640bd0155ea/text {}
+2024-07-30 21:25:05,461 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/793afc60-cbbe-4d38-beb8-f640bd0155ea/text HTTP/11" 200 0
+2024-07-30 21:25:05,461 - DEBUG - Remote response: status=200 | data={"value":"Heat Index"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,461 - DEBUG - Finished Request
+2024-07-30 21:25:05,461 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/48026bbe-a3a2-4d57-9adf-96ee3a382b1c/text {}
+2024-07-30 21:25:05,467 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/48026bbe-a3a2-4d57-9adf-96ee3a382b1c/text HTTP/11" 200 0
+2024-07-30 21:25:05,467 - DEBUG - Remote response: status=200 | data={"value":"17.2 °C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,467 - DEBUG - Finished Request
+2024-07-30 21:25:05,467 - DEBUG - Splitting value: 17.2 °C for key: None
+2024-07-30 21:25:05,467 - DEBUG - Result - Numeric Value: 17.2, Unit: °C
+2024-07-30 21:25:05,468 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/86c13b8a-dda9-4d16-9a12-9837f2c4d4cf/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,470 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/86c13b8a-dda9-4d16-9a12-9837f2c4d4cf/element HTTP/11" 200 0
+2024-07-30 21:25:05,470 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"8bc99459-6d98-44c4-85a0-2464e6dbf551"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,470 - DEBUG - Finished Request
+2024-07-30 21:25:05,470 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/8bc99459-6d98-44c4-85a0-2464e6dbf551/text {}
+2024-07-30 21:25:05,476 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/8bc99459-6d98-44c4-85a0-2464e6dbf551/text HTTP/11" 200 0
+2024-07-30 21:25:05,476 - DEBUG - Remote response: status=200 | data={"value":"Lightning Strike Count"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '34', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,476 - DEBUG - Finished Request
+2024-07-30 21:25:05,476 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/86c13b8a-dda9-4d16-9a12-9837f2c4d4cf/text {}
+2024-07-30 21:25:05,482 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/86c13b8a-dda9-4d16-9a12-9837f2c4d4cf/text HTTP/11" 200 0
+2024-07-30 21:25:05,482 - DEBUG - Remote response: status=200 | data={"value":"0"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '13', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,482 - DEBUG - Finished Request
+2024-07-30 21:25:05,483 - DEBUG - Splitting value: 0 for key: None
+2024-07-30 21:25:05,483 - DEBUG - Result - Numeric Value: 0, Unit: None
+2024-07-30 21:25:05,483 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/3a93fce7-6277-4534-a05e-004c455cb4ea/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,485 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/3a93fce7-6277-4534-a05e-004c455cb4ea/element HTTP/11" 200 0
+2024-07-30 21:25:05,485 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"baa68122-920f-46d3-953e-5892fb9b7130"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,485 - DEBUG - Finished Request
+2024-07-30 21:25:05,485 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/baa68122-920f-46d3-953e-5892fb9b7130/text {}
+2024-07-30 21:25:05,491 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/baa68122-920f-46d3-953e-5892fb9b7130/text HTTP/11" 200 0
+2024-07-30 21:25:05,491 - DEBUG - Remote response: status=200 | data={"value":"Lightning Detected Last 3 Hrs"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '41', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,491 - DEBUG - Finished Request
+2024-07-30 21:25:05,491 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/3a93fce7-6277-4534-a05e-004c455cb4ea/text {}
+2024-07-30 21:25:05,497 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/3a93fce7-6277-4534-a05e-004c455cb4ea/text HTTP/11" 200 0
+2024-07-30 21:25:05,497 - DEBUG - Remote response: status=200 | data={"value":"0"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '13', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,497 - DEBUG - Finished Request
+2024-07-30 21:25:05,497 - DEBUG - Splitting value: 0 for key: None
+2024-07-30 21:25:05,497 - DEBUG - Result - Numeric Value: 0, Unit: None
+2024-07-30 21:25:05,497 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7fe25a8b-3a64-47ef-977a-9c66959e1bdd/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,499 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7fe25a8b-3a64-47ef-977a-9c66959e1bdd/element HTTP/11" 200 0
+2024-07-30 21:25:05,500 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"62fb77c4-6af1-4a73-90af-682cfbfc5626"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,500 - DEBUG - Finished Request
+2024-07-30 21:25:05,500 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/62fb77c4-6af1-4a73-90af-682cfbfc5626/text {}
+2024-07-30 21:25:05,505 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/62fb77c4-6af1-4a73-90af-682cfbfc5626/text HTTP/11" 200 0
+2024-07-30 21:25:05,505 - DEBUG - Remote response: status=200 | data={"value":"Lightning Distance Detected"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '39', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,505 - DEBUG - Finished Request
+2024-07-30 21:25:05,505 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7fe25a8b-3a64-47ef-977a-9c66959e1bdd/text {}
+2024-07-30 21:25:05,512 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7fe25a8b-3a64-47ef-977a-9c66959e1bdd/text HTTP/11" 200 0
+2024-07-30 21:25:05,512 - DEBUG - Remote response: status=200 | data={"value":"40 - 44 km"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,512 - DEBUG - Finished Request
+2024-07-30 21:25:05,512 - DEBUG - Splitting value: 40 - 44 km for key: None
+2024-07-30 21:25:05,512 - DEBUG - Result - Numeric Value: 40, Unit: - 44 km
+2024-07-30 21:25:05,512 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/6ab434e9-ccf6-4014-b095-42f1f27b30a0/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,514 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/6ab434e9-ccf6-4014-b095-42f1f27b30a0/element HTTP/11" 200 0
+2024-07-30 21:25:05,514 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"199e52e1-4952-4bc0-8fdd-6772fa5e05ec"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,514 - DEBUG - Finished Request
+2024-07-30 21:25:05,514 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/199e52e1-4952-4bc0-8fdd-6772fa5e05ec/text {}
+2024-07-30 21:25:05,520 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/199e52e1-4952-4bc0-8fdd-6772fa5e05ec/text HTTP/11" 200 0
+2024-07-30 21:25:05,520 - DEBUG - Remote response: status=200 | data={"value":"Lightning Last Detected"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '35', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,520 - DEBUG - Finished Request
+2024-07-30 21:25:05,520 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/6ab434e9-ccf6-4014-b095-42f1f27b30a0/text {}
+2024-07-30 21:25:05,526 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/6ab434e9-ccf6-4014-b095-42f1f27b30a0/text HTTP/11" 200 0
+2024-07-30 21:25:05,527 - DEBUG - Remote response: status=200 | data={"value":"4 months"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,527 - DEBUG - Finished Request
+2024-07-30 21:25:05,527 - DEBUG - Splitting value: 4 months for key: None
+2024-07-30 21:25:05,527 - DEBUG - Result - Numeric Value: 4, Unit: months
+2024-07-30 21:25:05,527 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ed81e0d2-6314-4b24-983f-984bbbf8dc53/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,529 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ed81e0d2-6314-4b24-983f-984bbbf8dc53/element HTTP/11" 200 0
+2024-07-30 21:25:05,529 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"bf8d377c-88e6-42e7-8471-388d588c3fef"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,530 - DEBUG - Finished Request
+2024-07-30 21:25:05,530 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/bf8d377c-88e6-42e7-8471-388d588c3fef/text {}
+2024-07-30 21:25:05,535 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/bf8d377c-88e6-42e7-8471-388d588c3fef/text HTTP/11" 200 0
+2024-07-30 21:25:05,535 - DEBUG - Remote response: status=200 | data={"value":"Rain Intensity"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '26', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,535 - DEBUG - Finished Request
+2024-07-30 21:25:05,535 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ed81e0d2-6314-4b24-983f-984bbbf8dc53/text {}
+2024-07-30 21:25:05,542 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/ed81e0d2-6314-4b24-983f-984bbbf8dc53/text HTTP/11" 200 0
+2024-07-30 21:25:05,542 - DEBUG - Remote response: status=200 | data={"value":"NONE (0.00 in / hour)"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '33', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,542 - DEBUG - Finished Request
+2024-07-30 21:25:05,542 - DEBUG - Splitting value: NONE (0.00 in / hour) for key: None
+2024-07-30 21:25:05,542 - DEBUG - Result - Numeric Value: NONE, Unit: (0.00 in / hour)
+2024-07-30 21:25:05,542 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/49c3536f-86da-455a-8aaf-9429001909c0/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,545 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/49c3536f-86da-455a-8aaf-9429001909c0/element HTTP/11" 200 0
+2024-07-30 21:25:05,545 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"6a65f609-c879-482c-b979-8a724c198c92"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,545 - DEBUG - Finished Request
+2024-07-30 21:25:05,545 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/6a65f609-c879-482c-b979-8a724c198c92/text {}
+2024-07-30 21:25:05,551 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/6a65f609-c879-482c-b979-8a724c198c92/text HTTP/11" 200 0
+2024-07-30 21:25:05,551 - DEBUG - Remote response: status=200 | data={"value":"Rain Accumulation (Today)"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '37', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,551 - DEBUG - Finished Request
+2024-07-30 21:25:05,551 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/49c3536f-86da-455a-8aaf-9429001909c0/text {}
+2024-07-30 21:25:05,557 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/49c3536f-86da-455a-8aaf-9429001909c0/text HTTP/11" 200 0
+2024-07-30 21:25:05,557 - DEBUG - Remote response: status=200 | data={"value":"0.00\""} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '18', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,557 - DEBUG - Finished Request
+2024-07-30 21:25:05,557 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,560 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c/element HTTP/11" 200 0
+2024-07-30 21:25:05,560 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"2fae4d13-462f-4bd6-bf02-cb334d33dd2b"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,560 - DEBUG - Finished Request
+2024-07-30 21:25:05,560 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/2fae4d13-462f-4bd6-bf02-cb334d33dd2b/text {}
+2024-07-30 21:25:05,566 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/2fae4d13-462f-4bd6-bf02-cb334d33dd2b/text HTTP/11" 200 0
+2024-07-30 21:25:05,574 - DEBUG - Remote response: status=200 | data={"value":"Rain Accumulation (Yesterday)"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '41', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,574 - DEBUG - Finished Request
+2024-07-30 21:25:05,574 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c/text {}
+2024-07-30 21:25:05,580 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88f2cb6b-61d8-4dcd-a2d8-83eafaa7b81c/text HTTP/11" 200 0
+2024-07-30 21:25:05,580 - DEBUG - Remote response: status=200 | data={"value":"0.28\""} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '18', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,580 - DEBUG - Finished Request
+2024-07-30 21:25:05,580 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1a420b72-b3be-4a48-ac90-b521db6b0329/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,582 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1a420b72-b3be-4a48-ac90-b521db6b0329/element HTTP/11" 200 0
+2024-07-30 21:25:05,582 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"f86bc6f1-58d5-4af0-8fc1-3e6b4c8fb4b7"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,583 - DEBUG - Finished Request
+2024-07-30 21:25:05,583 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f86bc6f1-58d5-4af0-8fc1-3e6b4c8fb4b7/text {}
+2024-07-30 21:25:05,588 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f86bc6f1-58d5-4af0-8fc1-3e6b4c8fb4b7/text HTTP/11" 200 0
+2024-07-30 21:25:05,588 - DEBUG - Remote response: status=200 | data={"value":"Rain Duration (Today)"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '33', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,588 - DEBUG - Finished Request
+2024-07-30 21:25:05,588 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1a420b72-b3be-4a48-ac90-b521db6b0329/text {}
+2024-07-30 21:25:05,595 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1a420b72-b3be-4a48-ac90-b521db6b0329/text HTTP/11" 200 0
+2024-07-30 21:25:05,595 - DEBUG - Remote response: status=200 | data={"value":"0 min"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '17', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,595 - DEBUG - Finished Request
+2024-07-30 21:25:05,595 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f56bc151-5a95-4d01-ba89-2819b9d8076a/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,597 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f56bc151-5a95-4d01-ba89-2819b9d8076a/element HTTP/11" 200 0
+2024-07-30 21:25:05,598 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"aaa5470c-6de8-42ba-9f81-cda83e1b2a4d"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,598 - DEBUG - Finished Request
+2024-07-30 21:25:05,598 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/aaa5470c-6de8-42ba-9f81-cda83e1b2a4d/text {}
+2024-07-30 21:25:05,603 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/aaa5470c-6de8-42ba-9f81-cda83e1b2a4d/text HTTP/11" 200 0
+2024-07-30 21:25:05,603 - DEBUG - Remote response: status=200 | data={"value":"Rain Duration (Yesterday)"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '37', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,603 - DEBUG - Finished Request
+2024-07-30 21:25:05,604 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f56bc151-5a95-4d01-ba89-2819b9d8076a/text {}
+2024-07-30 21:25:05,610 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f56bc151-5a95-4d01-ba89-2819b9d8076a/text HTTP/11" 200 0
+2024-07-30 21:25:05,610 - DEBUG - Remote response: status=200 | data={"value":"260 min"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '19', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,610 - DEBUG - Finished Request
+2024-07-30 21:25:05,610 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7517f473-af6b-4e46-a520-118b6668b140/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,612 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7517f473-af6b-4e46-a520-118b6668b140/element HTTP/11" 200 0
+2024-07-30 21:25:05,612 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"e518774d-5e6b-41f9-bf45-b40505045d50"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,612 - DEBUG - Finished Request
+2024-07-30 21:25:05,613 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/e518774d-5e6b-41f9-bf45-b40505045d50/text {}
+2024-07-30 21:25:05,618 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/e518774d-5e6b-41f9-bf45-b40505045d50/text HTTP/11" 200 0
+2024-07-30 21:25:05,618 - DEBUG - Remote response: status=200 | data={"value":"Relative Humidity"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '29', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,618 - DEBUG - Finished Request
+2024-07-30 21:25:05,619 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7517f473-af6b-4e46-a520-118b6668b140/text {}
+2024-07-30 21:25:05,624 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/7517f473-af6b-4e46-a520-118b6668b140/text HTTP/11" 200 0
+2024-07-30 21:25:05,625 - DEBUG - Remote response: status=200 | data={"value":"96%"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '15', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,625 - DEBUG - Finished Request
+2024-07-30 21:25:05,625 - DEBUG - Splitting value: 96% for key: None
+2024-07-30 21:25:05,625 - DEBUG - Result - Numeric Value: 96%, Unit: None
+2024-07-30 21:25:05,625 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88276b7e-abce-4a12-bdbd-203faebece0e/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,627 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88276b7e-abce-4a12-bdbd-203faebece0e/element HTTP/11" 200 0
+2024-07-30 21:25:05,627 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"93acfe6c-2fdb-4b30-aef3-2ec194fbd22c"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,627 - DEBUG - Finished Request
+2024-07-30 21:25:05,627 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/93acfe6c-2fdb-4b30-aef3-2ec194fbd22c/text {}
+2024-07-30 21:25:05,633 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/93acfe6c-2fdb-4b30-aef3-2ec194fbd22c/text HTTP/11" 200 0
+2024-07-30 21:25:05,633 - DEBUG - Remote response: status=200 | data={"value":"Sea Level Pressure"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '30', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,633 - DEBUG - Finished Request
+2024-07-30 21:25:05,633 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88276b7e-abce-4a12-bdbd-203faebece0e/text {}
+2024-07-30 21:25:05,639 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/88276b7e-abce-4a12-bdbd-203faebece0e/text HTTP/11" 200 0
+2024-07-30 21:25:05,639 - DEBUG - Remote response: status=200 | data={"value":"30.017 inHg"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '23', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,639 - DEBUG - Finished Request
+2024-07-30 21:25:05,639 - DEBUG - Splitting value: 30.017 inHg for key: None
+2024-07-30 21:25:05,640 - DEBUG - Result - Numeric Value: 30.017, Unit: inHg
+2024-07-30 21:25:05,640 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/18176ad4-4794-48b5-9608-ca880dc955ed/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,642 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/18176ad4-4794-48b5-9608-ca880dc955ed/element HTTP/11" 200 0
+2024-07-30 21:25:05,642 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"b4bff64a-6272-4e04-baa5-a35db6a7da44"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,642 - DEBUG - Finished Request
+2024-07-30 21:25:05,642 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/b4bff64a-6272-4e04-baa5-a35db6a7da44/text {}
+2024-07-30 21:25:05,648 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/b4bff64a-6272-4e04-baa5-a35db6a7da44/text HTTP/11" 200 0
+2024-07-30 21:25:05,648 - DEBUG - Remote response: status=200 | data={"value":"Solar Radiation"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '27', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,648 - DEBUG - Finished Request
+2024-07-30 21:25:05,648 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/18176ad4-4794-48b5-9608-ca880dc955ed/text {}
+2024-07-30 21:25:05,654 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/18176ad4-4794-48b5-9608-ca880dc955ed/text HTTP/11" 200 0
+2024-07-30 21:25:05,654 - DEBUG - Remote response: status=200 | data={"value":"0 W/m2"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '18', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,654 - DEBUG - Finished Request
+2024-07-30 21:25:05,654 - DEBUG - Splitting value: 0 W/m2 for key: None
+2024-07-30 21:25:05,654 - DEBUG - Result - Numeric Value: 0, Unit: W/m2
+2024-07-30 21:25:05,654 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/59bbfb1a-8588-4dea-9636-b7651fd6c594/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,657 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/59bbfb1a-8588-4dea-9636-b7651fd6c594/element HTTP/11" 200 0
+2024-07-30 21:25:05,657 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"a7973b67-6997-44f7-af82-26f83ceccec8"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,657 - DEBUG - Finished Request
+2024-07-30 21:25:05,657 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/a7973b67-6997-44f7-af82-26f83ceccec8/text {}
+2024-07-30 21:25:05,663 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/a7973b67-6997-44f7-af82-26f83ceccec8/text HTTP/11" 200 0
+2024-07-30 21:25:05,664 - DEBUG - Remote response: status=200 | data={"value":"Timestamp"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '21', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,664 - DEBUG - Finished Request
+2024-07-30 21:25:05,664 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/59bbfb1a-8588-4dea-9636-b7651fd6c594/text {}
+2024-07-30 21:25:05,669 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/59bbfb1a-8588-4dea-9636-b7651fd6c594/text HTTP/11" 200 0
+2024-07-30 21:25:05,669 - DEBUG - Remote response: status=200 | data={"value":"07/30/2024 9:23:55 pm"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '33', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,670 - DEBUG - Finished Request
+2024-07-30 21:25:05,670 - DEBUG - Splitting value: 07/30/2024 9:23:55 pm for key: None
+2024-07-30 21:25:05,670 - DEBUG - Result - Numeric Value: 07/30/2024, Unit: 9:23:55 pm
+2024-07-30 21:25:05,670 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/575a073f-d206-4087-a61c-6faadfd3cf6d/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,672 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/575a073f-d206-4087-a61c-6faadfd3cf6d/element HTTP/11" 200 0
+2024-07-30 21:25:05,672 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"1b9e7e10-f2d5-4a8a-87fc-d3f4dc3b5abc"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,672 - DEBUG - Finished Request
+2024-07-30 21:25:05,672 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1b9e7e10-f2d5-4a8a-87fc-d3f4dc3b5abc/text {}
+2024-07-30 21:25:05,678 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/1b9e7e10-f2d5-4a8a-87fc-d3f4dc3b5abc/text HTTP/11" 200 0
+2024-07-30 21:25:05,678 - DEBUG - Remote response: status=200 | data={"value":"Timezone"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,678 - DEBUG - Finished Request
+2024-07-30 21:25:05,678 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/575a073f-d206-4087-a61c-6faadfd3cf6d/text {}
+2024-07-30 21:25:05,684 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/575a073f-d206-4087-a61c-6faadfd3cf6d/text HTTP/11" 200 0
+2024-07-30 21:25:05,684 - DEBUG - Remote response: status=200 | data={"value":"America/Vancouver"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '29', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,684 - DEBUG - Finished Request
+2024-07-30 21:25:05,684 - DEBUG - Splitting value: America/Vancouver for key: None
+2024-07-30 21:25:05,684 - DEBUG - Result - Numeric Value: America/Vancouver, Unit: None
+2024-07-30 21:25:05,684 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/77818571-46aa-4931-8970-1978545439ac/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,686 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/77818571-46aa-4931-8970-1978545439ac/element HTTP/11" 200 0
+2024-07-30 21:25:05,686 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"83f383e4-d657-414d-91f3-dcd3eb6625e5"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,686 - DEBUG - Finished Request
+2024-07-30 21:25:05,686 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/83f383e4-d657-414d-91f3-dcd3eb6625e5/text {}
+2024-07-30 21:25:05,692 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/83f383e4-d657-414d-91f3-dcd3eb6625e5/text HTTP/11" 200 0
+2024-07-30 21:25:05,692 - DEBUG - Remote response: status=200 | data={"value":"UV Index"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,692 - DEBUG - Finished Request
+2024-07-30 21:25:05,692 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/77818571-46aa-4931-8970-1978545439ac/text {}
+2024-07-30 21:25:05,698 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/77818571-46aa-4931-8970-1978545439ac/text HTTP/11" 200 0
+2024-07-30 21:25:05,698 - DEBUG - Remote response: status=200 | data={"value":"0.0"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '15', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,698 - DEBUG - Finished Request
+2024-07-30 21:25:05,698 - DEBUG - Splitting value: 0.0 for key: None
+2024-07-30 21:25:05,698 - DEBUG - Result - Numeric Value: 0.0, Unit: None
+2024-07-30 21:25:05,698 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/fff2b29c-920f-4169-b347-0d51bd1d8796/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,701 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/fff2b29c-920f-4169-b347-0d51bd1d8796/element HTTP/11" 200 0
+2024-07-30 21:25:05,701 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"c6af75fc-4e28-4b1d-9dbf-64ac83b4e228"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,701 - DEBUG - Finished Request
+2024-07-30 21:25:05,701 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c6af75fc-4e28-4b1d-9dbf-64ac83b4e228/text {}
+2024-07-30 21:25:05,707 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c6af75fc-4e28-4b1d-9dbf-64ac83b4e228/text HTTP/11" 200 0
+2024-07-30 21:25:05,707 - DEBUG - Remote response: status=200 | data={"value":"Wet Bulb Temperature"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '32', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,707 - DEBUG - Finished Request
+2024-07-30 21:25:05,707 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/fff2b29c-920f-4169-b347-0d51bd1d8796/text {}
+2024-07-30 21:25:05,713 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/fff2b29c-920f-4169-b347-0d51bd1d8796/text HTTP/11" 200 0
+2024-07-30 21:25:05,713 - DEBUG - Remote response: status=200 | data={"value":"16.8 °C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,713 - DEBUG - Finished Request
+2024-07-30 21:25:05,713 - DEBUG - Splitting value: 16.8 °C for key: None
+2024-07-30 21:25:05,713 - DEBUG - Result - Numeric Value: 16.8, Unit: °C
+2024-07-30 21:25:05,714 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/711312f9-c3dd-4fa3-ac3a-47898325538d/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,716 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/711312f9-c3dd-4fa3-ac3a-47898325538d/element HTTP/11" 200 0
+2024-07-30 21:25:05,716 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"e8c9a3a2-f32a-4db7-ab42-b1382affec80"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,716 - DEBUG - Finished Request
+2024-07-30 21:25:05,716 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/e8c9a3a2-f32a-4db7-ab42-b1382affec80/text {}
+2024-07-30 21:25:05,721 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/e8c9a3a2-f32a-4db7-ab42-b1382affec80/text HTTP/11" 200 0
+2024-07-30 21:25:05,722 - DEBUG - Remote response: status=200 | data={"value":"Wind Speed"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,722 - DEBUG - Finished Request
+2024-07-30 21:25:05,722 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/711312f9-c3dd-4fa3-ac3a-47898325538d/text {}
+2024-07-30 21:25:05,728 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/711312f9-c3dd-4fa3-ac3a-47898325538d/text HTTP/11" 200 0
+2024-07-30 21:25:05,728 - DEBUG - Remote response: status=200 | data={"value":"0.7 km/h"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,728 - DEBUG - Finished Request
+2024-07-30 21:25:05,728 - DEBUG - Splitting value: 0.7 km/h for key: None
+2024-07-30 21:25:05,728 - DEBUG - Result - Numeric Value: 0.7, Unit: km/h
+2024-07-30 21:25:05,728 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c594576d-5638-40df-9c93-a116e4045dd9/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,730 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c594576d-5638-40df-9c93-a116e4045dd9/element HTTP/11" 200 0
+2024-07-30 21:25:05,730 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"c8b5fe6e-6449-4e0f-9d3c-6a52bce7f932"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,730 - DEBUG - Finished Request
+2024-07-30 21:25:05,730 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c8b5fe6e-6449-4e0f-9d3c-6a52bce7f932/text {}
+2024-07-30 21:25:05,736 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c8b5fe6e-6449-4e0f-9d3c-6a52bce7f932/text HTTP/11" 200 0
+2024-07-30 21:25:05,736 - DEBUG - Remote response: status=200 | data={"value":"Wind Chill"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '22', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,736 - DEBUG - Finished Request
+2024-07-30 21:25:05,737 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c594576d-5638-40df-9c93-a116e4045dd9/text {}
+2024-07-30 21:25:05,743 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/c594576d-5638-40df-9c93-a116e4045dd9/text HTTP/11" 200 0
+2024-07-30 21:25:05,743 - DEBUG - Remote response: status=200 | data={"value":"17.2 °C"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,743 - DEBUG - Finished Request
+2024-07-30 21:25:05,743 - DEBUG - Splitting value: 17.2 °C for key: None
+2024-07-30 21:25:05,743 - DEBUG - Result - Numeric Value: 17.2, Unit: °C
+2024-07-30 21:25:05,743 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/bcfad4f9-a267-4267-8cac-06be77f714cf/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,745 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/bcfad4f9-a267-4267-8cac-06be77f714cf/element HTTP/11" 200 0
+2024-07-30 21:25:05,745 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"d4858b8d-9069-4585-a083-d8e2f804683d"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,745 - DEBUG - Finished Request
+2024-07-30 21:25:05,745 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/d4858b8d-9069-4585-a083-d8e2f804683d/text {}
+2024-07-30 21:25:05,751 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/d4858b8d-9069-4585-a083-d8e2f804683d/text HTTP/11" 200 0
+2024-07-30 21:25:05,751 - DEBUG - Remote response: status=200 | data={"value":"Wind Direction"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '26', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,751 - DEBUG - Finished Request
+2024-07-30 21:25:05,751 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/bcfad4f9-a267-4267-8cac-06be77f714cf/text {}
+2024-07-30 21:25:05,757 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/bcfad4f9-a267-4267-8cac-06be77f714cf/text HTTP/11" 200 0
+2024-07-30 21:25:05,758 - DEBUG - Remote response: status=200 | data={"value":"76°"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '16', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,758 - DEBUG - Finished Request
+2024-07-30 21:25:05,758 - DEBUG - Splitting value: 76° for key: None
+2024-07-30 21:25:05,758 - DEBUG - Result - Numeric Value: 76°, Unit: None
+2024-07-30 21:25:05,758 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f5f03ca9-3100-4777-8806-81ee3b5d80bf/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,760 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f5f03ca9-3100-4777-8806-81ee3b5d80bf/element HTTP/11" 200 0
+2024-07-30 21:25:05,760 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"75fd8673-6d17-4813-8733-7ec7aabf0b3c"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,760 - DEBUG - Finished Request
+2024-07-30 21:25:05,760 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/75fd8673-6d17-4813-8733-7ec7aabf0b3c/text {}
+2024-07-30 21:25:05,766 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/75fd8673-6d17-4813-8733-7ec7aabf0b3c/text HTTP/11" 200 0
+2024-07-30 21:25:05,766 - DEBUG - Remote response: status=200 | data={"value":"Wind Gust"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '21', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,766 - DEBUG - Finished Request
+2024-07-30 21:25:05,766 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f5f03ca9-3100-4777-8806-81ee3b5d80bf/text {}
+2024-07-30 21:25:05,772 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/f5f03ca9-3100-4777-8806-81ee3b5d80bf/text HTTP/11" 200 0
+2024-07-30 21:25:05,773 - DEBUG - Remote response: status=200 | data={"value":"3.2 km/h"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,773 - DEBUG - Finished Request
+2024-07-30 21:25:05,773 - DEBUG - Splitting value: 3.2 km/h for key: None
+2024-07-30 21:25:05,773 - DEBUG - Result - Numeric Value: 3.2, Unit: km/h
+2024-07-30 21:25:05,773 - DEBUG - POST http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/debcad50-9254-4258-91be-1fa8a1c4e4e5/element {'using': 'xpath', 'value': '../span[@class="lv-param-label"]'}
+2024-07-30 21:25:05,776 - DEBUG - http://localhost:60279 "POST /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/debcad50-9254-4258-91be-1fa8a1c4e4e5/element HTTP/11" 200 0
+2024-07-30 21:25:05,776 - DEBUG - Remote response: status=200 | data={"value":{"element-6066-11e4-a52e-4f735466cecf":"4c940933-d2c0-4823-9153-2569a35e45a0"}} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '88', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,776 - DEBUG - Finished Request
+2024-07-30 21:25:05,776 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/4c940933-d2c0-4823-9153-2569a35e45a0/text {}
+2024-07-30 21:25:05,782 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/4c940933-d2c0-4823-9153-2569a35e45a0/text HTTP/11" 200 0
+2024-07-30 21:25:05,782 - DEBUG - Remote response: status=200 | data={"value":"Wind Lull"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '21', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,782 - DEBUG - Finished Request
+2024-07-30 21:25:05,782 - DEBUG - GET http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/debcad50-9254-4258-91be-1fa8a1c4e4e5/text {}
+2024-07-30 21:25:05,788 - DEBUG - http://localhost:60279 "GET /session/e9e3ed26-1648-4b8e-aece-6814331e78f6/element/debcad50-9254-4258-91be-1fa8a1c4e4e5/text HTTP/11" 200 0
+2024-07-30 21:25:05,789 - DEBUG - Remote response: status=200 | data={"value":"0.0 km/h"} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '20', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:05,789 - DEBUG - Finished Request
+2024-07-30 21:25:05,789 - DEBUG - Splitting value: 0.0 km/h for key: None
+2024-07-30 21:25:05,789 - DEBUG - Result - Numeric Value: 0.0, Unit: km/h
+2024-07-30 21:25:05,801 - DEBUG - Data extraction completed. Data: {'station_id': '136154', 'station_name': 'Walfred Rd', 'air_density': {'value': '1.19104', 'unit': 'kg/m3', 'description': 'The mass of air per unit volume.'}, 'air_temperature': {'value': '17.2', 'unit': '°C', 'description': 'The temperature of the air.'}, 'station_pressure': {'value': '29.315', 'unit': 'inHg', 'description': 'The atmospheric pressure at the station.'}, 'brightness': {'value': '4', 'unit': 'lux', 'description': 'The intensity of light.'}, 'delta_t': {'value': '0.4', 'unit': '°C', 'description': 'The difference between air temperature and dew point.'}, 'dew_point': {'value': '16.6', 'unit': '°C', 'description': 'The temperature at which air becomes saturated with moisture.'}, 'feels_like': {'value': '17.2', 'unit': '°C', 'description': 'The apparent temperature considering humidity and wind.'}, 'heat_index': {'value': '17.2', 'unit': '°C', 'description': 'The perceived temperature due to air temperature and humidity.'}, 'lightning_strike_count': {'value': '0', 'unit': None, 'description': 'The number of lightning strikes detected.'}, 'lightning_detected_last_3_hrs': {'value': '0', 'unit': None, 'description': 'The number of lightning strikes detected in the last 3 hours.'}, 'lightning_distance_detected': {'value': '40', 'unit': '- 44 km', 'description': 'The estimated distance of detected lightning strikes.'}, 'lightning_last_detected': {'value': '4', 'unit': 'months', 'description': 'The time since the last lightning strike was detected.'}, 'rain_intensity': {'value': 'NONE', 'unit': '(0.00 in / hour)', 'description': 'The rate of rainfall.'}, 'rain_accumulation_today': {'value': '0.00', 'unit': 'inches', 'description': 'The total rainfall accumulated today.'}, 'rain_accumulation_yesterday': {'value': '0.28', 'unit': 'inches', 'description': 'The total rainfall accumulated yesterday.'}, 'rain_duration_today': {'value': None, 'unit': None, 'description': 'The duration of rainfall today.'}, 'rain_duration_yesterday': {'value': None, 'unit': None, 'description': 'The duration of rainfall yesterday.'}, 'relative_humidity': {'value': '96%', 'unit': None, 'description': 'The percentage of moisture in the air relative to saturation.'}, 'sea_level_pressure': {'value': '30.017', 'unit': 'inHg', 'description': 'The atmospheric pressure adjusted to sea level.'}, 'solar_radiation': {'value': '0', 'unit': 'W/m2', 'description': 'The power per unit area received from the Sun.'}, 'timestamp': {'value': '07/30/2024', 'unit': '9:23:55 pm', 'description': 'The date and time of the observation.'}, 'timezone': {'value': 'America/Vancouver', 'unit': None, 'description': 'The timezone of the observation.'}, 'timestamp_unix': {'value': None, 'unit': None, 'description': 'The timestamp in Unix time format.'}, 'uv_index': {'value': '0.0', 'unit': None, 'description': 'The ultraviolet index indicating the level of UV radiation.'}, 'wet_bulb_temperature': {'value': '16.8', 'unit': '°C', 'description': 'The lowest temperature air can reach by evaporative cooling.'}, 'wind_speed': {'value': '0.7', 'unit': 'km/h', 'description': 'The speed of the wind.'}, 'wind_chill': {'value': '17.2', 'unit': '°C', 'description': 'The perceived decrease in air temperature felt by the body.'}, 'wind_direction': {'value': '76°', 'unit': None, 'description': 'The direction from which the wind is blowing.'}, 'wind_gust': {'value': '3.2', 'unit': 'km/h', 'description': 'The peak wind speed during a short time interval.'}, 'wind_lull': {'value': '0.0', 'unit': 'km/h', 'description': 'The minimum wind speed during a short time interval.'}}
+2024-07-30 21:25:05,801 - DEBUG - Attribute descriptions prepared: {'air_density': 'The mass of air per unit volume.', 'air_temperature': 'The temperature of the air.', 'station_pressure': 'The atmospheric pressure at the station.', 'brightness': 'The intensity of light.', 'delta_t': 'The difference between air temperature and dew point.', 'dew_point': 'The temperature at which air becomes saturated with moisture.', 'feels_like': 'The apparent temperature considering humidity and wind.', 'heat_index': 'The perceived temperature due to air temperature and humidity.', 'lightning_strike_count': 'The number of lightning strikes detected.', 'lightning_detected_last_3_hrs': 'The number of lightning strikes detected in the last 3 hours.', 'lightning_distance_detected': 'The estimated distance of detected lightning strikes.', 'lightning_last_detected': 'The time since the last lightning strike was detected.', 'rain_intensity': 'The rate of rainfall.', 'rain_accumulation_today': 'The total rainfall accumulated today.', 'rain_accumulation_yesterday': 'The total rainfall accumulated yesterday.', 'rain_duration_today': 'The duration of rainfall today.', 'rain_duration_yesterday': 'The duration of rainfall yesterday.', 'relative_humidity': 'The percentage of moisture in the air relative to saturation.', 'sea_level_pressure': 'The atmospheric pressure adjusted to sea level.', 'solar_radiation': 'The power per unit area received from the Sun.', 'timestamp': 'The date and time of the observation.', 'timezone': 'The timezone of the observation.', 'timestamp_unix': 'The timestamp in Unix time format.', 'uv_index': 'The ultraviolet index indicating the level of UV radiation.', 'wet_bulb_temperature': 'The lowest temperature air can reach by evaporative cooling.', 'wind_speed': 'The speed of the wind.', 'wind_chill': 'The perceived decrease in air temperature felt by the body.', 'wind_direction': 'The direction from which the wind is blowing.', 'wind_gust': 'The peak wind speed during a short time interval.', 'wind_lull': 'The minimum wind speed during a short time interval.'}
+2024-07-30 21:25:05,801 - DEBUG - DELETE http://localhost:60279/session/e9e3ed26-1648-4b8e-aece-6814331e78f6 {}
+2024-07-30 21:25:06,437 - DEBUG - http://localhost:60279 "DELETE /session/e9e3ed26-1648-4b8e-aece-6814331e78f6 HTTP/11" 200 0
+2024-07-30 21:25:06,437 - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache', 'content-length': '14', 'date': 'Wed, 31 Jul 2024 04:25:05 GMT'})
+2024-07-30 21:25:06,437 - DEBUG - Finished Request
+2024-07-30 21:25:06,440 - DEBUG - Data processing completed. Data: {'station_id': '136154', 'station_name': 'Walfred Rd', 'air_density': {'value': '1.19104', 'unit': 'kg/m3', 'description': 'The mass of air per unit volume.'}, 'air_temperature': {'value': '17.2', 'unit': '°C', 'description': 'The temperature of the air.'}, 'station_pressure': {'value': '29.315', 'unit': 'inHg', 'description': 'The atmospheric pressure at the station.'}, 'brightness': {'value': '4', 'unit': 'lux', 'description': 'The intensity of light.'}, 'delta_t': {'value': '0.4', 'unit': '°C', 'description': 'The difference between air temperature and dew point.'}, 'dew_point': {'value': '16.6', 'unit': '°C', 'description': 'The temperature at which air becomes saturated with moisture.'}, 'feels_like': {'value': '17.2', 'unit': '°C', 'description': 'The apparent temperature considering humidity and wind.'}, 'heat_index': {'value': '17.2', 'unit': '°C', 'description': 'The perceived temperature due to air temperature and humidity.'}, 'lightning_strike_count': {'value': '0', 'unit': None, 'description': 'The number of lightning strikes detected.'}, 'lightning_detected_last_3_hrs': {'value': '0', 'unit': None, 'description': 'The number of lightning strikes detected in the last 3 hours.'}, 'lightning_distance_detected': {'value': '40', 'unit': '- 44 km', 'description': 'The estimated distance of detected lightning strikes.'}, 'lightning_last_detected': {'value': '4', 'unit': 'months', 'description': 'The time since the last lightning strike was detected.'}, 'rain_intensity': {'value': 'NONE', 'unit': '(0.00 in / hour)', 'description': 'The rate of rainfall.'}, 'rain_accumulation_today': {'value': '0.00', 'unit': 'inches', 'description': 'The total rainfall accumulated today.'}, 'rain_accumulation_yesterday': {'value': '0.28', 'unit': 'inches', 'description': 'The total rainfall accumulated yesterday.'}, 'rain_duration_today': {'value': None, 'unit': None, 'description': 'The duration of rainfall today.'}, 'rain_duration_yesterday': {'value': None, 'unit': None, 'description': 'The duration of rainfall yesterday.'}, 'relative_humidity': {'value': '96%', 'unit': None, 'description': 'The percentage of moisture in the air relative to saturation.'}, 'sea_level_pressure': {'value': '30.017', 'unit': 'inHg', 'description': 'The atmospheric pressure adjusted to sea level.'}, 'solar_radiation': {'value': '0', 'unit': 'W/m2', 'description': 'The power per unit area received from the Sun.'}, 'timestamp': {'value': '07/30/2024', 'unit': '9:23:55 pm', 'description': 'The date and time of the observation.'}, 'timezone': {'value': 'America/Vancouver', 'unit': None, 'description': 'The timezone of the observation.'}, 'timestamp_unix': {'value': None, 'unit': None, 'description': 'The timestamp in Unix time format.'}, 'uv_index': {'value': '0.0', 'unit': None, 'description': 'The ultraviolet index indicating the level of UV radiation.'}, 'wet_bulb_temperature': {'value': '16.8', 'unit': '°C', 'description': 'The lowest temperature air can reach by evaporative cooling.'}, 'wind_speed': {'value': '0.7', 'unit': 'km/h', 'description': 'The speed of the wind.'}, 'wind_chill': {'value': '17.2', 'unit': '°C', 'description': 'The perceived decrease in air temperature felt by the body.'}, 'wind_direction': {'value': '76°', 'unit': None, 'description': 'The direction from which the wind is blowing.'}, 'wind_gust': {'value': '3.2', 'unit': 'km/h', 'description': 'The peak wind speed during a short time interval.'}, 'wind_lull': {'value': '0.0', 'unit': 'km/h', 'description': 'The minimum wind speed during a short time interval.'}}
+2024-07-30 21:25:06,440 - DEBUG - Attribute descriptions: {'air_density': 'The mass of air per unit volume.', 'air_temperature': 'The temperature of the air.', 'station_pressure': 'The atmospheric pressure at the station.', 'brightness': 'The intensity of light.', 'delta_t': 'The difference between air temperature and dew point.', 'dew_point': 'The temperature at which air becomes saturated with moisture.', 'feels_like': 'The apparent temperature considering humidity and wind.', 'heat_index': 'The perceived temperature due to air temperature and humidity.', 'lightning_strike_count': 'The number of lightning strikes detected.', 'lightning_detected_last_3_hrs': 'The number of lightning strikes detected in the last 3 hours.', 'lightning_distance_detected': 'The estimated distance of detected lightning strikes.', 'lightning_last_detected': 'The time since the last lightning strike was detected.', 'rain_intensity': 'The rate of rainfall.', 'rain_accumulation_today': 'The total rainfall accumulated today.', 'rain_accumulation_yesterday': 'The total rainfall accumulated yesterday.', 'rain_duration_today': 'The duration of rainfall today.', 'rain_duration_yesterday': 'The duration of rainfall yesterday.', 'relative_humidity': 'The percentage of moisture in the air relative to saturation.', 'sea_level_pressure': 'The atmospheric pressure adjusted to sea level.', 'solar_radiation': 'The power per unit area received from the Sun.', 'timestamp': 'The date and time of the observation.', 'timezone': 'The timezone of the observation.', 'timestamp_unix': 'The timestamp in Unix time format.', 'uv_index': 'The ultraviolet index indicating the level of UV radiation.', 'wet_bulb_temperature': 'The lowest temperature air can reach by evaporative cooling.', 'wind_speed': 'The speed of the wind.', 'wind_chill': 'The perceived decrease in air temperature felt by the body.', 'wind_direction': 'The direction from which the wind is blowing.', 'wind_gust': 'The peak wind speed during a short time interval.', 'wind_lull': 'The minimum wind speed during a short time interval.'}
+ found. Station Name: Walfred Rd
+{
+    "station_id": "136154",
+    "station_name": "Walfred Rd",
+    "air_density": {
+        "value": "1.19104",
+        "unit": "kg/m3",
+        "description": "The mass of air per unit volume."
+    },
+    "air_temperature": {
+        "value": "17.2",
+        "unit": "\u00b0C",
+        "description": "The temperature of the air."
+    },
+    "station_pressure": {
+        "value": "29.315",
+        "unit": "inHg",
+        "description": "The atmospheric pressure at the station."
+    },
+    "brightness": {
+        "value": "4",
+        "unit": "lux",
+        "description": "The intensity of light."
+    },
+    "delta_t": {
+        "value": "0.4",
+        "unit": "\u00b0C",
+        "description": "The difference between air temperature and dew point."
+    },
+    "dew_point": {
+        "value": "16.6",
+        "unit": "\u00b0C",
+        "description": "The temperature at which air becomes saturated with moisture."
+    },
+    "feels_like": {
+        "value": "17.2",
+        "unit": "\u00b0C",
+        "description": "The apparent temperature considering humidity and wind."
+    },
+    "heat_index": {
+        "value": "17.2",
+        "unit": "\u00b0C",
+        "description": "The perceived temperature due to air temperature and humidity."
+    },
+    "lightning_strike_count": {
+        "value": "0",
+        "unit": null,
+        "description": "The number of lightning strikes detected."
+    },
+    "lightning_detected_last_3_hrs": {
+        "value": "0",
+        "unit": null,
+        "description": "The number of lightning strikes detected in the last 3 hours."
+    },
+    "lightning_distance_detected": {
+        "value": "40",
+        "unit": "- 44 km",
+        "description": "The estimated distance of detected lightning strikes."
+    },
+    "lightning_last_detected": {
+        "value": "4",
+        "unit": "months",
+        "description": "The time since the last lightning strike was detected."
+    },
+    "rain_intensity": {
+        "value": "NONE",
+        "unit": "(0.00 in / hour)",
+        "description": "The rate of rainfall."
+    },
+    "rain_accumulation_today": {
+        "value": "0.00",
+        "unit": "inches",
+        "description": "The total rainfall accumulated today."
+    },
+    "rain_accumulation_yesterday": {
+        "value": "0.28",
+        "unit": "inches",
+        "description": "The total rainfall accumulated yesterday."
+    },
+    "rain_duration_today": {
+        "value": null,
+        "unit": null,
+        "description": "The duration of rainfall today."
+    },
+    "rain_duration_yesterday": {
+        "value": null,
+        "unit": null,
+        "description": "The duration of rainfall yesterday."
+    },
+    "relative_humidity": {
+        "value": "96%",
+        "unit": null,
+        "description": "The percentage of moisture in the air relative to saturation."
+    },
+    "sea_level_pressure": {
+        "value": "30.017",
+        "unit": "inHg",
+        "description": "The atmospheric pressure adjusted to sea level."
+    },
+    "solar_radiation": {
+        "value": "0",
+        "unit": "W/m2",
+        "description": "The power per unit area received from the Sun."
+    },
+    "timestamp": {
+        "value": "07/30/2024",
+        "unit": "9:23:55 pm",
+        "description": "The date and time of the observation."
+    },
+    "timezone": {
+        "value": "America/Vancouver",
+        "unit": null,
+        "description": "The timezone of the observation."
+    },
+    "timestamp_unix": {
+        "value": null,
+        "unit": null,
+        "description": "The timestamp in Unix time format."
+    },
+    "uv_index": {
+        "value": "0.0",
+        "unit": null,
+        "description": "The ultraviolet index indicating the level of UV radiation."
+    },
+    "wet_bulb_temperature": {
+        "value": "16.8",
+        "unit": "\u00b0C",
+        "description": "The lowest temperature air can reach by evaporative cooling."
+    },
+    "wind_speed": {
+        "value": "0.7",
+        "unit": "km/h",
+        "description": "The speed of the wind."
+    },
+    "wind_chill": {
+        "value": "17.2",
+        "unit": "\u00b0C",
+        "description": "The perceived decrease in air temperature felt by the body."
+    },
+    "wind_direction": {
+        "value": "76\u00b0",
+        "unit": null,
+        "description": "The direction from which the wind is blowing."
+    },
+    "wind_gust": {
+        "value": "3.2",
+        "unit": "km/h",
+        "description": "The peak wind speed during a short time interval."
+    },
+    "wind_lull": {
+        "value": "0.0",
+        "unit": "km/h",
+        "description": "The minimum wind speed during a short time interval."
+    }
+}
