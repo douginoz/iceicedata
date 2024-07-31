@@ -1,8 +1,4 @@
-def split_value_and_unit(value):
-    parts = value.split(' ')
-    numeric_value = parts[0]
-    unit = ' '.join(parts[1:]) if len(parts) > 1 else None
-    return numeric_value, unit
+import logging
 
 def convert_wind_speed_to_mps(speed):
     try:

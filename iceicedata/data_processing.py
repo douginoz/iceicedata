@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
-from helper import convert_wind_speed_to_mps, split_value_and_unit, convert_timestamp_to_unix_ms, convert_compass_to_degrees
+from helper import split_value_and_unit, convert_timestamp_to_unix_ms, convert_compass_to_degrees
 
 def process_data(url, skip_initial=False):
     logger = logging.getLogger()
@@ -73,20 +73,15 @@ def process_data(url, skip_initial=False):
                 'wind_lull': {'value': None, 'unit': None, 'description': "The minimum wind speed during a short time interval."}
             }
 
-            # Initialize the wind_data dictionary
-            wind_data = {
-                'wind_speed': None,
-                'wind_direction': None
-            }
-
             # Populate the data dictionary with values from the website
+
             sw_list = station_detail.find_element(By.CLASS_NAME, 'sw-list')
             for item in sw_list.find_elements(By.CLASS_NAME, 'lv-value-display'):
-                label = item.find_element(By.XPATH, '../span[@class="lv-param-label"]').text.strip().lower().replace(" ", "_")
+                label = item.find_element(By.XPATH, '../span[@class="lv-param-label"]').text.strip().lower().replace(" ", "_").replace("(", "").replace(")", "")
                 value = item.text.strip()
 
                 if label in data:
-                    numeric_value, unit = split_value_and_unit(value)
+                    numeric_value, unit = split_value_and_unit(value, key=label)
                     data[label]['value'] = numeric_value
                     data[label]['unit'] = unit
 
@@ -114,7 +109,7 @@ def process_data(url, skip_initial=False):
         # Log the attribute descriptions
         logger.debug("Attribute descriptions prepared: %s", attribute_descriptions)
 
-        return data, wind_data, station_name, attribute_descriptions
+        return data, None, station_name, attribute_descriptions
     except Exception as e:
         logger.error("An error occurred: %s", e)
         print(f"An error occurred: {e}")
@@ -129,7 +124,7 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
         print("No data to output.")
         return
 
-    json_data = json.dumps(data)
+    json_data = json.dumps(data, indent=4)
     
     if stdout and not output_file:
         print(json_data)
@@ -143,7 +138,11 @@ def output_data(data, wind_data, json_file=None, output_file=None, stdout=False)
     if output_file and output_file != '/dev/null':
         with open(output_file, 'w') as f:
             for key, value in data.items():
+                logger.debug(f'Outputting {key}: value={value["value"]}, unit={value["unit"]}, description={value["description"]}')
                 value_str = f'"{value["value"]}"' if "value" in value else '""'
                 unit_str = f'"{value["unit"]}"' if "unit" in value else '""'
                 description_str = f'"{value["description"]}"' if "description" in value else '""'
+                # Handle inches properly in output
+                if value_str.endswith('inches"'):
+                    value_str = value_str.replace('inches"', 'inches')
                 f.write(f'"{key}",{value_str},{unit_str},{description_str}\n')
